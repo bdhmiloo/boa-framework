@@ -44,6 +44,11 @@ public class FileToStanfordConverter {
 
 			}while(nextchar!= -1);
 			
+    		while(text.startsWith("\n"))
+    		{
+    			text = text.substring(1);
+    		}			
+			
 			reader.close();		
 			return text;
 		}
@@ -71,8 +76,6 @@ public class FileToStanfordConverter {
 			text = FileToString(FilePath);
 			removedSentence = nextSentence(text);
 			newText = text.replace(removedSentence, "");
-			if(newText.startsWith("\n")) newText.substring(2);
-			//if(!newText.equals("")||newText.startsWith(" ")) newText = newText.substring(2);
 			
 			file.delete();
 			
@@ -92,12 +95,6 @@ public class FileToStanfordConverter {
 		}
 	}
 	
-    /**
-     * TODO export to library
-     * 
-     * @param sentence
-     * @return
-     */
        
     public String nextSentence(String text)
     {
@@ -110,6 +107,8 @@ public class FileToStanfordConverter {
     		{
     			sentence+=text.charAt(i);
     			i++;
+
+    			if(i == text.length()) break;
     		}
     	
            return sentence;
@@ -120,38 +119,6 @@ public class FileToStanfordConverter {
     	}
     
     	return "";
-    		/*try {
-                    
-                    this.stringReader = new StringReader(sentence);
-                    this.preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
-                    String text="";
-                    boolean firstword = true;
-                    
-                    HashSet<String> set = new HashSet<String>();
-                    set.add(".");
-                    set.add("!");
-                    set.add("?");
-                    set.add(",");
-                    
-                    Iterator<List<HasWord>> iter = this.preprocessor.iterator();
-                    while ( iter.hasNext() ) {
-                            
-                            for ( HasWord word : iter.next() ) {
-                                    if(!firstword && !set.contains(word.toString()))text+= " " + word.toString();
-                                    else 
-                                    {
-                                    	text+= word.toString();
-                                    	firstword = false;
-                                    }
-                            }
-                            return text.trim();
-                    }
-            }
-            catch (ArrayIndexOutOfBoundsException aioobe) {
-                    
-                   // logger.debug("Could not segment string...", aioobe);
-            }*/
     }
-
 
 }
