@@ -17,8 +17,11 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard;
 
 import java.util.ArrayList;
 
+// serves sentences to goldstandard applications and saves annotations
+// calls from different sessions are synchronized
 public class SentenceServer
 {
+	// called to request a new sentence, returns a list of tokens
 	static synchronized ArrayList<String> getSentence()
 	{
 		ArrayList ret = new ArrayList<String>();
@@ -26,11 +29,13 @@ public class SentenceServer
 		return ret;
 	}
 	
+	// called to return a annotated sentence  
 	static synchronized void returnSentence(ArrayList<String> tokens, ArrayList<Annotation> annotations)
 	{
 		
 	}
 	
+	// called to return a sentence without annotations
 	static synchronized void discardSentence(ArrayList<String> tokens)
 	{
 		
