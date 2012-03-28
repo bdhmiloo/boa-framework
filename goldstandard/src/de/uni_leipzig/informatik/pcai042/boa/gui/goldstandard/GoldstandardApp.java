@@ -6,15 +6,20 @@ import com.vaadin.ui.*;
 @SuppressWarnings("serial")
 public class GoldstandardApp extends Application
 {
+	private GoldstandardGUI gui = new GoldstandardGUI();
+	
 	@Override
 	public void init()
 	{
 		Window mainWindow = new Window("Goldstandard");
 		setMainWindow(mainWindow);
 		mainWindow.getContent().setSizeFull();
-		
-        GoldstandardGUI gui = new GoldstandardGUI();
         mainWindow.addComponent(gui);
 	}
-
+	
+	@Override
+	public void close()
+	{
+		gui.close();
+	}
 }
