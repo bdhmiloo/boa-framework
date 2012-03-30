@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -72,9 +73,47 @@ public class SentenceServer
 	}
 	
 	// called to return an annotated sentence  
-	static synchronized void returnSentence(ArrayList<String> tokens, ArrayList<Annotation> annotations)
+	static synchronized void returnSentence(ArrayList<String> tokens, ArrayList<playground.Annotation> myAnno)
 	{
-
+		//initializing Stanford pipeline
+		Properties props = new Properties();
+		props.put("annotators", "tokenize, ssplit");
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		
+		//merging the tokens into a String
+		String text = "";
+		Iterator<String> it = tokens.iterator();
+		
+		while(it.hasNext())
+		{
+			text+=it.next()+" ";
+		}
+		
+		//creating Stanford annotations
+		Annotation document = new Annotation(text);
+		pipeline.annotate(document);
+		
+		//print xml file
+		String filePath = "c:/users/Bosthorst/Java/test.xml";	//to do: adding the Path of the directory + introducing a sentence ID of some kind
+		
+		try
+		{
+			pipeline.xmlPrint(document, new FileWriter(filePath));	//
+			
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//still to implement: method to insert our Annotations into the XML
+		
+		
+		
 	}
 	
 	// called to return a sentence without annotations
