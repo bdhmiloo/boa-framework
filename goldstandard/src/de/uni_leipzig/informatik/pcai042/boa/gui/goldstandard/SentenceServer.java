@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -47,7 +48,7 @@ public class SentenceServer
 		ArrayList<String> tokens = new ArrayList<String>();
 		String sentence = nextSentence(fileToString("PLACEHODLER"));	//PLACEHOLDER = your FilePath (later constant) 
 				
-		//initializing Stanford pieline
+		//initializing Stanford pipeline
 		Properties props = new Properties();
 		props.put("annotators", "tokenize, ssplit");
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
@@ -71,9 +72,62 @@ public class SentenceServer
 	}
 	
 	// called to return an annotated sentence  
-	static synchronized void returnSentence(ArrayList<String> tokens, ArrayList<Annotation> annotations)
+	static synchronized void returnSentence(ArrayList<String> tokens, ArrayList<de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard.Annotation> annotations)
 	{
-
+		//initializing Stanford pipeline
+		Properties props = new Properties();
+		props.put("annotators", "tokenize, ssplit");
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		
+		//merging the tokens into a String
+		String text = "";
+		Iterator<String> it = tokens.iterator();
+		
+		while(it.hasNext())
+		{
+			text+=it.next()+" ";
+		}
+		
+		//creating Stanford annotations
+		Annotation document = new Annotation(text);
+		pipeline.annotate(document);
+		
+		//print xml file
+		String filePath = "sentenceID.xml";	//to do: adding the Path of the directory + introducing a sentence ID of some kind
+		
+		try
+		{
+			pipeline.xmlPrint(document, new FileWriter(filePath));	//
+			
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//still to implement: method to insert our Annotations into the XML
+		
+		String annotationBlock = "<ANNOTATIONS>";
+		text = fileToString(filePath);
+		de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard.Annotation currentAnno = new de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard.Annotation(null, null);
+		
+		Iterator<de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard.Annotation> itAnno = annotations.iterator();
+		while(itAnno.hasNext())
+		{
+			currentAnno = itAnno.next();
+			
+			if(currentAnno.getType()!=null)	//only necessary if we create empty annotations
+			{
+				//now our Annotation class needs to be modified so a token that occurs more than once in a sentence can definitely be identified
+				//best is to convert the ArrayList<String> tokens into an ArrayList<(String, int)> where the integer describes which occurrence
+				//of the String the token resembles
+			}
+		}
+		
 	}
 	
 	// called to return a sentence without annotations
