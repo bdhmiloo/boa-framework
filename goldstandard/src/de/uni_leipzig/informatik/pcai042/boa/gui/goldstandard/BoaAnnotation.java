@@ -17,7 +17,7 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard;
 
 import java.util.ArrayList;
 
-public class Annotation
+public class BoaAnnotation
 {
 	// TODO insert types
 	public static enum Type
@@ -28,7 +28,7 @@ public class Annotation
 	private Type type;
 	private ArrayList<String> tokens;
 	
-	public Annotation(Type type, ArrayList<String> tokens)
+	public BoaAnnotation(Type type, ArrayList<String> tokens)
 	{
 		this.type = type;
 		this.tokens = tokens;

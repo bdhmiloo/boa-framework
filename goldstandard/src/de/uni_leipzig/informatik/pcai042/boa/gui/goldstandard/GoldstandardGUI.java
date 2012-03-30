@@ -37,7 +37,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
-import de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard.Annotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard.BoaAnnotation.Type;
 
 @SuppressWarnings("serial")
 public class GoldstandardGUI extends CustomComponent
@@ -73,8 +73,7 @@ public class GoldstandardGUI extends CustomComponent
 	private Button buttonNext;
 	
 	private CssLayout cssLayoutTokens;
-	private ArrayList<String> tokens;
-	private ArrayList<Annotation> annotations;
+	private BoaSentence sentence;
 	
 	/**
 	 * The constructor should first build the main layout, set the composition
@@ -90,7 +89,7 @@ public class GoldstandardGUI extends CustomComponent
 		
 		// user code
 		
-		for (Type t : Annotation.Type.values())
+		for (Type t : BoaAnnotation.Type.values())
 		{
 			comboBoxTypes.addItem(t);
 		}
@@ -120,20 +119,19 @@ public class GoldstandardGUI extends CustomComponent
 		{
 			public void buttonClick(ClickEvent event)
 			{
-				if (tokens != null)
+				if (sentence != null)
 				{
-					SentenceServer.returnSentence(tokens, annotations);
+					SentenceServer.returnSentence(sentence);
 				}
 				
 				resetComponents();
-				annotations = new ArrayList<Annotation>();
-				tokens = SentenceServer.getSentence();
+				sentence = SentenceServer.getSentence();
 				
 				// create new check boxes for tokens
 				CheckBox checkbox;
 				Label label;
 				VerticalLayout vertLayout;
-				for (int i = 0; i < tokens.size(); i++)
+				for (int i = 0; i < sentence.getTokens().size(); i++)
 				{
 					checkbox = new CheckBox();
 					checkbox.setImmediate(true);
@@ -163,7 +161,7 @@ public class GoldstandardGUI extends CustomComponent
 							textFieldLabel.setReadOnly(true);
 						}
 					});
-					label = new Label(tokens.get(i));
+					label = new Label(sentence.getTokens().get(i));
 					label.setSizeUndefined();
 					vertLayout = new VerticalLayout();
 					vertLayout.addComponent(label);
@@ -180,7 +178,7 @@ public class GoldstandardGUI extends CustomComponent
 		{
 			public void buttonClick(ClickEvent event)
 			{
-				SentenceServer.discardSentence(tokens);
+				SentenceServer.discardSentence(sentence);
 				resetComponents();
 			}
 		});
@@ -207,10 +205,10 @@ public class GoldstandardGUI extends CustomComponent
 							cb.setValue(false);
 						}
 					}
-					Annotation anno = new Annotation((Type) comboBoxTypes.getValue(), selected);
+					BoaAnnotation anno = new BoaAnnotation((Type) comboBoxTypes.getValue(), selected);
 					boolean isDuplicate = false;
 					boolean isColliding = false;
-					for (Annotation a : annotations)
+					for (BoaAnnotation a : sentence.getAnnotations())
 					{
 						if (a.getTokens().equals(anno.getTokens()))
 						{
@@ -227,7 +225,7 @@ public class GoldstandardGUI extends CustomComponent
 								Notification.TYPE_ERROR_MESSAGE);
 					} else
 					{
-						annotations.add(anno);
+						sentence.getAnnotations().add(anno);
 						listSelectAnnotations.addItem(anno);
 					}
 				} else
@@ -241,7 +239,7 @@ public class GoldstandardGUI extends CustomComponent
 			{
 				if (listSelectAnnotations.getValue() != null)
 				{
-					annotations.remove(listSelectAnnotations.getValue());
+					sentence.getAnnotations().remove(listSelectAnnotations.getValue());
 					listSelectAnnotations.removeItem(listSelectAnnotations.getValue());
 				}
 			}
@@ -250,8 +248,7 @@ public class GoldstandardGUI extends CustomComponent
 	
 	private void resetComponents()
 	{
-		tokens = null;
-		annotations = null;
+		sentence = null;
 		textFieldLabel.setReadOnly(false);
 		textFieldLabel.setValue("");
 		textFieldLabel.setReadOnly(true);
@@ -261,8 +258,8 @@ public class GoldstandardGUI extends CustomComponent
 	
 	public void close()
 	{
-		if (tokens != null)
-			SentenceServer.discardSentence(tokens);
+		if (sentence != null)
+			SentenceServer.discardSentence(sentence);
 	}
 	
 	@SuppressWarnings("deprecation")
