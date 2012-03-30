@@ -11,10 +11,12 @@ public class GoldstandardApp extends Application
 	@Override
 	public void init()
 	{
+		if (!SentenceServer.isInitialized())
+			SentenceServer.init(getContext().getBaseDirectory());
 		Window mainWindow = new Window("Goldstandard");
 		setMainWindow(mainWindow);
 		mainWindow.getContent().setSizeFull();
-        mainWindow.addComponent(gui);
+		mainWindow.addComponent(gui);
 	}
 	
 	@Override
