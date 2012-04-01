@@ -18,6 +18,7 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -53,7 +54,7 @@ public class SentenceServer
 		String sentence = nextSentence(fileToString(sentenceFile));
 		// TODO sentence can be empty
 		
-		// TODO remove sentence from file
+		aodSentence(sentence, sentenceFile.getAbsolutePath(), false);
 		
 		BoaSentence sent = null;
 		while (sent == null)
@@ -141,7 +142,7 @@ public class SentenceServer
 	
 	static synchronized void discardSentence(BoaSentence sentence)
 	{
-		// TODO implement
+		aodSentence(sentence.getSentence(), sentenceFile.getAbsolutePath(), true);
 	}
 	
 	/**
@@ -196,5 +197,47 @@ public class SentenceServer
 	private static String nextSentence(String text)
 	{		
 		return text.indexOf('\n') > -1 ? text.substring(0, text.indexOf('\n')) : "";
+	}
+
+	//aod = add (if direction = true) or delete (if direction = false)
+	//sentence is added as first line of the file
+	//when on delete, all occurrences of the sentence are removed from the file
+	private static void aodSentence(String sentence, String FilePath, Boolean direction)
+	{
+		File file = new File(FilePath);
+		String text, newText;
+		
+		try
+		{
+			text = fileToString(file);
+			if(direction) newText = sentence + text;	//perhaps +"\n" still has to be added after sentence
+			else newText = text.replace(sentence, "");
+			
+			//backup old text to temporary file
+			File tempFile = new File(FilePath+".tmp");
+			FileWriter tempWriter = new FileWriter(tempFile);
+			tempWriter.write(text);
+			tempWriter.close();
+			
+			//delete old file
+			file.delete();
+			
+			//create new file
+			File newFile = new File(FilePath);
+			FileWriter writer = new FileWriter(newFile);
+			writer.write(newText);
+			writer.close();		
+			
+			//delete temporary backup
+			if(newFile!=null)tempFile.delete();
+		}
+		catch(FileNotFoundException eFile)
+		{
+			eFile.printStackTrace();
+		}
+		catch(IOException eIO)
+		{
+			eIO.printStackTrace();
+		}
 	}
 }
