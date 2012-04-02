@@ -154,8 +154,8 @@ public class SentenceServer
 	 */
 	private static String fileToString(File file)
 	{
-		String text = "";
 		int nextchar;
+		StringBuilder stringBuilder = new StringBuilder();
 		
 		try
 		{
@@ -164,21 +164,23 @@ public class SentenceServer
 			{
 				nextchar = reader.read();
 				if (nextchar != -1)
-					text += (char) (nextchar);
+					stringBuilder.append((char) (nextchar));
 				
 			} while (nextchar != -1);
 			
-			while (text.startsWith("\n"))
+			while (stringBuilder.toString().startsWith("\n"))
 			{
-				text = text.substring(1);
+				stringBuilder.deleteCharAt(0);
 			}
 			
 			reader.close();
-			return text;
-		} catch (FileNotFoundException eFile)
+			return stringBuilder.toString().trim();
+		}
+		catch (FileNotFoundException eFile)
 		{
 			eFile.printStackTrace();
-		} catch (IOException eIO)
+		} 
+		catch (IOException eIO)
 		{
 			eIO.printStackTrace();
 		}
