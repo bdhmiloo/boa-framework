@@ -53,8 +53,8 @@ public class SentenceServer
 	{
 		String sentence = nextSentence(fileToString(sentenceFile));
 		// TODO sentence can be empty
-		
-		aodSentence(sentence, sentenceFile.getAbsolutePath(), false);
+
+		aodSentence(sentence, sentenceFile, false);
 		
 		BoaSentence sent = null;
 		while (sent == null)
@@ -142,7 +142,7 @@ public class SentenceServer
 	
 	static synchronized void discardSentence(BoaSentence sentence)
 	{
-		aodSentence(sentence.getSentence(), sentenceFile.getAbsolutePath(), true);
+		aodSentence(sentence.getSentence(), sentenceFile, true);
 	}
 	
 	/**
@@ -154,8 +154,8 @@ public class SentenceServer
 	 */
 	private static String fileToString(File file)
 	{
-		String text = "";
 		int nextchar;
+		StringBuilder stringBuilder = new StringBuilder();
 		
 		try
 		{
@@ -164,21 +164,23 @@ public class SentenceServer
 			{
 				nextchar = reader.read();
 				if (nextchar != -1)
-					text += (char) (nextchar);
+					stringBuilder.append((char) (nextchar));
 				
 			} while (nextchar != -1);
 			
-			while (text.startsWith("\n"))
+			while (stringBuilder.toString().startsWith("\n"))
 			{
-				text = text.substring(1);
+				stringBuilder.deleteCharAt(0);
 			}
 			
 			reader.close();
-			return text;
-		} catch (FileNotFoundException eFile)
+			return stringBuilder.toString().trim();
+		}
+		catch (FileNotFoundException eFile)
 		{
 			eFile.printStackTrace();
-		} catch (IOException eIO)
+		} 
+		catch (IOException eIO)
 		{
 			eIO.printStackTrace();
 		}
@@ -196,37 +198,42 @@ public class SentenceServer
 	 */
 	private static String nextSentence(String text)
 	{		
+		if(text.contains("\n"))
 		return text.indexOf('\n') > -1 ? text.substring(0, text.indexOf('\n')) : "";
+		else return text;
 	}
 
 	//aod = add (if direction = true) or delete (if direction = false)
 	//sentence is added as first line of the file
 	//when on delete, all occurrences of the sentence are removed from the file
-	private static void aodSentence(String sentence, String FilePath, Boolean direction)
+	private static void aodSentence(String sentence, File oldFile, Boolean direction)
 	{
-		File file = new File(FilePath);
+		String path = oldFile.getAbsolutePath();
 		String text, newText;
 		
 		try
 		{
-			text = fileToString(file);
-			if(direction) newText = sentence + text;	//perhaps +"\n" still has to be added after sentence
+			text = fileToString(oldFile);
+			
+			if(direction) newText = sentence + "\n" + text;	
 			else newText = text.replace(sentence, "");
 			
 			//backup old text to temporary file
-			File tempFile = new File(FilePath+".tmp");
+			File tempFile = new File(path+".tmp");
 			FileWriter tempWriter = new FileWriter(tempFile);
 			tempWriter.write(text);
 			tempWriter.close();
 			
 			//delete old file
-			file.delete();
+			oldFile.delete();
 			
 			//create new file
-			File newFile = new File(FilePath);
+			File newFile = new File(path);
 			FileWriter writer = new FileWriter(newFile);
 			writer.write(newText);
-			writer.close();		
+			writer.close();	
+			
+			System.out.println("I was here!" + "\n" + newText);
 			
 			//delete temporary backup
 			if(newFile!=null)tempFile.delete();
