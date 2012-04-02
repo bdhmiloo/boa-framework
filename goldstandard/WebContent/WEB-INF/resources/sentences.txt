@@ -1,3 +1,6 @@
 Today's date is 26.03.2012.
 The Mount Everest 8,848 metres (29,029 ft) high.
-This is another sentence...
+This is another sentence.
+More sentences.
+I think it only doesn't work for the very last one.
+Sure!
