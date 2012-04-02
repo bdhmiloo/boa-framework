@@ -57,8 +57,7 @@ public class BoaSentence
 		// otherwise StanfordCoreNLP had problems to tokenize the sentence
 		if (sentences.size() != 1)
 		{
-			if(sentences.size() ==0){ System.out.println("NULL"); return ;}
-			else throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 		}
 			
 		for (CoreLabel token : sentences.get(0).get(TokensAnnotation.class))

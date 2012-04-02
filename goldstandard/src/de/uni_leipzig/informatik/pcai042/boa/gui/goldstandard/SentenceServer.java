@@ -21,6 +21,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Properties;
+
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -33,6 +36,7 @@ public class SentenceServer
 	private static File path;
 	private static File sentenceFile;
 	private static File outputFile;
+	private static String eof = "END OF FILE - DO NOT ANNOTATE THIS!";
 	
 	public static synchronized void init(File file)
 	{
@@ -52,7 +56,7 @@ public class SentenceServer
 	static synchronized BoaSentence getSentence()
 	{
 		String sentence = nextSentence(fileToString(sentenceFile));
-		// TODO sentence can be empty
+		if(sentence.length() == 0) sentence = eof;	//not sure if this is best solution for empty sentences, but at least this will keep the program from crashing
 
 		aodSentence(sentence, sentenceFile, false);
 		
@@ -121,9 +125,14 @@ public class SentenceServer
 					Element tokenElem = new Element("token");
 					// inserts id of token; add one since Stanford's ids aren't zero-based
 					tokenElem.appendChild("" + (sentence.getTokens().indexOf(token) + 1));
-					// TODO add type
 					annoElem.appendChild(tokenElem);
 				}
+				//add annotation type
+				Element annoType = new Element("type");
+				annoType.appendChild("" + currentAnno.getType());
+				annoElem.appendChild(annoType);
+				
+				//add annotation to sentence
 				sentenceElem.appendChild(annoElem);
 			}
 		}
@@ -137,7 +146,8 @@ public class SentenceServer
 					.appendChild(sentenceElem.copy());
 		}
 		
-		// TODO save output
+		//save output
+		stringToFile(output.toXML());
 	}
 	
 	static synchronized void discardSentence(BoaSentence sentence)
@@ -233,10 +243,29 @@ public class SentenceServer
 			writer.write(newText);
 			writer.close();	
 			
-			System.out.println("I was here!" + "\n" + newText);
-			
 			//delete temporary backup
 			if(newFile!=null)tempFile.delete();
+		}
+		catch(FileNotFoundException eFile)
+		{
+			eFile.printStackTrace();
+		}
+		catch(IOException eIO)
+		{
+			eIO.printStackTrace();
+		}
+	}
+	
+	private static void stringToFile(String text)
+	{
+		String path = outputFile.getAbsolutePath();
+		
+		try
+		{
+			File file = new File(path);
+			FileWriter writer = new FileWriter(file);
+			writer.write(text);
+			writer.close();
 		}
 		catch(FileNotFoundException eFile)
 		{
