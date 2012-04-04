@@ -20,11 +20,9 @@ import java.util.List;
 import java.util.Properties;
 
 import nu.xom.Document;
-
-import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
@@ -36,17 +34,23 @@ public class BoaSentence
 	private ArrayList<BoaAnnotation> annotations;
 	private Document xmlDoc;
 	
+	private static StanfordCoreNLP pipeline = null;
+	
 	public BoaSentence(String sentence) throws IllegalArgumentException
 	{
 		this.sentence = sentence;
 		annotations = new ArrayList<BoaAnnotation>();
 		tokens = new ArrayList<String>();
 		
-		// generate tokens with StanfordCoreNLP
-		Properties props = new Properties();
-		props.put("annotators", "tokenize, ssplit");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		// initialize StanfordCoreNLP
+		if (pipeline == null)
+		{
+			Properties props = new Properties();
+			props.put("annotators", "tokenize, ssplit");
+			pipeline = new StanfordCoreNLP(props);
+		}
 		
+		// generate tokens with StanfordCoreNLP
 		Annotation document = new Annotation(sentence);
 		pipeline.annotate(document);
 		
@@ -59,11 +63,12 @@ public class BoaSentence
 		{
 			throw new IllegalArgumentException();
 		}
-			
+		
 		for (CoreLabel token : sentences.get(0).get(TokensAnnotation.class))
 		{
 			// this is the text of the token
-			String word = token.get(TextAnnotation.class);
+			
+			String word = token.originalText();
 			tokens.add(word);
 		}
 		
