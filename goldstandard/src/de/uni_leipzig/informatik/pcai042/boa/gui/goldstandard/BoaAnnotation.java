@@ -22,7 +22,7 @@ public class BoaAnnotation
 	// TODO insert types
 	public static enum Type
 	{
-		TYPE1, TYPE2
+		DATE, LINEAR_MEASURE, TEMPERATURE, WEIGHT;
 	}
 	
 	private Type type;
