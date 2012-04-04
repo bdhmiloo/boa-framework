@@ -16,28 +16,42 @@
 package de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
-import java.util.Properties;
-
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.ParsingException;
+import nu.xom.Serializer;
 import nu.xom.ValidityException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SentenceServer
 {
 	private static File path;
 	private static File sentenceFile;
 	private static File outputFile;
-	private static String eof = "END OF FILE - DO NOT ANNOTATE THIS!";
 	
+	private static Document output = null;
+	private static int sentenceCount = 0;
+	
+	private static final Logger logger = LoggerFactory.getLogger(SentenceServer.class);
+	
+	/**
+	 * Initializes file destination paths
+	 * 
+	 * @param file
+	 *            the root destination of all files
+	 */
 	public static synchronized void init(File file)
 	{
 		if (!isInitialized())
@@ -45,99 +59,111 @@ public class SentenceServer
 			path = new File(file.getAbsolutePath() + "/WEB-INF/resources/");
 			sentenceFile = new File(path, "sentences.txt");
 			outputFile = new File(path, "output.xml");
+			
+			if (outputFile.exists())
+			{
+				// load output from file after server is restarted
+				try
+				{
+					output = new Builder().build(outputFile);
+				} catch (ValidityException e)
+				{
+					logger.error(e.getMessage());
+				} catch (ParsingException e)
+				{
+					logger.error(e.getMessage());
+				} catch (IOException e)
+				{
+					logger.error(e.getMessage());
+				}
+				sentenceCount = output.getRootElement().getFirstChildElement("document")
+						.getFirstChildElement("sentences").getChildElements().size();
+				logger.info("loaded previous annotationed sentences (" + sentenceCount + ")");
+			}
+			logger.info("SentenceServer initialized");
 		}
 	}
 	
+	/**
+	 * Returns whether the server is initialized
+	 * 
+	 * @return true if already initialized
+	 */
 	public static boolean isInitialized()
 	{
 		return path != null;
 	}
 	
+	/**
+	 * Called by the GUI to request a new non-annotated sentence.
+	 * 
+	 * @return the sentence
+	 */
 	static synchronized BoaSentence getSentence()
 	{
-		String sentence = nextSentence(fileToString(sentenceFile));
-		if(sentence.length() == 0) sentence = eof;	//not sure if this is best solution for empty sentences, but at least this will keep the program from crashing
-
-		aodSentence(sentence, sentenceFile, false);
-		
 		BoaSentence sent = null;
+		String sentence;
 		while (sent == null)
 		{
+			sentence = nextSentence(fileToString(sentenceFile));
+			if (sentence == null)
+				return null;
+			aodSentence(sentence, sentenceFile, false);
 			try
 			{
 				// tokens are automatically generated
 				sent = new BoaSentence(sentence);
+				logger.info("sentence served: \"" + sentence + "\"");
 			} catch (IllegalArgumentException e)
 			{
-				e.printStackTrace();
-				// TODO: handle exception thrown when Stanford couldn't tokenize the sentence properly
+				logger.warn("sentence rejected: \"" + sentence + "\"");
 			}
 		}
 		return sent;
 	}
 	
+	/**
+	 * Called by the GUI to return an annotated sentence. Saves the annotated
+	 * sentence in output file.
+	 * 
+	 * @param sentence
+	 *            the returned sentence
+	 */
 	static synchronized void returnSentence(BoaSentence sentence)
 	{
-		// the xml containing all sentences
-		Document output = null;
-		// the xml containing the current sentence
 		Document xmlSentence = sentence.getXmlDoc();
-		
-		boolean firstSentence = !outputFile.exists();
-		if (!firstSentence)
-		{
-			// load output from file
-			try
-			{
-				output = new Builder().build(outputFile);
-			} catch (ValidityException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ParsingException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		sentenceCount++;
 		
 		BoaAnnotation currentAnno;
 		Iterator<BoaAnnotation> itAnno = sentence.getAnnotations().iterator();
 		// the xml element of our sentence to annotate
 		Element sentenceElem = xmlSentence.getRootElement().getFirstChildElement("document")
 				.getFirstChildElement("sentences").getFirstChildElement("sentence");
+		sentenceElem.getAttribute("id").setValue("" + sentenceCount);
 		
 		while (itAnno.hasNext())
 		{
 			currentAnno = itAnno.next();
 			
-			if (currentAnno.getType() != null) // only necessary if we
-												// create
-												// empty annotations
+			Element annoElem = new Element("annotation");
+			for (String token : currentAnno.getTokens())
 			{
-				Element annoElem = new Element("annotation");
-				for (String token : currentAnno.getTokens())
-				{
-					Element tokenElem = new Element("token");
-					// inserts id of token; add one since Stanford's ids aren't zero-based
-					tokenElem.appendChild("" + (sentence.getTokens().indexOf(token) + 1));
-					annoElem.appendChild(tokenElem);
-				}
-				//add annotation type
-				Element annoType = new Element("type");
-				annoType.appendChild("" + currentAnno.getType());
-				annoElem.appendChild(annoType);
-				
-				//add annotation to sentence
-				sentenceElem.appendChild(annoElem);
+				Element tokenElem = new Element("token");
+				// inserts id of token; add one since Stanford's ids aren't
+				// zero-based
+				tokenElem.appendChild("" + (sentence.getTokens().indexOf(token) + 1));
+				annoElem.appendChild(tokenElem);
 			}
+			// add annotation type
+			Element annoType = new Element("type");
+			annoType.appendChild("" + currentAnno.getType());
+			annoElem.appendChild(annoType);
+			
+			// add annotation to sentence
+			sentenceElem.appendChild(annoElem);
 		}
 		
-		if (firstSentence)
+		if (output == null)
 		{
 			output = xmlSentence;
 		} else
@@ -146,13 +172,22 @@ public class SentenceServer
 					.appendChild(sentenceElem.copy());
 		}
 		
-		//save output
-		stringToFile(output.toXML());
+		// save output
+		xmlDocToFile(output);
+		logger.info("annotated sentence #" + sentenceCount + ": \"" + sentence.getSentence() + "\"");
 	}
 	
+	/**
+	 * Called by the GUI to return a discarded sentence. Puts the sentence back
+	 * in sentence pool.
+	 * 
+	 * @param sentence
+	 *            the returned sentence
+	 */
 	static synchronized void discardSentence(BoaSentence sentence)
 	{
 		aodSentence(sentence.getSentence(), sentenceFile, true);
+		logger.info("discarded sentence: \"" + sentence.getSentence() + "\"");
 	}
 	
 	/**
@@ -169,7 +204,7 @@ public class SentenceServer
 		
 		try
 		{
-			FileReader reader = new FileReader(file);
+			InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
 			do
 			{
 				nextchar = reader.read();
@@ -178,102 +213,103 @@ public class SentenceServer
 				
 			} while (nextchar != -1);
 			
-			while (stringBuilder.toString().startsWith("\n"))
-			{
-				stringBuilder.deleteCharAt(0);
-			}
-			
 			reader.close();
 			return stringBuilder.toString().trim();
-		}
-		catch (FileNotFoundException eFile)
+		} catch (FileNotFoundException e)
 		{
-			eFile.printStackTrace();
-		} 
-		catch (IOException eIO)
+			logger.error(e.getMessage());
+		} catch (IOException e)
 		{
-			eIO.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		
 		return "";
 	}
 	
 	/**
-	 * Auxiliary Function: Returns the first line of a String (waits for first
-	 * line break).
+	 * Returns the first line of a String or null if String is empty.
 	 * 
 	 * @param text
 	 *            input String
-	 * @return sentence part of the input String until first occurrence of "\n"
+	 * @return first line of input String or null
 	 */
 	private static String nextSentence(String text)
-	{		
-		if(text.contains("\n"))
-		return text.indexOf('\n') > -1 ? text.substring(0, text.indexOf('\n')) : "";
-		else return text;
+	{
+		if (text.isEmpty())
+			return null;
+		return text.indexOf('\n') > -1 ? text.substring(0, text.indexOf('\n')) : text;
 	}
-
-	//aod = add (if direction = true) or delete (if direction = false)
-	//sentence is added as first line of the file
-	//when on delete, all occurrences of the sentence are removed from the file
+	
+	/**
+	 * aod = add (if direction = true) or delete (if direction = false) sentence
+	 * is added as first line of the file when on delete, all occurrences of the
+	 * sentence are removed from the file
+	 * 
+	 * @param sentence
+	 * @param oldFile
+	 * @param direction
+	 */
 	private static void aodSentence(String sentence, File oldFile, Boolean direction)
 	{
-		String path = oldFile.getAbsolutePath();
 		String text, newText;
 		
 		try
 		{
 			text = fileToString(oldFile);
 			
-			if(direction) newText = sentence + "\n" + text;	
-			else newText = text.replace(sentence, "");
+			if (direction)
+				newText = sentence + "\n" + text;
+			else
+				newText = text.replace(sentence, "");
 			
-			//backup old text to temporary file
-			File tempFile = new File(path+".tmp");
-			FileWriter tempWriter = new FileWriter(tempFile);
-			tempWriter.write(text);
+			// backup old text to temporary file
+			File tempFile = new File(path, "sentences.txt.tmp");
+			OutputStreamWriter tempWriter = new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8");
+			tempWriter.write(newText);
 			tempWriter.close();
 			
-			//delete old file
-			oldFile.delete();
-			
-			//create new file
-			File newFile = new File(path);
-			FileWriter writer = new FileWriter(newFile);
-			writer.write(newText);
-			writer.close();	
-			
-			//delete temporary backup
-			if(newFile!=null)tempFile.delete();
-		}
-		catch(FileNotFoundException eFile)
+			if (!tempFile.renameTo(sentenceFile))
+			{
+				logger.error("renaming of temporary sententece file unsuccesful");
+			}
+		} catch (FileNotFoundException e)
 		{
-			eFile.printStackTrace();
-		}
-		catch(IOException eIO)
+			logger.error(e.getMessage());
+		} catch (IOException e)
 		{
-			eIO.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	
-	private static void stringToFile(String text)
+	/**
+	 * Pretty prints a xml document to output file.
+	 * 
+	 * @param doc
+	 *            The document to print
+	 */
+	private static void xmlDocToFile(Document doc)
 	{
-		String path = outputFile.getAbsolutePath();
-		
 		try
 		{
-			File file = new File(path);
-			FileWriter writer = new FileWriter(file);
-			writer.write(text);
-			writer.close();
-		}
-		catch(FileNotFoundException eFile)
+			File tmpOutputFile = new File(path, "output.xml.tmp");
+			FileOutputStream outputStream = new FileOutputStream(tmpOutputFile);
+			Serializer serializer = new Serializer(outputStream, "UTF-8");
+			serializer.setIndent(4);
+			serializer.write(doc);
+			outputStream.close();
+			if (!tmpOutputFile.renameTo(outputFile))
+			{
+				logger.error("renaming of temporary output file unsuccesful");
+			}
+		} catch (FileNotFoundException e)
 		{
-			eFile.printStackTrace();
-		}
-		catch(IOException eIO)
+			logger.error(e.getMessage());
+		} catch (UnsupportedEncodingException e)
 		{
-			eIO.printStackTrace();
+			logger.error(e.getMessage());
+		} catch (IOException e)
+		{
+			logger.error(e.getMessage());
 		}
 	}
 }
