@@ -19,14 +19,14 @@ import java.util.ArrayList;
 
 public class BoaAnnotation
 {
+	private Type type;
+	private ArrayList<String> tokens;
+	
 	// TODO insert types
 	public static enum Type
 	{
 		DATE, LINEAR_MEASURE, TEMPERATURE, WEIGHT;
 	}
-	
-	private Type type;
-	private ArrayList<String> tokens;
 	
 	public BoaAnnotation(Type type, ArrayList<String> tokens)
 	{
