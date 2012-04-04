@@ -127,6 +127,12 @@ public class GoldstandardGUI extends CustomComponent
 				resetComponents();
 				sentence = SentenceServer.getSentence();
 				
+				if (sentence == null)
+				{
+					getWindow().showNotification("No more senentences.", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				
 				// create new check boxes for tokens
 				CheckBox checkbox;
 				Label label;
@@ -178,8 +184,11 @@ public class GoldstandardGUI extends CustomComponent
 		{
 			public void buttonClick(ClickEvent event)
 			{
-				SentenceServer.discardSentence(sentence);
-				resetComponents();
+				if (sentence != null)
+				{
+					SentenceServer.discardSentence(sentence);
+					resetComponents();
+				}
 			}
 		});
 		
