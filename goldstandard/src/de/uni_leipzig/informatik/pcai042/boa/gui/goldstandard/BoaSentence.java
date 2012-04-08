@@ -56,16 +56,11 @@ public class BoaSentence
 		annotations = new ArrayList<BoaAnnotation>();
 		tokens = new ArrayList<String>();
 		
+		// double checked locking
+		if (pipeline == null)
+			initPipeline();
 		synchronized (pipeline)
 		{
-			// initialize StanfordCoreNLP
-			if (pipeline == null)
-			{
-				Properties props = new Properties();
-				props.put("annotators", "tokenize, ssplit");
-				pipeline = new StanfordCoreNLP(props);
-			}
-			
 			// generate tokens with StanfordCoreNLP
 			Annotation document = new Annotation(sentence);
 			pipeline.annotate(document);
@@ -87,6 +82,16 @@ public class BoaSentence
 				tokens.add(word);
 			}
 			xmlDoc = pipeline.annotationToDoc(document);
+		}
+	}
+	
+	private static synchronized void initPipeline()
+	{
+		if (pipeline == null)
+		{
+			Properties props = new Properties();
+			props.put("annotators", "tokenize, ssplit");
+			pipeline = new StanfordCoreNLP(props);
 		}
 	}
 	
