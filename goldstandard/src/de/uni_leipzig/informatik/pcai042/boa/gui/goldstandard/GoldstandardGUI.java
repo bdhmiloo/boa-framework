@@ -219,10 +219,19 @@ public class GoldstandardGUI extends CustomComponent
 					boolean isColliding = false;
 					for (BoaAnnotation a : sentence.getAnnotations())
 					{
-						if (a.getTokens().equals(anno.getTokens()))
+						if (a.getTokens().size() == anno.getTokens().size())
 						{
-							isColliding = !(isDuplicate = a.getType().equals(anno.getType()));
-							break;
+							boolean sameTokens = true;
+							for (int i = 0; i < a.getTokens().size(); i++)
+							{
+								sameTokens = a.getTokens().get(i) == anno.getTokens().get(i);
+								if (!sameTokens) break;
+							}
+							if (sameTokens)
+							{
+								isColliding = !(isDuplicate = a.getType().equals(anno.getType()));
+								break;
+							}
 						}
 					}
 					if (isDuplicate)
