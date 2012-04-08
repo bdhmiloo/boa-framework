@@ -27,6 +27,12 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+/**
+ * Contains various immutable representations of a Sentence, and its
+ * Annotations.
+ * 
+ * @author Simon Suiter
+ */
 public class BoaSentence
 {
 	private String sentence;
@@ -36,43 +42,52 @@ public class BoaSentence
 	
 	private static StanfordCoreNLP pipeline = null;
 	
+	/**
+	 * Tokenizes the sentence and generates an XML representation.
+	 * 
+	 * @param sentence
+	 * @throws IllegalArgumentException
+	 *             thrown when StanfordCoreNLP couldn't tokenize the sentenze
+	 *             properly
+	 */
 	public BoaSentence(String sentence) throws IllegalArgumentException
 	{
 		this.sentence = sentence;
 		annotations = new ArrayList<BoaAnnotation>();
 		tokens = new ArrayList<String>();
 		
-		// initialize StanfordCoreNLP
-		if (pipeline == null)
+		synchronized (pipeline)
 		{
-			Properties props = new Properties();
-			props.put("annotators", "tokenize, ssplit");
-			pipeline = new StanfordCoreNLP(props);
-		}
-		
-		// generate tokens with StanfordCoreNLP
-		Annotation document = new Annotation(sentence);
-		pipeline.annotate(document);
-		
-		List<CoreMap> sentences = document.get(SentencesAnnotation.class);
-		
-		// since we always deal with single sentences, there can be only one
-		// sentence in the output
-		// otherwise StanfordCoreNLP had problems to tokenize the sentence
-		if (sentences.size() != 1)
-		{
-			throw new IllegalArgumentException();
-		}
-		
-		for (CoreLabel token : sentences.get(0).get(TokensAnnotation.class))
-		{
-			// this is the text of the token
+			// initialize StanfordCoreNLP
+			if (pipeline == null)
+			{
+				Properties props = new Properties();
+				props.put("annotators", "tokenize, ssplit");
+				pipeline = new StanfordCoreNLP(props);
+			}
 			
-			String word = token.originalText();
-			tokens.add(word);
+			// generate tokens with StanfordCoreNLP
+			Annotation document = new Annotation(sentence);
+			pipeline.annotate(document);
+			
+			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+			
+			// since we always deal with single sentences, there can be only one
+			// sentence in the output
+			// otherwise StanfordCoreNLP had problems to tokenize the sentence
+			if (sentences.size() != 1)
+			{
+				throw new IllegalArgumentException();
+			}
+			
+			for (CoreLabel token : sentences.get(0).get(TokensAnnotation.class))
+			{
+				// this is the text of the token
+				String word = token.originalText();
+				tokens.add(word);
+			}
+			xmlDoc = pipeline.annotationToDoc(document);
 		}
-		
-		xmlDoc = pipeline.annotationToDoc(document);
 	}
 	
 	public String getSentence()
