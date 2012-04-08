@@ -17,12 +17,16 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.goldstandard;
 
 import java.util.ArrayList;
 
+/**
+ * An immutable annotation containing its label as list of tokens and its type.
+ * 
+ * @author Simon Suiter
+ */
 public class BoaAnnotation
 {
 	private Type type;
 	private ArrayList<String> tokens;
 	
-	// TODO insert types
 	public static enum Type
 	{
 		DATE, LINEAR_MEASURE, TEMPERATURE, WEIGHT;
@@ -44,6 +48,9 @@ public class BoaAnnotation
 		return tokens;
 	}
 	
+	/**
+	 * Format: token_1 token_2 ... token_n: type
+	 */
 	@Override
 	public String toString()
 	{

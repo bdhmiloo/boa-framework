@@ -19,6 +19,9 @@ public class GoldstandardApp extends Application
 		mainWindow.addComponent(gui);
 	}
 	
+	/**
+	 * Ensures that the current sentence is discarded on a session timeout.
+	 */
 	@Override
 	public void close()
 	{

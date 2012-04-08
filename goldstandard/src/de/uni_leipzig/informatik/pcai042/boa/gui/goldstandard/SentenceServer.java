@@ -35,6 +35,16 @@ import nu.xom.ValidityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class handles the input of sentences from a text file and the output of
+ * annotated sentences as an XML file. It serves the GUI with sentences and receives the annotations.
+ * The class is thread-save.
+ * 
+ * Input text file: WEB-INF/resources/sentences.txt
+ * Every sentence must be in a distinct line.
+ * 
+ * Output file: WEB-INF/resources/output.xml
+ */
 public class SentenceServer
 {
 	private static File path;
@@ -47,7 +57,8 @@ public class SentenceServer
 	private static final Logger logger = LoggerFactory.getLogger(SentenceServer.class);
 	
 	/**
-	 * Initializes file destination paths
+	 * Initializes file destination paths and tries to load previous Annotation
+	 * from the output file.
 	 * 
 	 * @param file
 	 *            the root destination of all files
