@@ -264,6 +264,9 @@ public class GoldstandardGUI extends CustomComponent
 		});
 	}
 	
+	/**
+	 * Restores the initial status of the Components and sets sentence to null.
+	 */
 	private void resetComponents()
 	{
 		sentence = null;
@@ -274,6 +277,9 @@ public class GoldstandardGUI extends CustomComponent
 		listSelectAnnotations.removeAllItems();
 	}
 	
+	/**
+	 * Called to discardSentence when timeout occurred
+	 */
 	public void close()
 	{
 		if (sentence != null)

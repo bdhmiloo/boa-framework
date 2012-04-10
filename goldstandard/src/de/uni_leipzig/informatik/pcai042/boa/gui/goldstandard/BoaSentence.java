@@ -38,6 +38,9 @@ public class BoaSentence
 	private String sentence;
 	private ArrayList<String> tokens;
 	private ArrayList<BoaAnnotation> annotations;
+	/**
+	 * the StanfordCoreNLP output of the sentence
+	 */
 	private Document xmlDoc;
 	
 	private static StanfordCoreNLP pipeline = null;
@@ -47,7 +50,7 @@ public class BoaSentence
 	 * 
 	 * @param sentence
 	 * @throws IllegalArgumentException
-	 *             thrown when StanfordCoreNLP couldn't tokenize the sentenze
+	 *             thrown when StanfordCoreNLP couldn't tokenize the sentence
 	 *             properly
 	 */
 	public BoaSentence(String sentence) throws IllegalArgumentException
