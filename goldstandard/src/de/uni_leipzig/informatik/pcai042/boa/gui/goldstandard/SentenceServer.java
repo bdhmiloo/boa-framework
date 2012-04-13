@@ -160,9 +160,18 @@ public class SentenceServer
 			for (String token : currentAnno.getTokens())
 			{
 				Element tokenElem = new Element("token");
-				// inserts id of token; add one since Stanford's ids aren't
+				// inserts id of token; start with 1 since Stanford's ids aren't
 				// zero-based
-				tokenElem.appendChild("" + (sentence.getTokens().indexOf(token) + 1));
+				int id = 1;
+				for (String s : sentence.getTokens())
+				{
+					if (s == token)
+					{
+						tokenElem.appendChild("" + id);
+						break;
+					}
+					id++;
+				}
 				annoElem.appendChild(tokenElem);
 			}
 			// add annotation type
