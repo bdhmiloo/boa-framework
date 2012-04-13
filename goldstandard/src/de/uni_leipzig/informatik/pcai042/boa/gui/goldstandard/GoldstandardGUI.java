@@ -210,7 +210,7 @@ public class GoldstandardGUI extends CustomComponent
 						cb = (CheckBox) vl.getComponent(1);
 						if (cb.booleanValue())
 						{
-							selected.add(l.getValue().toString());
+							selected.add((String)l.getValue());
 							cb.setValue(false);
 						}
 					}
