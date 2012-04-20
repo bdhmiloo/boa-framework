@@ -19,10 +19,12 @@ import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
+
 
 /**
  * 
@@ -40,11 +42,14 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	private TabSheet t;
 	private VerticalLayout mainlayout;
 	
+	private Label labelIntroduction;
+	
 	/**
 	 * Constructor
 	 */
 	public EvaluationView()
 	{
+		setSpacing(true);
 		buildMainLayout();
 		
 	}
@@ -54,21 +59,21 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 */
 	private VerticalLayout buildMainLayout()
 	{
-		
 		// Tab 1 content
 		VerticalLayout lay1 = new VerticalLayout();
 		lay1.setMargin(true);
-		lay1.addComponent(new Label("There are no previously saved actions."));
+		labelIntroduction = buildContentTab1();
+		lay1.addComponent(labelIntroduction);
 		// Tab 2 content
 		VerticalLayout lay2 = new VerticalLayout();
 		lay2.setMargin(true);
-		lay2.addComponent(new Label("There are no saved notes."));
+		lay2.addComponent(new Label("There should be some textfields and buttons."));
 		// Tab 3 content
 		VerticalLayout lay3 = new VerticalLayout();
 		lay3.setMargin(true);
-		lay3.addComponent(new Label("There are currently no issues."));
+		lay3.addComponent(new Label("evaluation, precision, recall."));
 		
-		//
+		// add all tabs to tabsheet
 		t = new TabSheet();
 		t.setHeight("800px");
 		t.setWidth("1024px");
@@ -81,6 +86,22 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		addComponent(t);
 		
 		return mainlayout;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private Label buildContentTab1()
+	{
+		labelIntroduction = new Label("<h1>Welcome to our test-GUI</h1>"
+				+ "<p><i>there should be a description here...as soon as possible! :)</i></p>"
+				+ "<p>Ð <i>swp12-1</i> Ð</p>");
+		
+		// adjust content to webpage
+		labelIntroduction.setContentMode(Label.CONTENT_XHTML);
+		
+		return labelIntroduction;
 	}
 	
 	/**
