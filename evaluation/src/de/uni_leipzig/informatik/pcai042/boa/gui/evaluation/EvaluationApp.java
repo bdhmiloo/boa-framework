@@ -18,15 +18,24 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 import com.vaadin.Application;
 import com.vaadin.ui.*;
 
+/**
+ * 
+ * @author Simon Suiter
+ */
 @SuppressWarnings("serial")
 public class EvaluationApp extends Application
 {
+	private EvaluationView view = new EvaluationView();
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void init()
 	{
-		Window mainWindow = new Window("Evaluation");
-		Label label = new Label("Hello Vaadin user");
-		mainWindow.addComponent(label);
+		Window mainWindow = new Window("Boa");
 		setMainWindow(mainWindow);
+		mainWindow.getContent().setSizeFull();
+		mainWindow.addComponent(view);
 	}
 }
