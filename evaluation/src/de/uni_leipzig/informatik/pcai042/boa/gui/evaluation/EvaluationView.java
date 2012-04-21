@@ -20,6 +20,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
 
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
@@ -57,6 +58,8 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	
 	private TextField textFieldSentence;
 	
+	private TextArea textAreaSentence;
+	
 	private Button buttonFileUpload;
 	private Button buttonNew;
 	private Button buttonAnnotate;
@@ -78,7 +81,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		this.setSizeFull();
 		
 		// buildMainLayout
-
+		
 		// Tab 1 content
 		tab1 = new VerticalLayout();
 		tab1.setMargin(true);
@@ -100,7 +103,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tabsheet.addTab(tab2, "Annotation");
 		tabsheet.addTab(tab3, "Evaluation");
 		tabsheet.addListener(this);
-
+		
 		this.addComponent(tabsheet);
 	}
 	
@@ -140,8 +143,9 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		hlay1.addComponent(buttonNew);
 		tab2Content.addComponent(hlay1);
 		
+		//instead of textfield textarea needed here
 		this.textFieldSentence = new TextField();
-		textFieldSentence.setValue("Please insert a sentence.");
+		textFieldSentence.setImmediate(true);
 		tab2Content.addComponent(textFieldSentence);
 		
 		this.buttonAnnotate = new Button("Annotate");
@@ -152,9 +156,9 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		
 		// listSelect needed here
 		
-		// table neede here
+		// table needed here
 		
-		// button next, end needed here
+		// button next,end needed here
 		
 		return tab2Content;
 	}
@@ -183,9 +187,9 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	}
 	
 	/**
-	 * @TODO should be moved to class EvaluationApp
+	 * TabChangeListener for testing GUI.
 	 * 
-	 *       TabChangeListener for testing GUI.
+	 * @TODO should be moved to class EvaluationApp
 	 * 
 	 * @param event
 	 */
@@ -205,7 +209,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 */
 	public void resetComponents()
 	{
-		textFieldSentence.setValue("Please insert a sentence.");
+		textFieldSentence.setInputPrompt("Please insert a sentence.");
 		// t.getTab(tab3).setEnabled(false);
 	}
 	
