@@ -15,97 +15,177 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
-import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.RichTextArea;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.TextField;
+
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
-import com.vaadin.ui.VerticalLayout;
-
+// DON'T DELETE THE FOLLOWING IMPORTS --> WILL BE DELETED AFTER FINISHING APPLICATION COMPLETELY
+//import com.vaadin.ui.Window;
+//import com.vaadin.ui.Link;
+//import com.vaadin.ui.Upload;
+//import com.vaadin.ui.Upload.FinishedEvent;
+//import com.vaadin.ui.Upload.Receiver;
+//import com.vaadin.terminal.ExternalResource;
+//import com.vaadin.terminal.Sizeable;
+//import com.vaadin.terminal.ThemeResource;
 
 /**
+ * 
  * 
  * @author Duc Huy Bui
  */
 @SuppressWarnings("serial")
 public class EvaluationView extends VerticalLayout implements TabSheet.SelectedTabChangeListener
 {
-	// private static final String CAPTION = "Open Google in new window";
+	// private static final String CAPTION = "Open Homepage";
 	// private static final String TOOLTIP =
 	// "http://pcai042.informatik.uni-leipzig.de/~swp12-1/";
 	// private static final ThemeResource ICON = new
 	// ThemeResource("../sampler/icons/icon_world.gif");
 	
-	private TabSheet t;
-	private VerticalLayout mainlayout;
+	private TabSheet tabsheet;
 	
-	private Label labelIntroduction;
+	private VerticalLayout tab1;
+	private VerticalLayout tab2;
+	private VerticalLayout tab3;
+	
+	private TextField textFieldSentence;
+	
+	private Button buttonFileUpload;
+	private Button buttonNew;
+	private Button buttonAnnotate;
+	private Button buttonNext;
+	private Button buttonNext2;
+	private Button buttonEnd;
+	
+	// private Button buttonHelp;
 	
 	/**
-	 * Constructor
+	 * Constructor initializes View.
 	 */
 	public EvaluationView()
 	{
-		setSpacing(true);
-		buildMainLayout();
+		// this.setModal(true);
+		this.setWidth("800px");
+		this.setHeight("1024px");
+		// this.setResizable(false);
+		this.setSizeFull();
 		
-	}
-	
-	/**
-	 * 
-	 */
-	private VerticalLayout buildMainLayout()
-	{
+		// buildMainLayout
+
 		// Tab 1 content
-		VerticalLayout lay1 = new VerticalLayout();
-		lay1.setMargin(true);
-		labelIntroduction = buildContentTab1();
-		lay1.addComponent(labelIntroduction);
+		tab1 = new VerticalLayout();
+		tab1.setMargin(true);
+		tab1.addComponent(buildTab1Content());
+		
 		// Tab 2 content
-		VerticalLayout lay2 = new VerticalLayout();
-		lay2.setMargin(true);
-		lay2.addComponent(new Label("There should be some textfields and buttons."));
+		tab2 = new VerticalLayout();
+		tab2.setMargin(true);
+		tab2.addComponent(buildTab2Content());
+		
 		// Tab 3 content
-		VerticalLayout lay3 = new VerticalLayout();
-		lay3.setMargin(true);
-		lay3.addComponent(new Label("evaluation, precision, recall."));
+		tab3 = new VerticalLayout();
+		tab3.setMargin(true);
+		tab3.addComponent(buildTab3Content());
 		
-		// add all tabs to tabsheet
-		t = new TabSheet();
-		t.setHeight("800px");
-		t.setWidth("1024px");
-		
-		t.addTab(lay1, "Home");
-		t.addTab(lay2, "Annotation");
-		t.addTab(lay3, "Evaluation");
-		t.addListener(this);
-		
-		addComponent(t);
-		
-		return mainlayout;
+		tabsheet = new TabSheet();
+		// tabsheet.setSizeFull();
+		tabsheet.addTab(tab1, "Home");
+		tabsheet.addTab(tab2, "Annotation");
+		tabsheet.addTab(tab3, "Evaluation");
+		tabsheet.addListener(this);
+
+		this.addComponent(tabsheet);
 	}
 	
 	/**
+	 * Build content 'welcome page' of tab 1.
 	 * 
-	 * @return
+	 * @return content of first tab
 	 */
-	private Label buildContentTab1()
+	private Label buildTab1Content()
 	{
-		labelIntroduction = new Label("<h1>Welcome to our test-GUI</h1>"
+		Label tab1Content = new Label("<h1>Welcome to our test-GUI</h1>"
 				+ "<p><i>there should be a description here...as soon as possible! :)</i></p>"
-				+ "<p>Ð <i>swp12-1</i> Ð</p>");
+				+ "<p>Ð <i>swp12-1</i> Ð</p>", Label.CONTENT_XHTML);
 		
-		// adjust content to webpage
-		labelIntroduction.setContentMode(Label.CONTENT_XHTML);
+		return tab1Content;
+	}
+	
+	/**
+	 * Build content 'annotation process' of tab 2.
+	 * 
+	 * @return content of second tab
+	 */
+	private Layout buildTab2Content()
+	{
+		VerticalLayout tab2Content = new VerticalLayout();
+		tab2Content.setSpacing(true);
+		tab2Content.setMargin(true);
+		tab2Content.setSizeFull();
 		
-		return labelIntroduction;
+		Label labelSentence = new Label("Sentence:");
+		tab2Content.addComponent(labelSentence);
+		
+		HorizontalLayout hlay1 = new HorizontalLayout();
+		this.buttonFileUpload = new Button("Select File");
+		this.buttonNew = new Button("New");
+		hlay1.addComponent(buttonFileUpload);
+		hlay1.addComponent(buttonNew);
+		tab2Content.addComponent(hlay1);
+		
+		this.textFieldSentence = new TextField();
+		textFieldSentence.setValue("Please insert a sentence.");
+		tab2Content.addComponent(textFieldSentence);
+		
+		this.buttonAnnotate = new Button("Annotate");
+		tab2Content.addComponent(buttonAnnotate);
+		
+		Label labelPrintOut = new Label("Print out:");
+		tab2Content.addComponent(labelPrintOut);
+		
+		// listSelect needed here
+		
+		// table neede here
+		
+		// button next, end needed here
+		
+		return tab2Content;
+	}
+	
+	/**
+	 * Build content 'evaluation process' of tab 3.
+	 * 
+	 * @return content of third tab
+	 */
+	private Layout buildTab3Content()
+	{
+		VerticalLayout tab3Content = new VerticalLayout();
+		tab3Content.setSpacing(true);
+		tab3Content.setMargin(true);
+		tab3Content.setSizeFull();
+		
+		Label labelConversion = new Label("Conversion:");
+		tab3Content.addComponent(labelConversion);
+		
+		// table needed here
+		
+		this.buttonNext2 = new Button("Next");
+		tab3Content.addComponent(buttonNext2);
+		
+		return tab3Content;
 	}
 	
 	/**
 	 * @TODO should be moved to class EvaluationApp
+	 * 
+	 *       TabChangeListener for testing GUI.
 	 * 
 	 * @param event
 	 */
@@ -124,6 +204,15 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 * Set all components to default status.
 	 */
 	public void resetComponents()
+	{
+		textFieldSentence.setValue("Please insert a sentence.");
+		// t.getTab(tab3).setEnabled(false);
+	}
+	
+	/**
+	 * 
+	 */
+	public void close()
 	{
 		
 	}
