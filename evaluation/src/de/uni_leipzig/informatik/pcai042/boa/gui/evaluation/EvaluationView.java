@@ -15,17 +15,18 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.TextField;
-
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.VerticalLayout;
 // DON'T DELETE THE FOLLOWING IMPORTS --> WILL BE DELETED AFTER FINISHING APPLICATION COMPLETELY
 //import com.vaadin.ui.Window;
 //import com.vaadin.ui.Link;
@@ -57,27 +58,26 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	private VerticalLayout tab3;
 	
 	private TextField textFieldSentence;
-	
 	private TextArea textAreaSentence;
+	
+	private ListSelect listAnnotation;
+	
+	private Panel panelAnnotation;
 	
 	private Button buttonFileUpload;
 	private Button buttonNew;
 	private Button buttonAnnotate;
-	private Button buttonNext;
-	private Button buttonNext2;
+	private Button buttonNext; // button 'next' in tab 'Annotation'
+	private Button buttonNext2; // button 'next' in tab 'Evaluation'
 	private Button buttonEnd;
-	
-	// private Button buttonHelp;
 	
 	/**
 	 * Constructor initializes View.
 	 */
 	public EvaluationView()
 	{
-		// this.setModal(true);
-		this.setWidth("800px");
-		this.setHeight("1024px");
-		// this.setResizable(false);
+//		this.setWidth("800px");
+//		this.setHeight("1024px");
 		this.setSizeFull();
 		
 		// buildMainLayout
@@ -112,11 +112,18 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 * 
 	 * @return content of first tab
 	 */
-	private Label buildTab1Content()
+	private Layout buildTab1Content()
 	{
-		Label tab1Content = new Label("<h1>Welcome to our test-GUI</h1>"
+		VerticalLayout tab1Content = new VerticalLayout();
+		tab1Content.setSpacing(true);
+		tab1Content.setMargin(true);
+		tab1Content.setSizeFull();
+		
+		Label welcomeIntro = new Label("<h1>Welcome to our test-GUI</h1>"
 				+ "<p><i>there should be a description here...as soon as possible! :)</i></p>"
 				+ "<p>Ð <i>swp12-1</i> Ð</p>", Label.CONTENT_XHTML);
+		
+		tab1Content.addComponent(welcomeIntro);
 		
 		return tab1Content;
 	}
@@ -133,34 +140,55 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tab2Content.setMargin(true);
 		tab2Content.setSizeFull();
 		
-		Label labelSentence = new Label("Sentence:");
-		tab2Content.addComponent(labelSentence);
-		
 		HorizontalLayout hlay1 = new HorizontalLayout();
 		this.buttonFileUpload = new Button("Select File");
+		buttonFileUpload.setImmediate(true);
 		this.buttonNew = new Button("New");
+		buttonNew.setImmediate(true);
 		hlay1.addComponent(buttonFileUpload);
 		hlay1.addComponent(buttonNew);
+		hlay1.setSpacing(true);
+		hlay1.setMargin(false);
 		tab2Content.addComponent(hlay1);
 		
-		//instead of textfield textarea needed here
-		this.textFieldSentence = new TextField();
-		textFieldSentence.setImmediate(true);
-		tab2Content.addComponent(textFieldSentence);
+		this.textAreaSentence = new TextArea("Sentence:");
+		textAreaSentence.setRows(2);
+		textAreaSentence.setWidth("100%");
+		textAreaSentence.setImmediate(true);
+		tab2Content.addComponent(textAreaSentence);
 		
 		this.buttonAnnotate = new Button("Annotate");
+		buttonAnnotate.setImmediate(true);
 		tab2Content.addComponent(buttonAnnotate);
 		
-		Label labelPrintOut = new Label("Print out:");
-		tab2Content.addComponent(labelPrintOut);
+		this.listAnnotation = new ListSelect("Annotations:");
+		listAnnotation.setImmediate(true);
+		listAnnotation.setHeight("70px");
+		listAnnotation.setWidth("100%");
+		tab2Content.addComponent(listAnnotation);
 		
-		// listSelect needed here
+		this.panelAnnotation = new Panel("Further annotations with other surfaceforms:");
+		panelAnnotation.setHeight("70px");
+		panelAnnotation.setWidth("100%");
+		tab2Content.addComponent(panelAnnotation);
 		
-		// table needed here
-		
-		// button next,end needed here
+		HorizontalLayout hlay2 = new HorizontalLayout();
+		this.buttonNext = new Button("Next");
+		buttonNext.setImmediate(true);
+		this.buttonEnd = new Button("End");
+		buttonEnd.setImmediate(true);
+		hlay2.addComponent(buttonNext);
+		hlay2.addComponent(buttonEnd);
+		hlay2.setSpacing(true);
+		hlay2.setMargin(false);
+		tab2Content.addComponent(hlay2);
 		
 		return tab2Content;
+	}
+	
+	public Panel getPanelAnnotation()
+	{
+		return this.panelAnnotation;
 	}
 	
 	/**
@@ -181,6 +209,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		// table needed here
 		
 		this.buttonNext2 = new Button("Next");
+		buttonNext2.setImmediate(true);
 		tab3Content.addComponent(buttonNext2);
 		
 		return tab3Content;
@@ -209,8 +238,9 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 */
 	public void resetComponents()
 	{
-		textFieldSentence.setInputPrompt("Please insert a sentence.");
-		// t.getTab(tab3).setEnabled(false);
+		textAreaSentence.setInputPrompt("Please insert a sentence.");
+
+		
 	}
 	
 	/**
