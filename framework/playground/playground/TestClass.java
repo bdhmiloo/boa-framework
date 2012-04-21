@@ -15,12 +15,27 @@
 
 package playground;
 
+import java.util.ArrayList;
+
 public class TestClass
 {
 	public static void main(String[] args)
 	{
-		System.out.println("Hello world!");
-		System.out.println("test");
+		String testString = "Bush ran for 52 yards on 12 carries and scored	a touchdown, and added three catches for 22 yards,"
+				+ " he also ran like 50 miles during the match and hated the way I messed him up with this sentence 23.4 meters (yeah, this doesn't make sense)!";
+		//create BoaSentence for tests
+		BoaSentence testSentence = new BoaSentence(testString);
+		
+		//create ArrayList of surfFroms to search for
+		ArrayList<String> testList = new ArrayList<String>();
+		testList.add("meters");
+		testList.add("miles");
+		testList.add("yards");
+		
+		//create Algo
+		SearchAlgorithm testAlgo = new NaiveAlgorithm();
+		
+		testAlgo.search(testSentence, testList, "LINEAR_MEASURE");	
 	}
 
 }
