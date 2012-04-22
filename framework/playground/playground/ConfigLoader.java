@@ -16,13 +16,9 @@
 package playground;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +37,7 @@ public class ConfigLoader
 	 * So either the first or second line of the configFile will be of interest. 
 	 */
 	
-	public ArrayList<String> openConfigSurfaceForms(File path, boolean isFalse)
+	public Set<String> openConfigSurfaceForms(File path, boolean isFalse)
 	{
 		//@TODO: Giorgos
 		return null;
