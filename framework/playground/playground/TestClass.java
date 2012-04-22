@@ -17,6 +17,8 @@ package playground;
 
 import java.util.ArrayList;
 
+import playground.BoaAnnotation.Type;
+
 public class TestClass
 {
 	public static void main(String[] args)
@@ -35,7 +37,8 @@ public class TestClass
 		//create Algo
 		SearchAlgorithm testAlgo = new NaiveAlgorithm();
 		
-		testAlgo.search(testSentence, testList, "LINEAR_MEASURE");	
+		testAlgo.search(testSentence, testList, Type.LINEAR_MEASURE);
+		System.out.println(testSentence.getAnnotations().toString());
 	}
 
 }

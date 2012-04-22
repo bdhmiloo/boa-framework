@@ -56,41 +56,4 @@ public class ConfigLoader
 	{
 		return null;
 	}
-	
-	/**
-	 * Auxiliary Function: Converts the content of a text file into a String. 
-	 * This might help but doesn't necessarily have to be called upon in the two functions above.
-	 * (Can still be removed from this class otherwise)
-	 * 
-	 * @param FilePath Path of the text file
-	 * @return text content of the text file as a String
-	 */
-	private String fileToString(File file)
-	{
-		int nextchar;
-		StringBuilder stringBuilder = new StringBuilder();
-		
-		try
-		{
-			InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
-			do
-			{
-				nextchar = reader.read();
-				if (nextchar != -1)
-					stringBuilder.append((char) (nextchar));
-				
-			} while (nextchar != -1);
-			
-			reader.close();
-			return stringBuilder.toString().trim();
-		} catch (FileNotFoundException e)
-		{
-			logger.error(e.getMessage());
-		} catch (IOException e)
-		{
-			logger.error(e.getMessage());
-		}
-		
-		return "";
-	}
 }

@@ -17,10 +17,12 @@ package playground;
 
 import java.util.ArrayList;
 
+import playground.BoaAnnotation.Type;
+
 public abstract class SearchAlgorithm
 {
 	//subclasses will have to overwrite this
-	public BoaSentence search(BoaSentence sentence, ArrayList<String> surForms, String annoType)
+	public BoaSentence search(BoaSentence sentence, ArrayList<String> surForms, Type annoType)
 	{
 		return null;
 	}

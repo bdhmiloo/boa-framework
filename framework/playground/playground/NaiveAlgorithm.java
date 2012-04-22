@@ -18,9 +18,11 @@ package playground;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import playground.BoaAnnotation.Type;
+
 public class NaiveAlgorithm extends SearchAlgorithm
 {
-	public BoaSentence search(BoaSentence sentence, ArrayList<String> surForms, String annoType)
+	public BoaSentence search(BoaSentence sentence, ArrayList<String> surForms, Type annoType)
 	{
 		String currentToken = "";
 		String currentSurf, match;
@@ -72,10 +74,15 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						//System.out.println("Test if " + match +" matches with " + currentSurf);
 						if(currentSurf.equals(match))
 						{
-							//@TODO: create Annotation
+							//create Annotation
+							ArrayList<String> annoTokens = new ArrayList<String>();
+							annoTokens.add(currentToken);
+							annoTokens.add(match);
+							
+							sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 							
 							//this is for tests only
-							System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
+							//System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
 						}
 					}			
 				}
