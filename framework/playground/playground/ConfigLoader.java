@@ -43,6 +43,7 @@ public class ConfigLoader
 	
 	public ArrayList<String> openConfigSurfaceForms(File path, boolean isFalse)
 	{
+		//@TODO: Giorgos
 		return null;
 	}
 	
@@ -54,6 +55,7 @@ public class ConfigLoader
 	
 	public HashMap<String, BigDecimal> openConfigConversion(File path, boolean direction)
 	{
+		//@TODO: Bene
 		return null;
 	}
 }
