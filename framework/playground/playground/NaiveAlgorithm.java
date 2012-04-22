@@ -16,20 +16,21 @@
 package playground;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.Iterator;
 
 import playground.BoaAnnotation.Type;
 
 public class NaiveAlgorithm extends SearchAlgorithm
 {
-	public void search(BoaSentence sentence, ArrayList<String> surForms, Type annoType)
+	public void search(BoaSentence sentence, Set<String> surForms, Type annoType)
 	{
 		String currentToken = "";
-		String currentSurf, match;
+		String match, suffix, prefix;
+		int position;
 		Boolean replaced = false;	//need this when a token representing a number is replaced with another token representing a number
 									//replacement isn't actually needed but makes algorithm a little faster
 		
-		//Step one: Check if any token is a number.
 		Iterator<String> tokenIt = sentence.getTokens().iterator();
 		
 		while(tokenIt.hasNext())
@@ -37,6 +38,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 			if(!replaced)currentToken = tokenIt.next();
 			replaced = false;
 			
+			//Step one a): Check if any token is a number.
 			if(this.checkIfNumber(currentToken))
 			{
 				//Step two: Find the corresponding unit. It can be assumed that (if it exists) it will be
@@ -66,14 +68,8 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					}
 					
 					//checks if match is equal to any known surface form of the units we look for
-					Iterator<String> surfIt = surForms.iterator();
-					
-					while(surfIt.hasNext())
+					if(surForms.contains(match))
 					{
-						currentSurf = surfIt.next();
-						//System.out.println("Test if " + match +" matches with " + currentSurf);
-						if(currentSurf.equals(match))
-						{
 							//create Annotation
 							ArrayList<String> annoTokens = new ArrayList<String>();
 							annoTokens.add(currentToken);
@@ -83,8 +79,29 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							
 							//this is for tests only
 							//System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
-						}
-					}			
+					}	
+				}
+			}
+			else
+			{	
+				//Step one b): Check if same token starts with number instead
+				position = this.checkIfStartsWithNumber(currentToken);
+			
+				if(position != -1)
+				{	
+					//Step two b): Split token in prefix (number) and suffix (word) and test if suffix is a surface form of the searched units
+					prefix = currentToken.substring(0, position-1);
+					suffix = currentToken.substring(position-1);
+					
+					if(surForms.contains(suffix))
+					{
+						//create Annotation
+						ArrayList<String> annoTokens = new ArrayList<String>();
+						annoTokens.add(prefix);
+						annoTokens.add(suffix);
+					
+						sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+					}
 				}
 			}
 		}

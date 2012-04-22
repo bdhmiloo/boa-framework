@@ -15,14 +15,14 @@
 
 package playground;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 import playground.BoaAnnotation.Type;
 
 public abstract class SearchAlgorithm
 {
 	//subclasses will have to overwrite this
-	public void search(BoaSentence sentence, ArrayList<String> surForms, Type annoType)
+	public void search(BoaSentence sentence, Set<String> surForms, Type annoType)
 	{
 		return;
 	}
@@ -46,4 +46,34 @@ public abstract class SearchAlgorithm
 				
 		return false;
 	}
+	
+	
+	/**
+	 * Checks if a String representation of a token starts with a number.
+	 * @param token
+	 * @return -1 if no combined number else position of first non-numerical char
+	 */
+	
+	public int checkIfStartsWithNumber(String token)
+	{
+		String prefix;
+		int length = 1;
+		int position = -1;
+		
+		try
+		{
+			while(length < token.length())
+			{
+				prefix = token.substring(0, length);
+				length++;
+				
+				if(checkIfNumber(prefix)) position = length;
+			}
+		}
+		catch(NumberFormatException e){}
+		
+		return position;
+	}
+	
+
 }
