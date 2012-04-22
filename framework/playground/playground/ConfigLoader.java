@@ -15,6 +15,7 @@
 
 package playground;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,6 +24,8 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,15 +50,38 @@ public class ConfigLoader
 		return null;
 	}
 	
-	/*
+	/**
 	 * Function to return a list of pairs of the unit's name and conversion factor into (direction = true) 
 	 * or from (direction = false) the basic unit of the corresponding unit type extracted from 
 	 * a text file at the given path.
+	 * 
+	 * @param specific Standard/Unit, first letter must be written large
+	 * @param unitName Name of Unit (Weight, Temperature, ...), first letter must be written large
 	 */
 	
-	public HashMap<String, BigDecimal> openConfigConversion(File path, boolean direction)
+	public HashMap<String, BigDecimal> openConfigConversion(String specific, String unitName)
 	{
-		//@TODO: Bene
+		Properties properties = new Properties();
+		HashMap<String, BigDecimal> conversionMap;
+		
+		//Try to create the full file name with merging. Only for default path (file in project directory)
+		String fileName="conversion"+specific+unitName+".properties";
+		
+		try
+		{
+			BufferedInputStream stream = new BufferedInputStream(new FileInputStream(fileName));
+			properties.load(stream);
+			stream.close();
+			
+			conversionMap = new HashMap<String, BigDecimal>((Map) properties);
+			
+			return conversionMap;
+		}
+		catch(Exception e)
+		{
+			logger.error(e.getMessage());
+		}
+		
 		return null;
 	}
 }
