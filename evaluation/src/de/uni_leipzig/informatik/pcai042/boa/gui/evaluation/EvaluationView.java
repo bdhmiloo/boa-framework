@@ -15,7 +15,6 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
-
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -203,11 +202,6 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		return this.buttonNext;
 	}
 	
-	public Button getButtonNext2()
-	{
-		return this.buttonNext2;
-	}
-	
 	public Button getButtonAnnotate()
 	{
 		return this.buttonAnnotate;
@@ -245,6 +239,11 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tab3Content.addComponent(buttonNext2);
 		
 		return tab3Content;
+	}
+	
+	public Button getButtonNext2()
+	{
+		return this.buttonNext2;
 	}
 	
 	/**
