@@ -57,7 +57,6 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	private VerticalLayout tab2;
 	private VerticalLayout tab3;
 	
-	private TextField textFieldSentence;
 	private TextArea textAreaSentence;
 	
 	private ListSelect listAnnotation;
@@ -76,8 +75,6 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 */
 	public EvaluationView()
 	{
-//		this.setWidth("800px");
-//		this.setHeight("1024px");
 		this.setSizeFull();
 		
 		// buildMainLayout
@@ -103,6 +100,9 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tabsheet.addTab(tab2, "Annotation");
 		tabsheet.addTab(tab3, "Evaluation");
 		tabsheet.addListener(this);
+		
+		// reset to default
+		this.resetComponents();
 		
 		this.addComponent(tabsheet);
 	}
@@ -155,6 +155,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		textAreaSentence.setRows(2);
 		textAreaSentence.setWidth("100%");
 		textAreaSentence.setImmediate(true);
+		textAreaSentence.setInputPrompt("Please insert a sentence.");
 		tab2Content.addComponent(textAreaSentence);
 		
 		this.buttonAnnotate = new Button("Annotate");
@@ -168,7 +169,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tab2Content.addComponent(listAnnotation);
 		
 		this.panelAnnotation = new Panel("Further annotations with other surfaceforms:");
-		panelAnnotation.setHeight("70px");
+		panelAnnotation.setHeight("100px");
 		panelAnnotation.setWidth("100%");
 		tab2Content.addComponent(panelAnnotation);
 		
@@ -238,8 +239,8 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 */
 	public void resetComponents()
 	{
-		textAreaSentence.setInputPrompt("Please insert a sentence.");
-
+		textAreaSentence.setInputPrompt("Please insert a sentence or load a sentence from a file.");
+		buttonAnnotate.setEnabled(false);
 		
 	}
 	
