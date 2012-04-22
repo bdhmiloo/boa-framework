@@ -15,20 +15,19 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 // DON'T DELETE THE FOLLOWING IMPORTS --> WILL BE DELETED AFTER FINISHING APPLICATION COMPLETELY
-//import com.vaadin.ui.Window;
 //import com.vaadin.ui.Link;
 //import com.vaadin.ui.Upload;
 //import com.vaadin.ui.Upload.FinishedEvent;
@@ -59,7 +58,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	
 	private TextArea textAreaSentence;
 	
-	private ListSelect listAnnotation;
+	private ListSelect listSelectAnnotation;
 	
 	private Panel panelAnnotation;
 	
@@ -101,7 +100,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tabsheet.addTab(tab3, "Evaluation");
 		tabsheet.addListener(this);
 		
-		// reset to default
+		// reset to default status
 		this.resetComponents();
 		
 		this.addComponent(tabsheet);
@@ -143,32 +142,34 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		HorizontalLayout hlay1 = new HorizontalLayout();
 		this.buttonFileUpload = new Button("Select File");
 		buttonFileUpload.setImmediate(true);
+		buttonFileUpload.setDescription("CLick <b>Select File</b> in order to upload a plain-text file to server");
 		this.buttonNew = new Button("New");
 		buttonNew.setImmediate(true);
-		hlay1.addComponent(buttonFileUpload);
-		hlay1.addComponent(buttonNew);
+		buttonNew.setDescription("Click <b>New</b> in order to type in a new sentence");
 		hlay1.setSpacing(true);
 		hlay1.setMargin(false);
+		hlay1.addComponent(buttonFileUpload);
+		hlay1.addComponent(buttonNew);
 		tab2Content.addComponent(hlay1);
 		
 		this.textAreaSentence = new TextArea("Sentence:");
+		textAreaSentence.setImmediate(true);
 		textAreaSentence.setRows(2);
 		textAreaSentence.setWidth("100%");
-		textAreaSentence.setImmediate(true);
-		textAreaSentence.setInputPrompt("Please insert a sentence.");
 		tab2Content.addComponent(textAreaSentence);
 		
 		this.buttonAnnotate = new Button("Annotate");
 		buttonAnnotate.setImmediate(true);
 		tab2Content.addComponent(buttonAnnotate);
 		
-		this.listAnnotation = new ListSelect("Annotations:");
-		listAnnotation.setImmediate(true);
-		listAnnotation.setHeight("70px");
-		listAnnotation.setWidth("100%");
-		tab2Content.addComponent(listAnnotation);
+		this.listSelectAnnotation = new ListSelect("Annotations:");
+		listSelectAnnotation.setImmediate(false);
+		listSelectAnnotation.setHeight("70px");
+		listSelectAnnotation.setWidth("100%");
+		tab2Content.addComponent(listSelectAnnotation);
 		
 		this.panelAnnotation = new Panel("Further annotations with other surfaceforms:");
+		panelAnnotation.setImmediate(false);
 		panelAnnotation.setHeight("100px");
 		panelAnnotation.setWidth("100%");
 		tab2Content.addComponent(panelAnnotation);
@@ -178,18 +179,48 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		buttonNext.setImmediate(true);
 		this.buttonEnd = new Button("End");
 		buttonEnd.setImmediate(true);
-		hlay2.addComponent(buttonNext);
-		hlay2.addComponent(buttonEnd);
 		hlay2.setSpacing(true);
 		hlay2.setMargin(false);
+		hlay2.addComponent(buttonNext);
+		hlay2.addComponent(buttonEnd);
 		tab2Content.addComponent(hlay2);
 		
 		return tab2Content;
 	}
 	
+	public Button getButtonFileUpload()
+	{
+		return this.buttonFileUpload;
+	}
+	
+	public Button getButtonNew()
+	{
+		return this.buttonNew;
+	}
+	
+	public Button getButtonNext()
+	{
+		return this.buttonNext;
+	}
+	
+	public Button getButtonNext2()
+	{
+		return this.buttonNext2;
+	}
+	
+	public Button getButtonAnnotate()
+	{
+		return this.buttonAnnotate;
+	}
+	
 	public Panel getPanelAnnotation()
 	{
 		return this.panelAnnotation;
+	}
+	
+	public ListSelect getListSelectAnnotation()
+	{
+		return this.listSelectAnnotation;
 	}
 	
 	/**
@@ -239,7 +270,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	 */
 	public void resetComponents()
 	{
-		textAreaSentence.setInputPrompt("Please insert a sentence or load a sentence from a file.");
+		textAreaSentence.setInputPrompt("Please insert or load a sentence from a plain-text file.");
 		buttonAnnotate.setEnabled(false);
 		
 	}
