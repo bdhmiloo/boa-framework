@@ -22,7 +22,7 @@ import playground.BoaAnnotation.Type;
 
 public class NaiveAlgorithm extends SearchAlgorithm
 {
-	public BoaSentence search(BoaSentence sentence, ArrayList<String> surForms, Type annoType)
+	public void search(BoaSentence sentence, ArrayList<String> surForms, Type annoType)
 	{
 		String currentToken = "";
 		String currentSurf, match;
@@ -89,7 +89,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 			}
 		}
 			
-		return sentence;
+		return;
 	}
 	
 }
