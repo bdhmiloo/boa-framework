@@ -27,6 +27,12 @@ public abstract class SearchAlgorithm
 		return;
 	}
 	
+	/**
+	 * Checks if a String representation of a token is a number
+	 * @param token
+	 * @return true if it can be parsed to an integer or double value, else false
+	 */
+	
 	
 	public boolean checkIfNumber(String token)
 	{	
