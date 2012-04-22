@@ -1,5 +1,5 @@
 /*
- * LabelSearcher.java
+ * LabelSearcherWeight.java
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,17 +15,15 @@
 
 package playground;
 
-import java.util.ArrayList;
+import playground.BoaAnnotation.Type;
 
-public interface LabelSearcher
+public class LabelSearcherWeight extends LabelSearcher
 {
-	static ArrayList<String> surfaceForms = null;
-	static ArrayList<String> falseSurfaceForms = null;
-	
-	//this is the Label for the Type any BoaAnnotations made by this Class will get
-	//for example a subclass LabelSearcherWeight would initialize annoType with "WEIGHT"
-	static String annoType = "ANNOTATION_TYPE";
-	
-	public BoaSentence searchUnit(BoaSentence sentence);
-	public BoaSentence searchFalseUnit(BoaSentence sentence);
+	public LabelSearcherWeight(Type annoType, String configPath)
+	{
+		super(annoType, configPath);
+		
+		LabelSearcherWeight.algoSimple = new NaiveAlgorithm();
+		LabelSearcherWeight.algoHard = new NaiveAlgorithm();
+	}
 }
