@@ -41,7 +41,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 			//Step one a): Check if any token is a number.
 			if(this.checkIfNumber(currentToken))
 			{
-				//Step two: Find the corresponding unit. It can be assumed that (if it exists) it will be
+				//Step two a): Find the corresponding unit. It can be assumed that (if it exists) it will be
 				//located in the part of the sentence right from the numerical value. 
 				Iterator<String> findMatch = sentence.getTokens().iterator();
 				
