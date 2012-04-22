@@ -17,10 +17,7 @@ package playground;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Set;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,11 +37,11 @@ public class ConfigLoader
 	 * Function to return the String representation of unit surface forms from a text file.
 	 * The second variable isFalse tells the class whether the method is called by the function
 	 * searchUnit in LabelSearcher (isFalse = false) or the searchFalseUnit function which is supposed
-	 * to find defective occurrences of the corresponding units (isFalse = true).
-	 * So either the first or second line of the configFile will be of interest. 
+	 * to find defective occurrences	public Set<String> openConfigSurfaceForms(File path, boolean isFalse)
+     * So either the first or the second line of the configFile will be of interest. 
 	 */
 	
-	public ArrayList<String> openConfigSurfaceForms(File path, boolean isFalse)
+	public Set<String> openConfigSurfaceForms(File path, boolean isFalse)
 	{
 		//@TODO: Giorgos
 		return null;

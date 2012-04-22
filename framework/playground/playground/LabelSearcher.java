@@ -16,14 +16,14 @@
 package playground;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Set;
 
 import playground.BoaAnnotation.Type;
 
 public abstract class LabelSearcher
 {
-	private static ArrayList<String> surfaceForms;
-	private static ArrayList<String> falseSurfaceForms;
+	private static Set<String> surfaceForms;
+	private static Set<String> falseSurfaceForms;
 	private static Type annoType;
 	protected static SearchAlgorithm algoSimple;
 	protected static SearchAlgorithm algoHard;

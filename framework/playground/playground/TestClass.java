@@ -15,30 +15,98 @@
 
 package playground;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import playground.BoaAnnotation.Type;
 
 public class TestClass
 {
+	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
+	
 	public static void main(String[] args)
 	{
-		String testString = "Bush ran for 52 yards on 12 carries and scored	a touchdown, and added three catches for 22 yards,"
-				+ " he also ran like 50 miles during the match and hated the way I messed him up with this sentence 23.4 meters (yeah, this doesn't make sense)!";
-		//create BoaSentence for tests
-		BoaSentence testSentence = new BoaSentence(testString);
-		
-		//create ArrayList of surfFroms to search for
-		ArrayList<String> testList = new ArrayList<String>();
-		testList.add("meters");
-		testList.add("miles");
-		testList.add("yards");
+		String testString, next, last;
+		int count = 0;
+		testString = fileToString(new File("C:/Users/Jakob/workspace/Test.txt"));
 		
 		//create Algo
 		SearchAlgorithm testAlgo = new NaiveAlgorithm();
 		
-		testAlgo.search(testSentence, testList, Type.LINEAR_MEASURE);
-		System.out.println(testSentence.getAnnotations().toString());
+		//create ArrayList of surfFroms to search for
+		Set<String> testSet = new HashSet<String>();
+		testSet.add("meters");
+		testSet.add("miles");
+		testSet.add("yards");
+		testSet.add("km");
+		
+		do
+		{
+			count++;
+			
+			next = nextSentence(testString);
+			last = testString;
+			if(!testString.equals(next))testString = testString.substring(next.length());
+			if(testString.startsWith("\n")) testString = testString.substring(1);
+			
+			//System.out.println(testString);
+			
+			System.out.println("\nSentence " + count + "\n" + next);
+			
+			//create BoaSentence for tests
+			BoaSentence testSentence = new BoaSentence(next);
+		
+			testAlgo.search(testSentence, testSet, Type.LINEAR_MEASURE);
+			System.out.println(testSentence.getAnnotations().toString());
+			
+		}while(!testString.equals(last));
+		
+		//System.out.println("400km " + testAlgo.checkIfCombinedNumber("400km") + "\n1a" + testAlgo.checkIfCombinedNumber("1a")); 
+	}
+	
+	private static String fileToString(File file)
+	{
+		int nextchar;
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		try
+		{
+			InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+			do
+			{
+				nextchar = reader.read();
+				if (nextchar != -1)
+					stringBuilder.append((char) (nextchar));
+				
+			} while (nextchar != -1);
+			
+			reader.close();
+			return stringBuilder.toString().trim();
+		} catch (FileNotFoundException e)
+		{
+			logger.error(e.getMessage());
+		} catch (IOException e)
+		{
+			logger.error(e.getMessage());
+		}
+		
+		return "";
+	}
+	
+	private static String nextSentence(String text)
+	{
+		if (text.isEmpty())
+			return null;
+		return text.indexOf('\n') > -1 ? text.substring(0, text.indexOf('\n')) : text;
 	}
 
 }
