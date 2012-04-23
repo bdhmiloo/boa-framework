@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,17 +36,49 @@ public class TestClass
 	{
 		String testString, next, last;
 		int count = 0;
-		testString = fileToString(new File("C:/Users/Jakob/workspace/Test.txt"));
+		testString = fileToString(new File("Test.txt"));
 		
 		//create Algo
 		SearchAlgorithm testAlgo = new NaiveAlgorithm();
 		
-		//create ArrayList of surfFroms to search for
-		Set<String> testSet = new HashSet<String>();
-		testSet.add("meters");
-		testSet.add("miles");
-		testSet.add("yards");
-		testSet.add("km");
+		//create HashSets of surfFroms to search for
+		//1: LINEAR_MEASURE
+		Set<String> testSetLM = new HashSet<String>();
+		testSetLM.add("meters");
+		testSetLM.add("metres");
+		testSetLM.add("miles");
+		testSetLM.add("yards");
+		testSetLM.add("km");
+		testSetLM.add("m");
+		testSetLM.add("millimeters");
+		testSetLM.add("millimetres");
+		testSetLM.add("mm");
+		testSetLM.add("centimeters");
+		testSetLM.add("centimetres");
+		testSetLM.add("cm");
+		testSetLM.add("nanometers");
+		testSetLM.add("nanometres");
+		testSetLM.add("nm");
+		testSetLM.add("inches");
+		testSetLM.add("ft");
+		testSetLM.add("feet");
+		
+		//2: WEIGHT
+		Set<String> testSetW = new HashSet<String>();
+		testSetW.add("kg");
+		testSetW.add("kilogram");
+		testSetW.add("tons");
+		testSetW.add("ounze");
+		testSetW.add("pounds");
+		testSetW.add("labs");
+		testSetW.add("lbs");
+		
+		//3: TEMPERATURE
+		Set<String> testSetT = new HashSet<String>();
+		testSetT.add("Kelvin");
+		testSetT.add("K");
+		testSetT.add("°C");
+		testSetT.add("°F");
 		
 		do
 		{
@@ -65,7 +96,9 @@ public class TestClass
 			//create BoaSentence for tests
 			BoaSentence testSentence = new BoaSentence(next);
 		
-			testAlgo.search(testSentence, testSet, Type.LINEAR_MEASURE);
+			testAlgo.search(testSentence, testSetLM, Type.LINEAR_MEASURE);
+			testAlgo.search(testSentence, testSetW, Type.WEIGHT);
+			testAlgo.search(testSentence, testSetT, Type.TEMPERATURE);
 			System.out.println(testSentence.getAnnotations().toString());
 			
 		}while(!testString.equals(last));
