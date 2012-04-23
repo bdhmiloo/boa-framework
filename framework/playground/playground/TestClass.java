@@ -90,7 +90,7 @@ public class TestClass
 		testSetW.add("kilogram");
 		testSetW.add("g");
 		testSetW.add("gram");
-		testSetW.add("tons");
+		testSetW.add("tonnes");
 		testSetW.add("ounze");
 		testSetW.add("pounds");
 		testSetW.add("labs");
@@ -101,7 +101,9 @@ public class TestClass
 		testSetT.add("Kelvin");
 		testSetT.add("K");
 		testSetT.add("°C");
+		testSetT.add("°C.");
 		testSetT.add("°F");
+		testSetT.add("°F.");
 		
 		Iterator<BoaSentence> it = sentences.iterator();
 		

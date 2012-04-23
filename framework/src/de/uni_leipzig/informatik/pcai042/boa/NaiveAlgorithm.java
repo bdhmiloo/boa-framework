@@ -98,7 +98,8 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						
 						while(this.isPrefix(stringBuilder.toString(), surForms))
 						{
-							//if yes, melt with next token and check again
+							//if yes, melt with next token (if it exists) and check again
+							if(!findMatch.hasNext()) break;
 							suffix = findMatch.next();
 							annoTokens.add(suffix);
 							stringBuilder.append(suffix);
