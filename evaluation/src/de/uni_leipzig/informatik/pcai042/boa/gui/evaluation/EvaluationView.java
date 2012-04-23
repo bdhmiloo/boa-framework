@@ -97,7 +97,6 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		tabsheet.addTab(tab1, "Home");
 		tabsheet.addTab(tab2, "Annotation");
 		tabsheet.addTab(tab3, "Evaluation");
-		tabsheet.addListener(this);
 		
 		// reset to default status
 		this.resetComponents();
@@ -119,7 +118,7 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		
 		Label welcomeIntro = new Label("<h1>Welcome to our test-GUI</h1>"
 				+ "<p><i>there should be a description here...as soon as possible! :)</i></p>"
-				+ "<p>Ð <i>swp12-1</i> Ð</p>", Label.CONTENT_XHTML);
+				+ "<p>- <i>swp12-1</i> -</p>", Label.CONTENT_XHTML);
 		
 		tab1Content.addComponent(welcomeIntro);
 		
@@ -187,6 +186,30 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		return tab2Content;
 	}
 	
+	/**
+	 * Build content 'evaluation process' of tab 3.
+	 * 
+	 * @return content of third tab
+	 */
+	private Layout buildTab3Content()
+	{
+		VerticalLayout tab3Content = new VerticalLayout();
+		tab3Content.setSpacing(true);
+		tab3Content.setMargin(true);
+		tab3Content.setSizeFull();
+		
+		Label labelConversion = new Label("Conversion:");
+		tab3Content.addComponent(labelConversion);
+		
+		// table needed here
+		
+		this.buttonNext2 = new Button("Next");
+		buttonNext2.setImmediate(true);
+		tab3Content.addComponent(buttonNext2);
+		
+		return tab3Content;
+	}
+	
 	public Button getButtonFileUpload()
 	{
 		return this.buttonFileUpload;
@@ -217,33 +240,14 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 		return this.listSelectAnnotation;
 	}
 	
-	/**
-	 * Build content 'evaluation process' of tab 3.
-	 * 
-	 * @return content of third tab
-	 */
-	private Layout buildTab3Content()
-	{
-		VerticalLayout tab3Content = new VerticalLayout();
-		tab3Content.setSpacing(true);
-		tab3Content.setMargin(true);
-		tab3Content.setSizeFull();
-		
-		Label labelConversion = new Label("Conversion:");
-		tab3Content.addComponent(labelConversion);
-		
-		// table needed here
-		
-		this.buttonNext2 = new Button("Next");
-		buttonNext2.setImmediate(true);
-		tab3Content.addComponent(buttonNext2);
-		
-		return tab3Content;
-	}
-	
 	public Button getButtonNext2()
 	{
 		return this.buttonNext2;
+	}
+	
+	public TabSheet getTabSheet()
+	{
+		return tabsheet;
 	}
 	
 	/**
@@ -271,15 +275,5 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	{
 		textAreaSentence.setInputPrompt("Please insert or load a sentence from a plain-text file.");
 		buttonAnnotate.setEnabled(false);
-		
 	}
-	
-	/**
-	 * 
-	 */
-	public void close()
-	{
-		
-	}
-	
 }
