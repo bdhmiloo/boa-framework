@@ -15,10 +15,6 @@
 
 package de.uni_leipzig.informatik.pcai042.boa;
 
-/**
- * Class to compare the result of annotation process with goldstandard
- */
-
 import java.io.File;
 import java.io.IOException;
 
@@ -27,22 +23,19 @@ import nu.xom.ValidityException;
 
 public class Scoring
 {
-	//testmain
 	public static void main(String[] args)
 	{
-		//can extract the sentences out of the xml file
 		SentenceLoader s1 = null;
-		double kp,fp,countGoldAnno;
-		kp=0;
-		fp=0;
-		countGoldAnno=0;
+		double kp, fp, countGoldAnno;
+		kp = 0;// kp=korrekte Annotationen
+		fp = 0;// fp=falsche Annotationen
+		countGoldAnno = 0;// =ANzahl der Annotationen im Goldstandard
 		int hilfe;
-		double recall,precision,fscore;
+		double recall, precision, fscore;
 		
-		//Call for SentenceLoader with Exception Handling
 		try
 		{
-			s1 = new SentenceLoader(new File("goldstandard.xml"));
+			s1 = new SentenceLoader(new File("Goldstandard.xml"));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -57,12 +50,10 @@ public class Scoring
 		if (s1 == null)
 			return;
 		
-		
-		
 		SentenceLoader s2 = null;
 		try
 		{
-			s2 = new SentenceLoader(new File("C:/Users/Christian/workspace/scoring/BoaAnno.xml"));
+			s2 = new SentenceLoader(new File("Goldstandard.xml"));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -74,84 +65,76 @@ public class Scoring
 			e.printStackTrace();
 		}
 		
-		//if (s1 == null)
-			//return;
-		
-		//calculate kp
-		for(int i=0;i<s2.getSentenceCount();i++) 
+		if (s2 == null)
+			return;
+		// kp ermitteln
+		for (int i = 0; i < s2.getSentenceCount(); i++)
 		{
-			for(int j=0;j<s2.getSentence(i).getAnnotations().size();j++)
-			{	
-				for(int k=0;k<s1.getSentence(i).getAnnotations().size();k++)
-				{	
-					if(s2.getSentence(i).getAnnotations().get(j).toString().equals(s1.getSentence(i).getAnnotations().get(k).toString()))
+			for (int j = 0; j < s2.getSentence(i).getAnnotations().size(); j++)
+			{
+				for (int k = 0; k < s1.getSentence(i).getAnnotations().size(); k++)
+				{
+					if (s2.getSentence(i).getAnnotations().get(j).toString()
+							.equals(s1.getSentence(i).getAnnotations().get(k).toString()))
 					{
-						kp++;
+						for (int e = 0; e < s2.getSentence(i).getAnnotations().get(j).getTokens().size(); e++)
+						{
+							for (int d = 0; d < s2.getSentence(i).getTokens().size(); d++)
+							{
+								if (s2.getSentence(i).getAnnotations().get(j).getTokens().get(e) == s1.getSentence(i)
+										.getTokens().get(d))
+									kp++;
+							}
+						}
 					}
 					
-				}	
-			}		
+				}
+			}
 			
 		}
 		
-		//calculate countGoldAnno 
-		for(int l=0;l<s1.getSentenceCount();l++)
+		// countGoldAnno ermitteln
+		for (int l = 0; l < s1.getSentenceCount(); l++)
 		{
-			countGoldAnno+=s1.getSentence(l).getAnnotations().size();
+			countGoldAnno += s1.getSentence(l).getAnnotations().size();
 		}
-		//calculate fp 
-		for(int b=0;b<s2.getSentenceCount();b++)
-		{	
-			for(int a=0;a<s2.getSentence(b).getAnnotations().size();a++)
+		// fp ermitteln
+		for (int b = 0; b < s2.getSentenceCount(); b++)
+		{
+			for (int a = 0; a < s2.getSentence(b).getAnnotations().size(); a++)
 			{
-					
-				hilfe=0;
-				for(int c=0;c<s1.getSentence(b).getAnnotations().size();c++)
+				
+				hilfe = 0;
+				for (int c = 0; c < s1.getSentence(b).getAnnotations().size(); c++)
 				{
-					if(!(s2.getSentence(b).getAnnotations().get(a).toString().equals(s1.getSentence(b).getAnnotations().get(c).toString())))
+					if (!(s2.getSentence(b).getAnnotations().get(a).toString().equals(s1.getSentence(b)
+							.getAnnotations().get(c).toString())))
 					{
 						hilfe++;
 					}
-										
+					
 				}
-				if(hilfe==s1.getSentence(b).getAnnotations().size())
+				if (hilfe == s1.getSentence(b).getAnnotations().size())
 				{
 					fp++;
 				}
 				
 			}
 			
-		}	
+		}
 		
-		//calculate scoring functions
-		recall=(kp)/(countGoldAnno);
-		precision=kp/(kp+fp);
-		fscore=(2*precision*recall)/(recall+precision);
+		recall = (kp) / (countGoldAnno);
+		precision = kp / (kp + fp);
+		fscore = (2 * precision * recall) / (recall + precision);
 		
-			
-			
-		//testoutput	
-			
 		System.out.println(kp);
 		System.out.println(fp);
 		System.out.println(countGoldAnno);
 		System.out.println(" ");
-		System.out.println("recall:"+recall);
-		System.out.println("precision:"+precision);
-		System.out.println("fscore:"+fscore);
+		System.out.println("recall:" + recall);
+		System.out.println("precision:" + precision);
+		System.out.println("fscore:" + fscore);
 		
-	}	
-		
-			
-		
-		
-		
+	}
+	
 }
-	
-	
-	
-	
-	
-	
-	
-
