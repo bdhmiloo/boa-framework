@@ -108,6 +108,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							{
 								//create Annotation
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+								break;
 							}
 						}
 					}
