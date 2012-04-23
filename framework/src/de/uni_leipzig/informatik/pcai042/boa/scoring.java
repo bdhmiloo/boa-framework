@@ -27,15 +27,15 @@ public class scoring
 	{
 		SentenceLoader s1 = null;
 		double kp,fp,countGoldAnno;
-		kp=0;
-		fp=0;
-		countGoldAnno=0;
+		kp=0;//kp=korrekte Annotationen
+		fp=0;//fp=falsche Annotationen
+		countGoldAnno=0;//=ANzahl der Annotationen im Goldstandard
 		int hilfe;
 		double recall,precision,fscore;
 		
 		try
 		{
-			s1 = new SentenceLoader(new File("C:/Users/Christian/workspace/scoring/Goldstandard.xml"));
+			s1 = new SentenceLoader(new File("Goldstandard.xml"));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -55,7 +55,7 @@ public class scoring
 		SentenceLoader s2 = null;
 		try
 		{
-			s2 = new SentenceLoader(new File("C:/Users/Christian/workspace/scoring/BoaAnno.xml"));
+			s2 = new SentenceLoader(new File("Goldstandard.xml"));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -67,7 +67,7 @@ public class scoring
 			e.printStackTrace();
 		}
 		
-		if (s1 == null)
+		if (s2 == null)
 			return;
 		//kp ermitteln
 		for(int i=0;i<s2.getSentenceCount();i++) 
@@ -78,7 +78,14 @@ public class scoring
 				{	
 					if(s2.getSentence(i).getAnnotations().get(j).toString().equals(s1.getSentence(i).getAnnotations().get(k).toString()))
 					{
-						kp++;
+						for(int e=0;e<s2.getSentence(i).getAnnotations().get(j).getTokens().size();e++)
+						{	
+							for(int d=0;d<s2.getSentence(i).getTokens().size();d++)
+							{		
+									if(s2.getSentence(i).getAnnotations().get(j).getTokens().get(e)==s1.getSentence(i).getTokens().get(d))
+										kp++;
+							}	
+						}
 					}
 					
 				}	
