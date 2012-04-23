@@ -15,6 +15,7 @@
 
 package playground;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import playground.BoaAnnotation.Type;
@@ -81,5 +82,20 @@ public abstract class SearchAlgorithm
 		return position;
 	}
 	
-
+	public boolean isPrefix(String token, Set<String> words)
+	{
+		Iterator<String> it = words.iterator();
+		String nextWord;
+		
+		while(it.hasNext())
+		{
+			nextWord = it.next();
+			if(nextWord.length() > token.length())
+			{
+				if(token.equals(nextWord.substring(0, token.length()))) return true;
+			}
+		}
+		
+		return false;
+	}
 }
