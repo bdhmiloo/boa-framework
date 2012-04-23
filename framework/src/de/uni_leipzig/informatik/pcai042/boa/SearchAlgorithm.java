@@ -13,12 +13,12 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package playground;
+package de.uni_leipzig.informatik.pcai042.boa;
 
 import java.util.Iterator;
 import java.util.Set;
 
-import playground.BoaAnnotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 
 public abstract class SearchAlgorithm
 {

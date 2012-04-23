@@ -26,7 +26,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import playground.BoaAnnotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.ConfigLoader;
+import de.uni_leipzig.informatik.pcai042.boa.NaiveAlgorithm;
+import de.uni_leipzig.informatik.pcai042.boa.SearchAlgorithm;
 
 public class TestClass
 {

@@ -13,13 +13,13 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package playground;
+package de.uni_leipzig.informatik.pcai042.boa;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Iterator;
 
-import playground.BoaAnnotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 
 /**
  * Algorithm that searches for patterns of the form "number ... unit" where number is an integer or double

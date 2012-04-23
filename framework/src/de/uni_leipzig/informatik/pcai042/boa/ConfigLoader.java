@@ -13,7 +13,7 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package playground;
+package de.uni_leipzig.informatik.pcai042.boa;
 
 import java.io.BufferedInputStream;
 import java.io.File;
