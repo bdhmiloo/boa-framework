@@ -103,10 +103,16 @@ public class BoaSentence
 			sb.append(token);
 			sb.append(" ");
 		}
-		//cut last space
+		// cut last space
 		if (tokens.size() > 0)
 			sb.setLength(sb.length() - 1);
 		sentence = sb.toString();
+	}
+	
+	@SuppressWarnings("unused")
+	private BoaSentence()
+	{
+		
 	}
 	
 	private static synchronized void initPipeline()
@@ -137,5 +143,17 @@ public class BoaSentence
 	public Document getXmlDoc()
 	{
 		return xmlDoc;
+	}
+	
+	/**
+	 * Creates a copy of the sentence without annotations.
+	 * 
+	 * @return a new instance of BoaSentence
+	 */
+	public BoaSentence copy()
+	{
+		BoaSentence bs = new BoaSentence(tokens);
+		bs.xmlDoc = xmlDoc;
+		return bs;
 	}
 }
