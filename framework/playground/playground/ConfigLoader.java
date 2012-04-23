@@ -72,7 +72,7 @@ public class ConfigLoader
 			e.printStackTrace();
 		}
 	
-		// weight_surfaceforms should be a 
+		// S_FORMS and F_S_FORMS are termorary because they cannot be tested for now .
 		if (isFalse) {unityTemp = configForms.getProperty("S_FORMS").split(";");}
 		else {unityTemp = configForms.getProperty("F_S_FORMS").split(";");}
 
