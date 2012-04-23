@@ -69,6 +69,8 @@ public class TestClass
 		testSetLM.add("metres");
 		testSetLM.add("miles");
 		testSetLM.add("yards");
+		testSetLM.add("kilometers");
+		testSetLM.add("kilometres");
 		testSetLM.add("km");
 		testSetLM.add("m");
 		testSetLM.add("millimeters");
@@ -100,6 +102,7 @@ public class TestClass
 		Set<String> testSetT = new HashSet<String>();
 		testSetT.add("Kelvin");
 		testSetT.add("K");
+		testSetT.add("K.");
 		testSetT.add("°C");
 		testSetT.add("°C.");
 		testSetT.add("°F");
