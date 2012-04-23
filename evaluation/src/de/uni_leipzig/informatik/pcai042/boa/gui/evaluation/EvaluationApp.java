@@ -17,19 +17,20 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
 import com.vaadin.Application;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 
 /**
  * 
  * @author Simon Suiter
  */
 @SuppressWarnings("serial")
-public class EvaluationApp extends Application
+public class EvaluationApp extends Application implements ClickListener, SelectedTabChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	
-	/**
-	 * 
-	 */
 	@Override
 	public void init()
 	{
@@ -37,5 +38,39 @@ public class EvaluationApp extends Application
 		setMainWindow(mainWindow);
 		mainWindow.getContent().setSizeFull();
 		mainWindow.addComponent(view);
+		
+		view.getButtonAnnotate().addListener(this);
+		view.getButtonFileUpload().addListener(this);
+		view.getButtonNew().addListener(this);
+		view.getButtonNext().addListener(this);
+		view.getButtonNext2().addListener(this);
+		view.getTabSheet().addListener(this);
+	}
+	
+	public void buttonClick(ClickEvent event)
+	{
+		Button button = event.getButton();
+		
+		if (button == view.getButtonAnnotate())
+		{
+			
+		} else if (button == view.getButtonFileUpload())
+		{
+			
+		} else if (button == view.getButtonNew())
+		{
+			
+		} else if (button == view.getButtonNext())
+		{
+			
+		} else if (button == view.getButtonNext2())
+		{
+			
+		}
+	}
+
+	public void selectedTabChange(SelectedTabChangeEvent event)
+	{
+		
 	}
 }
