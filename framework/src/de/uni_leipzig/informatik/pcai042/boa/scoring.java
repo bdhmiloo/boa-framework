@@ -26,9 +26,13 @@ public class scoring
 	public static void main(String[] args)
 	{
 		SentenceLoader s1 = null;
-		int kp,fp;
+		double kp,fp,countGoldAnno;
 		kp=0;
 		fp=0;
+		countGoldAnno=0;
+		int hilfe;
+		double recall,precision,fscore;
+		
 		try
 		{
 			s1 = new SentenceLoader(new File("C:/Users/Christian/workspace/scoring/Goldstandard.xml"));
@@ -65,10 +69,10 @@ public class scoring
 		
 		if (s1 == null)
 			return;
-		
-		for(int i=0;i<s1.getSentenceCount();i++) 
+		//kp ermitteln
+		for(int i=0;i<s2.getSentenceCount();i++) 
 		{
-			for(int j=0;j<s1.getSentence(i).getAnnotations().size();j++)
+			for(int j=0;j<s2.getSentence(i).getAnnotations().size();j++)
 			{	
 				for(int k=0;k<s1.getSentence(i).getAnnotations().size();k++)
 				{	
@@ -76,16 +80,56 @@ public class scoring
 					{
 						kp++;
 					}
-					else
-					{
-						fp++;
-					}	
+					
 				}	
 			}		
-					
+			
 		}
+		
+		//countGoldAnno ermitteln
+		for(int l=0;l<s1.getSentenceCount();l++)
+		{
+			countGoldAnno+=s1.getSentence(l).getAnnotations().size();
+		}
+		//fp ermitteln
+		for(int b=0;b<s2.getSentenceCount();b++)
+		{	
+			for(int a=0;a<s2.getSentence(b).getAnnotations().size();a++)
+			{
+					
+				hilfe=0;
+				for(int c=0;c<s1.getSentence(b).getAnnotations().size();c++)
+				{
+					if(!(s2.getSentence(b).getAnnotations().get(a).toString().equals(s1.getSentence(b).getAnnotations().get(c).toString())))
+					{
+						hilfe++;
+					}
+										
+				}
+				if(hilfe==s1.getSentence(b).getAnnotations().size())
+				{
+					fp++;
+				}
+				
+			}
+			
+		}	
+			
+		recall=(kp)/(countGoldAnno);
+		precision=kp/(kp+fp);
+		fscore=(2*precision*recall)/(recall+precision);
+		
+			
+			
+			
+			
 		System.out.println(kp);
 		System.out.println(fp);
+		System.out.println(countGoldAnno);
+		System.out.println(" ");
+		System.out.println("recall:"+recall);
+		System.out.println("precision:"+precision);
+		System.out.println("fscore:"+fscore);
 		
 	}	
 		
