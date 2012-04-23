@@ -16,31 +16,47 @@
 package playground;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 import de.uni_leipzig.informatik.pcai042.boa.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.NaiveAlgorithm;
 import de.uni_leipzig.informatik.pcai042.boa.SearchAlgorithm;
+import de.uni_leipzig.informatik.pcai042.boa.SentenceLoader;
 
 public class TestClass
-{
-	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
-	
+{	
 	public static void main(String[] args)
 	{
-		String testString, next, last;
 		int count = 0;
-		testString = fileToString(new File("Test.txt"));
+		ArrayList<BoaSentence> sentences = new ArrayList<BoaSentence>();
+		BoaSentence testSentence;
+		SentenceLoader sentenceLoader = null;
+		try
+		{
+			sentenceLoader = new SentenceLoader(new File("goldstandard.xml"));
+		} catch (ValidityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sentences = sentenceLoader.getSentences();
 		
 		//create Algo
 		SearchAlgorithm testAlgo = new NaiveAlgorithm();
@@ -72,6 +88,8 @@ public class TestClass
 		Set<String> testSetW = new HashSet<String>();
 		testSetW.add("kg");
 		testSetW.add("kilogram");
+		testSetW.add("g");
+		testSetW.add("gram");
 		testSetW.add("tons");
 		testSetW.add("ounze");
 		testSetW.add("pounds");
@@ -85,66 +103,26 @@ public class TestClass
 		testSetT.add("°C");
 		testSetT.add("°F");
 		
-		do
+		Iterator<BoaSentence> it = sentences.iterator();
+		
+		while(it.hasNext())
 		{
 			count++;
 			
-			next = nextSentence(testString);
-			last = testString;
-			if(!testString.equals(next))testString = testString.substring(next.length());
-			if(testString.startsWith("\n")) testString = testString.substring(1);
+			testSentence = it.next();
 			
 			//System.out.println(testString);
 			
-			System.out.println("\nSentence " + count + "\n" + next);
-			
-			//create BoaSentence for tests
-			BoaSentence testSentence = new BoaSentence(next);
+			System.out.println("\nSentence " + count + "\n" + testSentence);
 		
 			testAlgo.search(testSentence, testSetLM, Type.LINEAR_MEASURE);
 			testAlgo.search(testSentence, testSetW, Type.WEIGHT);
 			testAlgo.search(testSentence, testSetT, Type.TEMPERATURE);
 			System.out.println(testSentence.getAnnotations().toString());
 			
-		}while(!testString.equals(last));
-		
-		//System.out.println("400km " + testAlgo.checkIfCombinedNumber("400km") + "\n1a" + testAlgo.checkIfCombinedNumber("1a")); 
-	}
-	
-	private static String fileToString(File file)
-	{
-		int nextchar;
-		StringBuilder stringBuilder = new StringBuilder();
-		
-		try
-		{
-			InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
-			do
-			{
-				nextchar = reader.read();
-				if (nextchar != -1)
-					stringBuilder.append((char) (nextchar));
-				
-			} while (nextchar != -1);
-			
-			reader.close();
-			return stringBuilder.toString().trim();
-		} catch (FileNotFoundException e)
-		{
-			logger.error(e.getMessage());
-		} catch (IOException e)
-		{
-			logger.error(e.getMessage());
 		}
 		
-		return "";
-	}
-	
-	private static String nextSentence(String text)
-	{
-		if (text.isEmpty())
-			return null;
-		return text.indexOf('\n') > -1 ? text.substring(0, text.indexOf('\n')) : text;
+		//System.out.println("400km " + testAlgo.checkIfCombinedNumber("400km") + "\n1a" + testAlgo.checkIfCombinedNumber("1a")); 
 	}
 
 }
