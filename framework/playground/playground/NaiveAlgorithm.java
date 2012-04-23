@@ -21,6 +21,11 @@ import java.util.Iterator;
 
 import playground.BoaAnnotation.Type;
 
+/**
+ * Algorithm that searches for patterns of the form "number ... unit" where number is an integer or double
+ * and unit is one token from the input Set<String> surForms.
+ */
+
 public class NaiveAlgorithm extends SearchAlgorithm
 {
 	public void search(BoaSentence sentence, Set<String> surForms, Type annoType)
@@ -61,6 +66,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					{
 						while(!currentToken.equals(match))
 						{
+							if(!tokenIt.hasNext()) break;
 							currentToken = tokenIt.next();
 							replaced = true;
 						}
@@ -79,7 +85,31 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							
 							//this is for tests only
 							//System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
-					}	
+					}
+					//else check if match is the prefix of any surface form
+					else
+					{
+						ArrayList<String> annoTokens = new ArrayList<String>();
+						annoTokens.add(currentToken);
+						annoTokens.add(match);
+						
+						StringBuilder stringBuilder = new StringBuilder();
+						stringBuilder.append(match);
+						
+						while(this.isPrefix(stringBuilder.toString(), surForms))
+						{
+							//if yes, melt with next token and check again
+							suffix = findMatch.next();
+							annoTokens.add(suffix);
+							stringBuilder.append(suffix);
+							
+							if(surForms.contains(stringBuilder.toString()))
+							{
+								//create Annotation
+								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+							}
+						}
+					}
 				}
 			}
 			else
