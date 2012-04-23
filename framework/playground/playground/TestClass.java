@@ -42,6 +42,7 @@ public class TestClass
 		SearchAlgorithm testAlgo = new NaiveAlgorithm();
 		
 		//create HashSets of surfFroms to search for
+		//this will be replaced as soon as ConfigLoader works
 		//1: LINEAR_MEASURE
 		Set<String> testSetLM = new HashSet<String>();
 		testSetLM.add("meters");

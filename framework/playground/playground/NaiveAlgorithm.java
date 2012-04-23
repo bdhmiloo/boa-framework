@@ -23,7 +23,7 @@ import playground.BoaAnnotation.Type;
 
 /**
  * Algorithm that searches for patterns of the form "number ... unit" where number is an integer or double
- * and unit is one token from the input Set<String> surForms.
+ * value and unit is a token from the input Set<String> surForms.
  */
 
 public class NaiveAlgorithm extends SearchAlgorithm
@@ -34,7 +34,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 		String match, suffix, prefix;
 		int position;
 		Boolean replaced = false;	//need this when a token representing a number is replaced with another token representing a number
-									//replacement isn't actually needed but makes algorithm a little faster
+									//replacement isn't actually needed but makes algorithm faster
 		
 		Iterator<String> tokenIt = sentence.getTokens().iterator();
 		

@@ -22,6 +22,14 @@ import playground.BoaAnnotation.Type;
 
 public abstract class SearchAlgorithm
 {
+	/**
+	 * Searches sentence for occurrences of certain patterns.
+	 * The nature of this patterns is defined in each subclass.
+	 * On success objects of type BoaAnnotation will be added to sentence.
+	 * @param sentence
+	 * @param surForms
+	 * @param annoType
+	 */
 	//subclasses will have to overwrite this
 	public void search(BoaSentence sentence, Set<String> surForms, Type annoType)
 	{
@@ -35,7 +43,7 @@ public abstract class SearchAlgorithm
 	 */
 	
 	
-	public boolean checkIfNumber(String token)
+	protected boolean checkIfNumber(String token)
 	{	
 		try
 		{
@@ -61,7 +69,7 @@ public abstract class SearchAlgorithm
 	 * @return -1 if no combined number else position of first non-numerical char
 	 */
 	
-	public int checkIfStartsWithNumber(String token)
+	protected int checkIfStartsWithNumber(String token)
 	{
 		String prefix;
 		int length = 1;
@@ -82,7 +90,14 @@ public abstract class SearchAlgorithm
 		return position;
 	}
 	
-	public boolean isPrefix(String token, Set<String> words)
+	/**
+	 * Checks if a token is a prefix of any word in a certain set of words
+	 * @param token
+	 * @param words
+	 * @return true if prefix, else false
+	 */
+	
+	protected boolean isPrefix(String token, Set<String> words)
 	{
 		Iterator<String> it = words.iterator();
 		String nextWord;
