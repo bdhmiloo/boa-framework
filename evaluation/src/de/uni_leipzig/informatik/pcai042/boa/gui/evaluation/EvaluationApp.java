@@ -21,6 +21,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+import com.vaadin.ui.TabSheet.Tab;
 
 /**
  * 
@@ -47,6 +48,9 @@ public class EvaluationApp extends Application implements ClickListener, Selecte
 		view.getTabSheet().addListener(this);
 	}
 	
+	/**
+	 * Listener for clicking buttons.
+	 */
 	public void buttonClick(ClickEvent event)
 	{
 		Button button = event.getButton();
@@ -69,8 +73,22 @@ public class EvaluationApp extends Application implements ClickListener, Selecte
 		}
 	}
 
+//	public void selectedTabChange(SelectedTabChangeEvent event)
+//	{
+//		
+//	}
+	
+	/**
+	 * Listener for changing tabs on tabsheet.
+	 */
 	public void selectedTabChange(SelectedTabChangeEvent event)
 	{
+		TabSheet tabsheet = event.getTabSheet();
+		Tab tab = tabsheet.getTab(tabsheet.getSelectedTab());
 		
+		if (tab != null)
+		{
+			getMainWindow().showNotification("Selected tab: " + tab.getCaption());
+		}
 	}
 }
