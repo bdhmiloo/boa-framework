@@ -23,32 +23,20 @@ import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
-// DON'T DELETE THE FOLLOWING IMPORTS --> WILL BE DELETED AFTER FINISHING APPLICATION COMPLETELY
+// DON'T DELETE THE FOLLOWING IMPORTS
 //import com.vaadin.ui.Link;
 //import com.vaadin.ui.Upload;
 //import com.vaadin.ui.Upload.FinishedEvent;
 //import com.vaadin.ui.Upload.Receiver;
-//import com.vaadin.terminal.ExternalResource;
-//import com.vaadin.terminal.Sizeable;
-//import com.vaadin.terminal.ThemeResource;
 
 /**
- * 
  * 
  * @author Duc Huy Bui
  */
 @SuppressWarnings("serial")
-public class EvaluationView extends VerticalLayout implements TabSheet.SelectedTabChangeListener
-{
-	// private static final String CAPTION = "Open Homepage";
-	// private static final String TOOLTIP =
-	// "http://pcai042.informatik.uni-leipzig.de/~swp12-1/";
-	// private static final ThemeResource ICON = new
-	// ThemeResource("../sampler/icons/icon_world.gif");
-	
+public class EvaluationView extends VerticalLayout
+{	
 	private TabSheet tabsheet;
 	
 	private VerticalLayout tab1;
@@ -251,29 +239,12 @@ public class EvaluationView extends VerticalLayout implements TabSheet.SelectedT
 	}
 	
 	/**
-	 * TabChangeListener for testing GUI.
-	 * 
-	 * @TODO should be moved to class EvaluationApp
-	 * 
-	 * @param event
-	 */
-	public void selectedTabChange(SelectedTabChangeEvent event)
-	{
-		TabSheet tabsheet = event.getTabSheet();
-		Tab tab = tabsheet.getTab(tabsheet.getSelectedTab());
-		
-		if (tab != null)
-		{
-			getWindow().showNotification("Selected tab: " + tab.getCaption());
-		}
-	}
-	
-	/**
 	 * Set all components to default status.
 	 */
 	public void resetComponents()
 	{
 		textAreaSentence.setInputPrompt("Please insert or load a sentence from a plain-text file.");
 		buttonAnnotate.setEnabled(false);
+		
 	}
 }
