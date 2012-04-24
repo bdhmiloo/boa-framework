@@ -17,7 +17,7 @@ package de.uni_leipzig.informatik.pcai042.boa;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.text.*;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
@@ -26,12 +26,14 @@ public class Scoring
 	public static void main(String[] args)
 	{
 		SentenceLoader s1 = null;
-		double kp, fp, countGoldAnno;
-		kp = 0;// kp=korrekte Annotationen
-		fp = 0;// fp=falsche Annotationen
-		countGoldAnno = 0;// =ANzahl der Annotationen im Goldstandard
-		int hilfe;
-		double recall, precision, fscore;
+		double kp,fp,countGoldAnno;
+		kp=0;//kp=korrekte Annotationen
+		fp=0;//fp=falsche Annotationen
+		countGoldAnno=0;//=ANzahl der Annotationen im Goldstandard
+		int hilfe,hilfe2,t1,t2;
+		double recall,precision,fscore;
+		t1=0;
+		t2=0;
 		
 		try
 		{
@@ -50,6 +52,8 @@ public class Scoring
 		if (s1 == null)
 			return;
 		
+		
+		
 		SentenceLoader s2 = null;
 		try
 		{
@@ -67,74 +71,117 @@ public class Scoring
 		
 		if (s2 == null)
 			return;
-		// kp ermitteln
-		for (int i = 0; i < s2.getSentenceCount(); i++)
+		
+		
+		
+		
+		System.out.println("recall       precision    fscore");
+				
+		//kp ermitteln
+		
+		for(int i=0;i<s1.getSentenceCount();i++) 
 		{
-			for (int j = 0; j < s2.getSentence(i).getAnnotations().size(); j++)
-			{
-				for (int k = 0; k < s1.getSentence(i).getAnnotations().size(); k++)
-				{
-					if (s2.getSentence(i).getAnnotations().get(j).toString()
-							.equals(s1.getSentence(i).getAnnotations().get(k).toString()))
-					{
-						for (int e = 0; e < s2.getSentence(i).getAnnotations().get(j).getTokens().size(); e++)
-						{
-							for (int d = 0; d < s2.getSentence(i).getTokens().size(); d++)
-							{
-								if (s2.getSentence(i).getAnnotations().get(j).getTokens().get(e) == s1.getSentence(i)
-										.getTokens().get(d))
-									kp++;
-							}
+			countGoldAnno+=s1.getSentence(i).getAnnotations().size();
+			
+			for(int j=0;j<s2.getSentence(i).getAnnotations().size();j++)
+			{	
+				for(int k=0;k<s1.getSentence(i).getAnnotations().size();k++)
+				{	
+					if(s2.getSentence(i).getAnnotations().get(j).toString().equals(s1.getSentence(i).getAnnotations().get(k).toString()))
+					t1=1;
+					
+				}	
+				hilfe2=0;
+				for(int e=0;e<s2.getSentence(i).getAnnotations().get(j).getTokens().size();e++)
+				{	
+					for(int d=0;d<s2.getSentence(i).getTokens().size();d++)
+					{		
+						if(s2.getSentence(i).getAnnotations().get(j).getTokens().get(e)==s2.getSentence(i).getTokens().get(d))
+						{	//System.out.println("i:"+i+"j:"+j+"e:"+e+"d:"+d);	
+							for(int w=0;w<s1.getSentence(i).getAnnotations().size();w++)
+							{																			
+								for(int z=0;z<s1.getSentence(i).getAnnotations().get(w).getTokens().size();z++)
+								{	
+									for(int y=0;y<s1.getSentence(i).getTokens().size();y++)
+									{		
+										if(s1.getSentence(i).getAnnotations().get(w).getTokens().get(z)==s1.getSentence(i).getTokens().get(y))
+										{
+											if(e==z&&d==y)
+												hilfe2++;
+										}
+									}
+								}
+							}	
 						}
 					}
-					
-				}
+							
+				}	//	System.out.println("t1:"+t1);
+						//System.out.println("satz:"+i);
+						//System.out.println("annotation:"+j);
+						//System.out.println("h2:"+hilfe2);
+						//System.out.println("anzahl tokens in sfalsch:"+s2.getSentence(i).getAnnotations().get(j).getTokens().size());
+						//System.out.println("  ");
+						if(hilfe2==s2.getSentence(i).getAnnotations().get(j).getTokens().size())
+							t2=1;
+						if(t1==1&&t2==1)
+							kp++;
 			}
-			
-		}
-		
-		// countGoldAnno ermitteln
-		for (int l = 0; l < s1.getSentenceCount(); l++)
-		{
-			countGoldAnno += s1.getSentence(l).getAnnotations().size();
-		}
-		// fp ermitteln
-		for (int b = 0; b < s2.getSentenceCount(); b++)
-		{
-			for (int a = 0; a < s2.getSentence(b).getAnnotations().size(); a++)
+					
+			for(int a=0;a<s2.getSentence(i).getAnnotations().size();a++)
 			{
-				
-				hilfe = 0;
-				for (int c = 0; c < s1.getSentence(b).getAnnotations().size(); c++)
+					
+				hilfe=0;
+				for(int c=0;c<s1.getSentence(i).getAnnotations().size();c++)
 				{
-					if (!(s2.getSentence(b).getAnnotations().get(a).toString().equals(s1.getSentence(b)
-							.getAnnotations().get(c).toString())))
+					if(!(s2.getSentence(i).getAnnotations().get(a).toString().equals(s1.getSentence(i).getAnnotations().get(c).toString())))
 					{
 						hilfe++;
 					}
-					
+										
 				}
-				if (hilfe == s1.getSentence(b).getAnnotations().size())
+				if(hilfe==s1.getSentence(i).getAnnotations().size())
 				{
 					fp++;
 				}
 				
-			}
+			}	
+			recall=(kp)/(countGoldAnno);
+			precision=kp/(kp+fp);
+			fscore=(2*precision*recall)/(recall+precision);
 			
-		}
+				
+			DecimalFormat df =   new DecimalFormat  ( ",0.00000000" );
+		    System.out.print(  df.format(recall)   +"   ");   
+			System.out.print(df.format(precision)  +"   ");	  
+			System.out.println(df.format(fscore));
+			
+			
+		}	
+			
+				
+			
 		
-		recall = (kp) / (countGoldAnno);
-		precision = kp / (kp + fp);
-		fscore = (2 * precision * recall) / (recall + precision);
 		
-		System.out.println(kp);
-		System.out.println(fp);
-		System.out.println(countGoldAnno);
-		System.out.println(" ");
-		System.out.println("recall:" + recall);
-		System.out.println("precision:" + precision);
-		System.out.println("fscore:" + fscore);
+		System.out.println("korrekte Annotationen:"+kp);
+		System.out.println("falsche Annotationen:"+fp);
+		System.out.println("Anzahl Annotationen im Goldstandard:"+countGoldAnno);
 		
-	}
-	
+		
+			
+		
+		
+	}	
+		
+			
+		
+		
+		
 }
+	
+	
+	
+	
+	
+	
+	
+
