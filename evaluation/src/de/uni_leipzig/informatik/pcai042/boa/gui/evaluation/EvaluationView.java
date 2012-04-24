@@ -21,6 +21,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
@@ -36,8 +37,10 @@ import com.vaadin.ui.VerticalLayout;
  */
 @SuppressWarnings("serial")
 public class EvaluationView extends VerticalLayout
-{	
+{
 	private TabSheet tabsheet;
+	
+	private Table tableEvaluation;
 	
 	private VerticalLayout tab1;
 	private VerticalLayout tab2;
@@ -149,7 +152,7 @@ public class EvaluationView extends VerticalLayout
 		tab2Content.addComponent(buttonAnnotate);
 		
 		this.listSelectAnnotation = new ListSelect("Annotations:");
-		listSelectAnnotation.setImmediate(false);
+		listSelectAnnotation.setImmediate(true);
 		listSelectAnnotation.setHeight("70px");
 		listSelectAnnotation.setWidth("100%");
 		tab2Content.addComponent(listSelectAnnotation);
@@ -186,14 +189,33 @@ public class EvaluationView extends VerticalLayout
 		tab3Content.setMargin(true);
 		tab3Content.setSizeFull();
 		
-		Label labelConversion = new Label("Conversion:");
-		tab3Content.addComponent(labelConversion);
+		this.tableEvaluation = new Table("Evaluation process:");
+		tableEvaluation.setHeight("150px");
+		tableEvaluation.setWidth("100%");
+		tableEvaluation.setImmediate(true);
+		tableEvaluation.setSelectable(true);
+		tableEvaluation.setMultiSelect(false);
+		tableEvaluation.setSortDisabled(false);
+		tableEvaluation.addContainerProperty("ID", Integer.class, null);
+		tableEvaluation.addContainerProperty("Sentence", String.class, null);
+		tableEvaluation.addContainerProperty("Precision", Double.class, null);
+		tableEvaluation.addContainerProperty("Recall", Double.class, null);
+		tableEvaluation.addContainerProperty("F-Score", Double.class, null);
+		tab3Content.addComponent(tableEvaluation);
 		
-		// table needed here
+		// testing table
+		for (int i = 1; i <= 10; i++)
+		{
+			// last "new Integer()" represents position of object in table!
+			tableEvaluation.addItem(new Object[] { new Integer(1234+i), "Bazinga!", new Double(0.2+i), new Double(5+i),
+					new Double(5.6789-i) }, new Integer(i));
+		}
 		
 		this.buttonNext2 = new Button("Next");
 		buttonNext2.setImmediate(true);
 		tab3Content.addComponent(buttonNext2);
+		
+		// printout neede here
 		
 		return tab3Content;
 	}
@@ -235,7 +257,12 @@ public class EvaluationView extends VerticalLayout
 	
 	public TabSheet getTabSheet()
 	{
-		return tabsheet;
+		return this.tabsheet;
+	}
+	
+	public Table getTableEvaluation()
+	{
+		return this.tableEvaluation;
 	}
 	
 	/**

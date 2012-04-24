@@ -16,19 +16,23 @@
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
 import com.vaadin.Application;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
-import com.vaadin.ui.TabSheet.Tab;
 
 /**
  * 
  * @author Simon Suiter
  */
 @SuppressWarnings("serial")
-public class EvaluationApp extends Application implements ClickListener, SelectedTabChangeListener
+public class EvaluationApp extends Application implements ItemClickListener, ClickListener, SelectedTabChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	
@@ -46,6 +50,7 @@ public class EvaluationApp extends Application implements ClickListener, Selecte
 		view.getButtonNext().addListener(this);
 		view.getButtonNext2().addListener(this);
 		view.getTabSheet().addListener(this);
+		view.getTableEvaluation().addListener(this);
 	}
 	
 	/**
@@ -72,11 +77,6 @@ public class EvaluationApp extends Application implements ClickListener, Selecte
 			
 		}
 	}
-
-//	public void selectedTabChange(SelectedTabChangeEvent event)
-//	{
-//		
-//	}
 	
 	/**
 	 * Listener for changing tabs on tabsheet.
@@ -84,11 +84,15 @@ public class EvaluationApp extends Application implements ClickListener, Selecte
 	public void selectedTabChange(SelectedTabChangeEvent event)
 	{
 		TabSheet tabsheet = event.getTabSheet();
-		Tab tab = tabsheet.getTab(tabsheet.getSelectedTab());
+		tabsheet.getTab(tabsheet.getSelectedTab());
+	}
+	
+	/**
+	 * 
+	 */
+	public void itemClick(ItemClickEvent event)
+	{
+		// https://vaadin.com/book/-/page/components.table.html
 		
-		if (tab != null)
-		{
-			getMainWindow().showNotification("Selected tab: " + tab.getCaption());
-		}
 	}
 }
