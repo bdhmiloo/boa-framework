@@ -131,10 +131,10 @@ public class EvaluationView extends VerticalLayout
 		HorizontalLayout hlay1 = new HorizontalLayout();
 		this.buttonFileUpload = new Button("Select File");
 		buttonFileUpload.setImmediate(true);
-		buttonFileUpload.setDescription("CLick <b>Select File</b> in order to upload a plain-text file to server");
+		buttonFileUpload.setDescription("Upload a plain-text file (.txt) to server");
 		this.buttonNew = new Button("New");
 		buttonNew.setImmediate(true);
-		buttonNew.setDescription("Click <b>New</b> in order to type in a new sentence");
+		buttonNew.setDescription("Type in a new sentence");
 		hlay1.setSpacing(true);
 		hlay1.setMargin(false);
 		hlay1.addComponent(buttonFileUpload);
@@ -149,6 +149,7 @@ public class EvaluationView extends VerticalLayout
 		
 		this.buttonAnnotate = new Button("Annotate");
 		buttonAnnotate.setImmediate(true);
+		buttonAnnotate.setDescription("Annotate the sentence above");
 		tab2Content.addComponent(buttonAnnotate);
 		
 		this.listSelectAnnotation = new ListSelect("Annotations:");
@@ -166,8 +167,10 @@ public class EvaluationView extends VerticalLayout
 		HorizontalLayout hlay2 = new HorizontalLayout();
 		this.buttonNext = new Button("Next");
 		buttonNext.setImmediate(true);
+		buttonNext.setDescription("Get next Sentence from uploaded file");
 		this.buttonEnd = new Button("End");
 		buttonEnd.setImmediate(true);
+		buttonEnd.setDescription("End Application");
 		hlay2.setSpacing(true);
 		hlay2.setMargin(false);
 		hlay2.addComponent(buttonNext);
