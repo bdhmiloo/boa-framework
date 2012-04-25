@@ -24,12 +24,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.VerticalLayout;
-// DON'T DELETE THE FOLLOWING IMPORTS
-//import com.vaadin.ui.Link;
-//import com.vaadin.ui.Upload;
-//import com.vaadin.ui.Upload.FinishedEvent;
-//import com.vaadin.ui.Upload.Receiver;
+import com.vaadin.ui.Upload;
 
 /**
  * 
@@ -52,12 +49,16 @@ public class EvaluationView extends VerticalLayout
 	
 	private Panel panelAnnotation;
 	
-	private Button buttonFileUpload;
+	private Upload buttonFileUpload;
+	
+//	private Button buttonFileUpload;
 	private Button buttonNew;
 	private Button buttonAnnotate;
 	private Button buttonNext; // button 'next' in tab 'Annotation'
 	private Button buttonNext2; // button 'next' in tab 'Evaluation'
 	private Button buttonEnd;
+	
+	Label status = new Label("test");
 	
 	/**
 	 * Constructor initializes View.
@@ -129,9 +130,28 @@ public class EvaluationView extends VerticalLayout
 		tab2Content.setSizeFull();
 		
 		HorizontalLayout hlay1 = new HorizontalLayout();
-		this.buttonFileUpload = new Button("Select File");
-		buttonFileUpload.setImmediate(true);
-		buttonFileUpload.setDescription("Upload a plain-text file (.txt) to server");
+//		this.buttonFileUpload = new Button("Select File");
+		
+		//upload button needed here
+		this.buttonFileUpload = new Upload(null, null);
+		buttonFileUpload.setButtonCaption("Upload file");
+		
+//		http://dev.vaadin.com/svn/doc/book-examples/trunk/src/com/vaadin/book/examples/component/UploadExample.java
+//		http://demo.vaadin.com/sampler#ImmediateUpload
+		
+		
+		
+		
+		 buttonFileUpload.addListener(new Upload.SucceededListener() {
+	            public void uploadSucceeded(SucceededEvent event) {
+	                // This method gets called when the upload finished successfully
+	                status.setValue("Uploading file \"" + event.getFilename()
+	                        + "\" succeeded");
+	            }
+	        });
+		
+//		buttonFileUpload.setImmediate(true);
+//		buttonFileUpload.setDescription("Upload a plain-text file (.txt) to server");
 		this.buttonNew = new Button("New");
 		buttonNew.setImmediate(true);
 		buttonNew.setDescription("Type in a new sentence");
@@ -218,15 +238,15 @@ public class EvaluationView extends VerticalLayout
 		buttonNext2.setImmediate(true);
 		tab3Content.addComponent(buttonNext2);
 		
-		// printout neede here
+		// printout needed here
 		
 		return tab3Content;
 	}
 	
-	public Button getButtonFileUpload()
-	{
-		return this.buttonFileUpload;
-	}
+//	public Button getButtonFileUpload()
+//	{
+//		return this.buttonFileUpload;
+//	}
 	
 	public Button getButtonNew()
 	{
