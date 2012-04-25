@@ -18,10 +18,12 @@ package de.uni_leipzig.informatik.pcai042.boa;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Set;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 
@@ -34,6 +36,9 @@ public class ConfigLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 	
+	private static final String sFormsLabel = "S_FORMS";
+	private static final String fsFormsLabel = "F_S_FORMS";
+	
 	/*
 	 * Function to return the String representation of unit surface forms from a text file.
 	 * The second variable isFalse tells the class whether the method is called by the function
@@ -44,8 +49,34 @@ public class ConfigLoader
 	
 	public Set<String> openConfigSurfaceForms(File path, boolean isFalse)
 	{
-		//@TODO: Giorgos
-		return null;
+		HashSet<String> unity= new HashSet<String>();	
+		Properties configForms = new Properties();
+		String[]  unityTemp;
+		
+		try 
+		{
+			configForms.load(new FileInputStream(path));
+		} 
+		catch (FileNotFoundException e)
+		{	
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	
+		// S_FORMS and F_S_FORMS are termorary because they cannot be tested for now .
+		if (!isFalse) {unityTemp = configForms.getProperty(sFormsLabel).split(";");}
+		else {unityTemp = configForms.getProperty(fsFormsLabel).split(";");}
+
+		
+		for(int i=0; i<unityTemp.length;i++) 
+		{
+			unityTemp[i] = unityTemp[i].trim();
+			unity.add(unityTemp[i]);
+		}
+		return unity;
 	}
 	
 	/**
