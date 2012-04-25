@@ -32,7 +32,8 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
  * @author Simon Suiter
  */
 @SuppressWarnings("serial")
-public class EvaluationApp extends Application implements ItemClickListener, ClickListener, SelectedTabChangeListener
+public class EvaluationApp extends Application implements ItemClickListener, ClickListener, SelectedTabChangeListener,
+		Property.ValueChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	
@@ -44,13 +45,13 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		mainWindow.getContent().setSizeFull();
 		mainWindow.addComponent(view);
 		
-		view.getButtonAnnotate().addListener(this);
-		view.getButtonFileUpload().addListener(this);
-		view.getButtonNew().addListener(this);
-		view.getButtonNext().addListener(this);
-		view.getButtonNext2().addListener(this);
-		view.getTabSheet().addListener(this);
-		view.getTableEvaluation().addListener(this);
+		view.getButtonAnnotate().addListener((ClickListener) this);
+		view.getButtonFileUpload().addListener((ClickListener) this);
+		view.getButtonNew().addListener((ClickListener) this);
+		view.getButtonNext().addListener((ClickListener) this);
+		view.getButtonNext2().addListener((ClickListener) this);
+		view.getTabSheet().addListener((SelectedTabChangeListener) this);
+		view.getTableEvaluation().addListener((Property.ValueChangeListener) this);
 	}
 	
 	/**
@@ -79,20 +80,28 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	}
 	
 	/**
+	 * Listener for choosing an item in listselect.
+	 */
+	public void itemClick(ItemClickEvent event)
+	{
+		
+	}
+	
+	/**
+	 * Listener for selecting a line of a table.
+	 */
+	public void valueChange(ValueChangeEvent event)
+	{
+		// https://vaadin.com/book/-/page/components.table.html
+		
+	}
+	
+	/**
 	 * Listener for changing tabs on tabsheet.
 	 */
 	public void selectedTabChange(SelectedTabChangeEvent event)
 	{
 		TabSheet tabsheet = event.getTabSheet();
 		tabsheet.getTab(tabsheet.getSelectedTab());
-	}
-	
-	/**
-	 * 
-	 */
-	public void itemClick(ItemClickEvent event)
-	{
-		// https://vaadin.com/book/-/page/components.table.html
-		
 	}
 }
