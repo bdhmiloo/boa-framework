@@ -15,12 +15,19 @@
 
 package de.uni_leipzig.informatik.pcai042.boa;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
 /**
  * 
  * @author Duc Huy Bui; Christian Kahmann
  */
 public abstract class Converter
 {
+	private HashMap<String, BigDecimal> conversionStandard;
+	private HashMap<String, BigDecimal> conversionUnit;
 	
 	/**
 	 * 
@@ -30,4 +37,18 @@ public abstract class Converter
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * 
+	 * @param annotation
+	 * @return
+	 */
+	public ArrayList<String> convertUnit(BoaAnnotation annotation)
+	{
+		
+		
+		
+		
+		// null --> placeholder for return
+		return null;
+	}
 }
