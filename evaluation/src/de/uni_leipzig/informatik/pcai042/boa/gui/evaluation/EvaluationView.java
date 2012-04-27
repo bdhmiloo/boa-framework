@@ -24,9 +24,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Upload;
 
 /**
  * 
@@ -49,9 +47,6 @@ public class EvaluationView extends VerticalLayout
 	
 	private Panel panelAnnotation;
 	
-	private Upload buttonFileUpload;
-	
-//	private Button buttonFileUpload;
 	private Button buttonNew;
 	private Button buttonAnnotate;
 	private Button buttonNext; // button 'next' in tab 'Annotation'
@@ -129,48 +124,24 @@ public class EvaluationView extends VerticalLayout
 		tab2Content.setMargin(true);
 		tab2Content.setSizeFull();
 		
-		HorizontalLayout hlay1 = new HorizontalLayout();
-//		this.buttonFileUpload = new Button("Select File");
-		
-		//upload button needed here
-		this.buttonFileUpload = new Upload(null, null);
-		buttonFileUpload.setButtonCaption("Upload file");
-		
-//		http://dev.vaadin.com/svn/doc/book-examples/trunk/src/com/vaadin/book/examples/component/UploadExample.java
-//		http://demo.vaadin.com/sampler#ImmediateUpload
-		
-		
-		
-		
-		 buttonFileUpload.addListener(new Upload.SucceededListener() {
-	            public void uploadSucceeded(SucceededEvent event) {
-	                // This method gets called when the upload finished successfully
-	                status.setValue("Uploading file \"" + event.getFilename()
-	                        + "\" succeeded");
-	            }
-	        });
-		
-//		buttonFileUpload.setImmediate(true);
-//		buttonFileUpload.setDescription("Upload a plain-text file (.txt) to server");
-		this.buttonNew = new Button("New");
-		buttonNew.setImmediate(true);
-		buttonNew.setDescription("Type in a new sentence");
-		hlay1.setSpacing(true);
-		hlay1.setMargin(false);
-		hlay1.addComponent(buttonFileUpload);
-		hlay1.addComponent(buttonNew);
-		tab2Content.addComponent(hlay1);
-		
 		this.textAreaSentence = new TextArea("Sentence:");
 		textAreaSentence.setImmediate(true);
-		textAreaSentence.setRows(2);
+		textAreaSentence.setRows(10);
 		textAreaSentence.setWidth("100%");
 		tab2Content.addComponent(textAreaSentence);
 		
+		HorizontalLayout hlay1 = new HorizontalLayout();
+		this.buttonNew = new Button("New");
+		buttonNew.setImmediate(true);
+		buttonNew.setDescription("Type in new sentences");
 		this.buttonAnnotate = new Button("Annotate");
 		buttonAnnotate.setImmediate(true);
-		buttonAnnotate.setDescription("Annotate the sentence above");
-		tab2Content.addComponent(buttonAnnotate);
+		buttonAnnotate.setDescription("Annotate the sentences above");
+		hlay1.setSpacing(true);
+		hlay1.setMargin(false);
+		hlay1.addComponent(buttonNew);
+		hlay1.addComponent(buttonAnnotate);
+		tab2Content.addComponent(hlay1);
 		
 		this.listSelectAnnotation = new ListSelect("Annotations:");
 		listSelectAnnotation.setImmediate(true);
@@ -243,16 +214,6 @@ public class EvaluationView extends VerticalLayout
 		return tab3Content;
 	}
 	
-	public Upload getButtonFileUpload()
-	{
-		return this.buttonFileUpload;
-	}
-	
-//	public Button getButtonFileUpload()
-//	{
-//		return this.buttonFileUpload;
-//	}
-	
 	public Button getButtonNew()
 	{
 		return this.buttonNew;
@@ -298,7 +259,7 @@ public class EvaluationView extends VerticalLayout
 	 */
 	public void resetComponents()
 	{
-		textAreaSentence.setInputPrompt("Please insert or load a sentence from a plain-text file.");
+		textAreaSentence.setInputPrompt("Please insert a sentence here.");
 		buttonAnnotate.setEnabled(false);
 		
 	}

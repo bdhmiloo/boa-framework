@@ -15,8 +15,6 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
-import java.io.OutputStream;
-
 import com.vaadin.Application;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -29,11 +27,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
-import com.vaadin.ui.Upload.FailedEvent;
-import com.vaadin.ui.Upload.FailedListener;
-import com.vaadin.ui.Upload.Receiver;
-import com.vaadin.ui.Upload.SucceededEvent;
-import com.vaadin.ui.Upload.SucceededListener;
 
 /**
  * 
@@ -41,7 +34,7 @@ import com.vaadin.ui.Upload.SucceededListener;
  */
 @SuppressWarnings("serial")
 public class EvaluationApp extends Application implements ItemClickListener, ClickListener, SelectedTabChangeListener,
-		ValueChangeListener, SucceededListener, FailedListener, Receiver
+		ValueChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	
@@ -54,8 +47,6 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		mainWindow.addComponent(view);
 		
 		view.getButtonAnnotate().addListener((ClickListener) this);
-		// view.getButtonFileUpload().addListener((ClickListener) this);
-//		view.getButtonFileUpload().addListener(()this);
 		view.getButtonNew().addListener((ClickListener) this);
 		view.getButtonNext().addListener((ClickListener) this);
 		view.getButtonNext2().addListener((ClickListener) this);
@@ -73,12 +64,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		if (button == view.getButtonAnnotate())
 		{
 			
-		}
-		// else if (button == view.getButtonFileUpload())
-		// {
-		//
-		// }
-		else if (button == view.getButtonNew())
+		} else if (button == view.getButtonNew())
 		{
 			
 		} else if (button == view.getButtonNext())
@@ -114,32 +100,5 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	{
 		TabSheet tabsheet = event.getTabSheet();
 		tabsheet.getTab(tabsheet.getSelectedTab());
-	}
-
-	/**
-	 * 
-	 */
-	public OutputStream receiveUpload(String filename, String mimeType)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * 
-	 */
-	public void uploadFailed(FailedEvent event)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	 * 
-	 */
-	public void uploadSucceeded(SucceededEvent event)
-	{
-		// TODO Auto-generated method stub
-		
 	}
 }
