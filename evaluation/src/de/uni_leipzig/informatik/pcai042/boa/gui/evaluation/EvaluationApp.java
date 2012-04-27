@@ -15,10 +15,13 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
+import java.io.OutputStream;
+
 import com.vaadin.Application;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.*;
@@ -26,6 +29,11 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+import com.vaadin.ui.Upload.FailedEvent;
+import com.vaadin.ui.Upload.FailedListener;
+import com.vaadin.ui.Upload.Receiver;
+import com.vaadin.ui.Upload.SucceededEvent;
+import com.vaadin.ui.Upload.SucceededListener;
 
 /**
  * 
@@ -33,7 +41,7 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
  */
 @SuppressWarnings("serial")
 public class EvaluationApp extends Application implements ItemClickListener, ClickListener, SelectedTabChangeListener,
-		Property.ValueChangeListener
+		ValueChangeListener, SucceededListener, FailedListener, Receiver
 {
 	private EvaluationView view = new EvaluationView();
 	
@@ -64,11 +72,11 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		if (button == view.getButtonAnnotate())
 		{
 			
-		} 
-//		else if (button == view.getButtonFileUpload())
-//		{
-//			
-//		} 
+		}
+		// else if (button == view.getButtonFileUpload())
+		// {
+		//
+		// }
 		else if (button == view.getButtonNew())
 		{
 			
@@ -105,5 +113,32 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	{
 		TabSheet tabsheet = event.getTabSheet();
 		tabsheet.getTab(tabsheet.getSelectedTab());
+	}
+
+	/**
+	 * 
+	 */
+	public OutputStream receiveUpload(String filename, String mimeType)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 
+	 */
+	public void uploadFailed(FailedEvent event)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * 
+	 */
+	public void uploadSucceeded(SucceededEvent event)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
