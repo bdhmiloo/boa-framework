@@ -55,6 +55,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		
 		view.getButtonAnnotate().addListener((ClickListener) this);
 		// view.getButtonFileUpload().addListener((ClickListener) this);
+//		view.getButtonFileUpload().addListener(()this);
 		view.getButtonNew().addListener((ClickListener) this);
 		view.getButtonNext().addListener((ClickListener) this);
 		view.getButtonNext2().addListener((ClickListener) this);
