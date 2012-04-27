@@ -15,6 +15,7 @@
 
 package de.uni_leipzig.informatik.pcai042.boa;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -22,6 +23,25 @@ import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 
 public abstract class SearchAlgorithm
 {
+	protected Set<String> surForms;
+	protected Type annoType;
+	
+	public SearchAlgorithm(){}
+	
+	public SearchAlgorithm(Set<String> surfaceForms, Type annoType)
+	{
+		try
+		{
+			this.annoType = annoType;
+			surForms = new HashSet<String>();
+			surForms.addAll(surfaceForms);
+		}
+		catch(NullPointerException e)
+		{
+			//do sth
+		}
+	}
+	
 	/**
 	 * Searches sentence for occurrences of certain patterns.
 	 * The nature of this patterns is defined in each subclass.
@@ -31,7 +51,7 @@ public abstract class SearchAlgorithm
 	 * @param annoType
 	 */
 	//subclasses will have to overwrite this
-	public void search(BoaSentence sentence, Set<String> surForms, Type annoType)
+	public void search(BoaSentence sentence)
 	{
 		return;
 	}
@@ -112,5 +132,17 @@ public abstract class SearchAlgorithm
 		}
 		
 		return false;
+	}
+
+	public void setSurForms(Set<String> surfaceForms)
+	{
+		surForms = new HashSet<String>();
+		surForms.addAll(surfaceForms);
+	}
+
+	public void setAnnoType(Type annoType2)
+	{
+		annoType = annoType2;
+		//System.out.println(annoType.toString());
 	}
 }

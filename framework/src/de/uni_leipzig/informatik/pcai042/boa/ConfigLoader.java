@@ -36,18 +36,15 @@ public class ConfigLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 	
-	private static final String sFormsLabel = "S_FORMS";
-	private static final String fsFormsLabel = "F_S_FORMS";
+	private static final File sForms = new File("sForms.properties");
 	
-	/*
-	 * Function to return the String representation of unit surface forms from a text file.
-	 * The second variable isFalse tells the class whether the method is called by the function
-	 * searchUnit in LabelSearcher (isFalse = false) or the searchFalseUnit function which is supposed
-	 * to find defective occurrences	public Set<String> openConfigSurfaceForms(File path, boolean isFalse)
-     * So either the first or the second line of the configFile will be of interest. 
+	/**
+	 * 
+	 * @param label name of the line that the surface forms are listed (in the .properties file)
+	 * @return Set of Strings
 	 */
 	
-	public Set<String> openConfigSurfaceForms(File path, boolean isFalse)
+	public Set<String> openConfigSurfaceForms(String label)
 	{
 		HashSet<String> unity= new HashSet<String>();	
 		Properties configForms = new Properties();
@@ -55,7 +52,7 @@ public class ConfigLoader
 		
 		try 
 		{
-			configForms.load(new FileInputStream(path));
+			configForms.load(new FileInputStream(sForms));
 		} 
 		catch (FileNotFoundException e)
 		{	
@@ -67,9 +64,7 @@ public class ConfigLoader
 		}
 	
 		// S_FORMS and F_S_FORMS are termorary because they cannot be tested for now .
-		if (!isFalse) {unityTemp = configForms.getProperty(sFormsLabel).split(";");}
-		else {unityTemp = configForms.getProperty(fsFormsLabel).split(";");}
-
+		unityTemp = configForms.getProperty(label).split(";");
 		
 		for(int i=0; i<unityTemp.length;i++) 
 		{

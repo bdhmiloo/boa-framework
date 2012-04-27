@@ -15,52 +15,38 @@
 
 package de.uni_leipzig.informatik.pcai042.boa;
 
-import java.io.File;
 import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 
-public abstract class LabelSearcher
+public class LabelSearcher
 {
 	private static Set<String> surfaceForms;
-	private static Set<String> falseSurfaceForms;
 	private static Type annoType;
-	protected static SearchAlgorithm algoSimple;
-	protected static SearchAlgorithm algoHard;
+	private static SearchAlgorithm algo;
 	
-	public LabelSearcher(Type annoType, String configPath)
+	public LabelSearcher(Type annoType, String sForms, SearchAlgorithm algorithm)
 	{
 		try
 		{
 			LabelSearcher.annoType = annoType;
+			surfaceForms  = new ConfigLoader().openConfigSurfaceForms(sForms);
 			
-			surfaceForms = new ConfigLoader().openConfigSurfaceForms(new File(configPath), false);
-			falseSurfaceForms = new ConfigLoader().openConfigSurfaceForms(new File(configPath), true);
+			algo = algorithm.getClass().newInstance();
+			algo.setSurForms(surfaceForms);
+			algo.setAnnoType(annoType);
 		}
 		catch(Exception e)
 		{
 			//do sth
 		}
 	}
-	
+
 	public void searchUnit(BoaSentence sentence)
 	{
 		try
 		{
-			algoSimple.search(sentence, surfaceForms, annoType);
-		}
-		catch(Exception e)
-		{
-			//do sth
-		}
-		
-		return;
-	}
-	public void searchFalseUnit(BoaSentence sentence)
-	{
-		try
-		{
-			algoHard.search(sentence, falseSurfaceForms, annoType);
+			algo.search(sentence);
 		}
 		catch(Exception e)
 		{

@@ -27,9 +27,18 @@ import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
  */
 
 public class NaiveAlgorithm extends SearchAlgorithm
-{
-	public void search(BoaSentence sentence, Set<String> surForms, Type annoType)
+{	
+	public NaiveAlgorithm(){}
+	
+	public NaiveAlgorithm(Set<String> surfaceForms, Type annoType)
 	{
+		super(surfaceForms, annoType);
+		// TODO Auto-generated constructor stub
+	}
+
+	public void search(BoaSentence sentence)
+	{	
+		//System.out.println(annoType.toString());
 		String currentToken = "";
 		String match, suffix, prefix;
 		int position;
@@ -84,7 +93,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 							
 							//this is for tests only
-							//System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
+							System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
 					}
 					//else check if match is the prefix of any surface form
 					else

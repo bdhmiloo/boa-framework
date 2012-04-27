@@ -25,11 +25,8 @@ import nu.xom.ValidityException;
 import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 import de.uni_leipzig.informatik.pcai042.boa.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.LabelSearcher;
-import de.uni_leipzig.informatik.pcai042.boa.LabelSearcherLinearMeasure;
-import de.uni_leipzig.informatik.pcai042.boa.LabelSearcherTemperature;
-import de.uni_leipzig.informatik.pcai042.boa.LabelSearcherWeight;
 import de.uni_leipzig.informatik.pcai042.boa.NaiveAlgorithm;
-import de.uni_leipzig.informatik.pcai042.boa.SearchAlgorithm;
+import de.uni_leipzig.informatik.pcai042.boa.SearchThread;
 import de.uni_leipzig.informatik.pcai042.boa.SentenceLoader;
 
 public class TestClass
@@ -38,7 +35,6 @@ public class TestClass
 	{
 		int count = 0;
 		ArrayList<BoaSentence> sentences = new ArrayList<BoaSentence>();
-		BoaSentence testSentence;
 		SentenceLoader sentenceLoader = null;
 		try
 		{
@@ -58,31 +54,40 @@ public class TestClass
 		}
 		sentences = sentenceLoader.getSentences();
 		
-		//create Algo
-		SearchAlgorithm testAlgo = new NaiveAlgorithm();
+		try
+		{
+			//create Searchers
+			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, "LINEAR_MEASURE_N", new NaiveAlgorithm());
+			SearchThread thread1 = new SearchThread(lsLinMeasure, sentences);
+			thread1.start();
+			
+			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT,"WEIGHT_N", new NaiveAlgorithm());
+			SearchThread thread2 = new SearchThread(lsWeight, sentences);
+			thread2.start();
+			
+			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, "TEMPERATURE_N", new NaiveAlgorithm());
+			SearchThread thread3 = new SearchThread(lsTemp, sentences);
+			thread3.start();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-		//create Searchers
-		LabelSearcher lsLinMeasure = new LabelSearcherLinearMeasure(Type.LINEAR_MEASURE,"SF_LINEAR_MEASURE.properties");
-		LabelSearcher lsWeight = new LabelSearcherWeight(Type.WEIGHT,"SF_WEIGHT.properties");
-		LabelSearcher lsTemp = new LabelSearcherTemperature(Type.TEMPERATURE, "SF_TEMPERATURE.properties");
+		///while(thread1.isAlive()&&thread2.isAlive()&&thread3.isAlive())
+		//{
+			//wait
+		//}
 		
-		Iterator<BoaSentence> it = sentences.iterator();
+		/*Iterator<BoaSentence> it = sentences.iterator();
 		
 		while(it.hasNext())
 		{
 			count++;
 			
-			testSentence = it.next();
+			System.out.println("\nSentence " + count + "\n");
+			System.out.println(it.next().getAnnotations().toString());
 			
-			//System.out.println(testString);
-			
-			System.out.println("\nSentence " + count + "\n" + testSentence);
-		
-			//lsLinMeasure.searchUnit(testSentence);
-			lsWeight.searchUnit(testSentence);
-			//lsTemp.searchUnit(testSentence);
-			System.out.println(testSentence.getAnnotations().toString());
-			
-		}
+		}*/
 	}
 }

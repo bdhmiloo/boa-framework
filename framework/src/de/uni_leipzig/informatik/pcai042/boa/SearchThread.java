@@ -1,5 +1,5 @@
 /*
- * LabelSearcherWeight.java
+ * SearchThread.java
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,15 +15,42 @@
 
 package de.uni_leipzig.informatik.pcai042.boa;
 
-import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-public class LabelSearcherLinearMeasure extends LabelSearcher
+public class SearchThread extends Thread
 {
-	public LabelSearcherLinearMeasure(Type annoType, String configPath)
+	private ArrayList<BoaSentence> sentences;
+	private LabelSearcher searcher;
+	
+	public SearchThread(LabelSearcher ls, ArrayList<BoaSentence> sentences)
 	{
-		super(annoType, configPath);
-		
-		LabelSearcherLinearMeasure.algoSimple = new NaiveAlgorithm();
-		LabelSearcherLinearMeasure.algoHard = new NaiveAlgorithm();
+		try
+		{
+			this.sentences = sentences;
+			this.searcher = ls;
+		}
+		catch(NullPointerException e)
+		{
+			//do sth.
+		}
 	}
+	
+	public void run()
+	{
+		try
+		{
+			Iterator<BoaSentence> it = sentences.iterator();
+			
+			while(it.hasNext())
+			{
+				searcher.searchUnit(it.next());
+			}
+		}
+		catch(NullPointerException e)
+		{
+			//do sth
+		}
+	}
+	
 }
