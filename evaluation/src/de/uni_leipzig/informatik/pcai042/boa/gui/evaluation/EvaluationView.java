@@ -243,6 +243,11 @@ public class EvaluationView extends VerticalLayout
 		return tab3Content;
 	}
 	
+	public Upload getButtonFileUpload()
+	{
+		return this.buttonFileUpload;
+	}
+	
 //	public Button getButtonFileUpload()
 //	{
 //		return this.buttonFileUpload;
