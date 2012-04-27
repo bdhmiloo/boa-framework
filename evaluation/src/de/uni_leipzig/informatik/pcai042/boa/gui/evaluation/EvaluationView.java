@@ -53,8 +53,6 @@ public class EvaluationView extends VerticalLayout
 	private Button buttonNext2; // button 'next' in tab 'Evaluation'
 	private Button buttonEnd;
 	
-	Label status = new Label("test");
-	
 	/**
 	 * Constructor initializes View.
 	 */
@@ -126,7 +124,7 @@ public class EvaluationView extends VerticalLayout
 		
 		this.textAreaSentence = new TextArea("Sentence:");
 		textAreaSentence.setImmediate(true);
-		textAreaSentence.setRows(10);
+		textAreaSentence.setRows(7);
 		textAreaSentence.setWidth("100%");
 		tab2Content.addComponent(textAreaSentence);
 		
@@ -244,10 +242,10 @@ public class EvaluationView extends VerticalLayout
 		return this.buttonNext2;
 	}
 	
-	public TabSheet getTabSheet()
-	{
-		return this.tabsheet;
-	}
+//	public TabSheet getTabSheet()
+//	{
+//		return this.tabsheet;
+//	}
 	
 	public Table getTableEvaluation()
 	{
@@ -259,6 +257,7 @@ public class EvaluationView extends VerticalLayout
 	 */
 	public void resetComponents()
 	{
+		textAreaSentence.setValue("");
 		textAreaSentence.setInputPrompt("Please insert a sentence here.");
 		buttonAnnotate.setEnabled(false);
 		
