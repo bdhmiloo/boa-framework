@@ -25,16 +25,15 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+//import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+//import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 
 /**
  * 
  * @author Simon Suiter
  */
 @SuppressWarnings("serial")
-public class EvaluationApp extends Application implements ItemClickListener, ClickListener, SelectedTabChangeListener,
-		ValueChangeListener
+public class EvaluationApp extends Application implements ItemClickListener, ClickListener, /*SelectedTabChangeListener,*/ ValueChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	
@@ -50,7 +49,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		view.getButtonNew().addListener((ClickListener) this);
 		view.getButtonNext().addListener((ClickListener) this);
 		view.getButtonNext2().addListener((ClickListener) this);
-		view.getTabSheet().addListener((SelectedTabChangeListener) this);
+//		view.getTabSheet().addListener((SelectedTabChangeListener) this);
 		view.getTableEvaluation().addListener((Property.ValueChangeListener) this);
 	}
 	
@@ -66,7 +65,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 			
 		} else if (button == view.getButtonNew())
 		{
-			
+			view.resetComponents();
 		} else if (button == view.getButtonNext())
 		{
 			
@@ -93,12 +92,12 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		
 	}
 	
-	/**
-	 * Listener for changing tabs on tabsheet.
-	 */
-	public void selectedTabChange(SelectedTabChangeEvent event)
-	{
-		TabSheet tabsheet = event.getTabSheet();
-		tabsheet.getTab(tabsheet.getSelectedTab());
-	}
+//	/**
+//	 * Listener for changing tabs on tabsheet.
+//	 */
+//	public void selectedTabChange(SelectedTabChangeEvent event)
+//	{
+//		TabSheet tabsheet = event.getTabSheet();
+//		tabsheet.getTab(tabsheet.getSelectedTab());
+//	}
 }
