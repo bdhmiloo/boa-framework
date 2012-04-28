@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 /**
  * 
  * @author Duc Huy Bui; Christian Kahmann
@@ -31,10 +30,21 @@ public abstract class Converter
 	
 	/**
 	 * 
+	 * 
+	 * @param token
+	 * @param number
+	 */
+	public Converter(String token, BigDecimal number)
+	{
+		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * 
 	 */
 	public Converter()
 	{
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	/**
@@ -45,10 +55,15 @@ public abstract class Converter
 	public ArrayList<String> convertUnit(BoaAnnotation annotation)
 	{
 		
-		
-		
-		
 		// null --> placeholder for return
 		return null;
+	}
+	
+	/**
+	 * Test
+	 */
+	public static void main(String arg[])
+	{
+		
 	}
 }
