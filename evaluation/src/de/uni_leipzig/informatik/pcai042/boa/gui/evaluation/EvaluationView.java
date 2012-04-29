@@ -15,9 +15,8 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
-import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation;
-
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -27,6 +26,8 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+
+import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation;
 
 /**
  * 
@@ -172,7 +173,7 @@ public class EvaluationView extends VerticalLayout
 	}
 	
 	/**
-	 * Add an item to list select Annotation.
+	 * Add an item to listselect Annotation.
 	 * 
 	 * @param annotation
 	 */
@@ -186,7 +187,7 @@ public class EvaluationView extends VerticalLayout
 	 * 
 	 * @param annotation
 	 */
-	public void addItemToPanelAnnotation(BoaAnnotation annotation)
+	public void addItemToPanelAnnotation(Component annotation)
 	{
 		panelAnnotation.addComponent(annotation);
 	}
