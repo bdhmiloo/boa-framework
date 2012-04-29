@@ -15,6 +15,8 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
+import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation;
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -32,7 +34,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 @SuppressWarnings("serial")
 public class EvaluationView extends VerticalLayout
-{
+{	
 	private TabSheet tabsheet;
 	
 	private Table tableEvaluation;
@@ -170,6 +172,26 @@ public class EvaluationView extends VerticalLayout
 	}
 	
 	/**
+	 * Add an item to list select Annotation.
+	 * 
+	 * @param annotation
+	 */
+	public void addItemToListSelectAnnotation(BoaAnnotation annotation)
+	{
+		listSelectAnnotation.addItem(annotation);
+	}
+	
+	/**
+	 * Add an item to panel Annotation.
+	 * 
+	 * @param annotation
+	 */
+	public void addItemToPanelAnnotation(BoaAnnotation annotation)
+	{
+		panelAnnotation.addComponent(annotation);
+	}
+	
+	/**
 	 * Build content 'evaluation process' of tab 3.
 	 * 
 	 * @return content of third tab
@@ -199,8 +221,8 @@ public class EvaluationView extends VerticalLayout
 		for (int i = 1; i <= 10; i++)
 		{
 			// last "new Integer()" represents position of object in table!
-			tableEvaluation.addItem(new Object[] { new Integer(1234+i), "Bazinga!", new Double(0.2+i), new Double(5+i),
-					new Double(5.6789-i) }, new Integer(i));
+			tableEvaluation.addItem(new Object[] { new Integer(1234 + i), "Bazinga!", new Double(0.2 + i),
+					new Double(5 + i), new Double(5.6789 - i) }, new Integer(i));
 		}
 		
 		this.buttonNext2 = new Button("Next");
@@ -210,6 +232,23 @@ public class EvaluationView extends VerticalLayout
 		// printout needed here
 		
 		return tab3Content;
+	}
+	
+	/**
+	 * Add an item to table Evaluation.
+	 * 
+	 * @param id
+	 * @param sentence
+	 * @param precision
+	 * @param recall
+	 * @param fScore
+	 * @param line
+	 */
+	public void addItemToTableEvaluation(Integer id, String sentence, Double precision, Double recall, Double fScore,
+			Integer line)
+	{
+		tableEvaluation.addItem(new Object[] { new Integer(id), sentence, new Double(precision), new Double(recall),
+				new Double(fScore) }, new Integer(line));
 	}
 	
 	public Button getButtonNew()
@@ -242,10 +281,10 @@ public class EvaluationView extends VerticalLayout
 		return this.buttonNext2;
 	}
 	
-//	public TabSheet getTabSheet()
-//	{
-//		return this.tabsheet;
-//	}
+	// public TabSheet getTabSheet()
+	// {
+	// return this.tabsheet;
+	// }
 	
 	public Table getTableEvaluation()
 	{
@@ -260,6 +299,6 @@ public class EvaluationView extends VerticalLayout
 		textAreaSentence.setValue("");
 		textAreaSentence.setInputPrompt("Please insert a sentence here.");
 		buttonAnnotate.setEnabled(false);
-		
+		listSelectAnnotation.removeAllItems();
 	}
 }
