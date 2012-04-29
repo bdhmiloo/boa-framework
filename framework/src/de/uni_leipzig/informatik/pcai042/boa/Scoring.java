@@ -30,7 +30,7 @@ public class Scoring
 {
 		SentenceLoader s1, s2;
 		double kp,fp,countGoldAnno;
-		int help;
+		int help, help2, t1, t2;
 		double recall,precision,fscore;
 		
 		/**
@@ -41,6 +41,8 @@ public class Scoring
 		{
 		s1 = null;
 		s2 = null; 
+		t1 =0;
+		t2 =0;
 		kp=0;
 		fp=0;
 		countGoldAnno=0;
@@ -87,26 +89,92 @@ public class Scoring
  * calculation kp, number of right annotations
  * @return kp
  */
-public double calculateKp()
+public void calculate()
 { 
 	
-		for(int i=0;i<s2.getSentenceCount();i++) 
-		{
-			for(int j=0;j<s2.getSentence(i).getAnnotations().size();j++)
+	for(int i=0;i<s1.getSentenceCount();i++) 
+	{
+		
+		for(int j=0;j<s2.getSentence(i).getAnnotations().size();j++)
+		{	
+			for(int k=0;k<s1.getSentence(i).getAnnotations().size();k++)
 			{	
-				for(int k=0;k<s1.getSentence(i).getAnnotations().size();k++)
-				{	
-					if(s2.getSentence(i).getAnnotations().get(j).toString().equals(s1.getSentence(i).getAnnotations().get(k).toString()))
-					{
-						kp++;
+				if(s2.getSentence(i).getAnnotations().get(j).toString().equals(s1.getSentence(i).getAnnotations().get(k).toString()))
+				t1=1;
+				
+			}	
+			help2=0;
+			for(int e=0;e<s2.getSentence(i).getAnnotations().get(j).getTokens().size();e++)
+			{	
+				for(int d=0;d<s2.getSentence(i).getTokens().size();d++)
+				{		
+					if(s2.getSentence(i).getAnnotations().get(j).getTokens().get(e)==s2.getSentence(i).getTokens().get(d))
+					{	//System.out.println("i:"+i+"j:"+j+"e:"+e+"d:"+d);	
+						for(int w=0;w<s1.getSentence(i).getAnnotations().size();w++)
+						{																			
+							for(int z=0;z<s1.getSentence(i).getAnnotations().get(w).getTokens().size();z++)
+							{	
+								for(int y=0;y<s1.getSentence(i).getTokens().size();y++)
+								{		
+									if(s1.getSentence(i).getAnnotations().get(w).getTokens().get(z)==s1.getSentence(i).getTokens().get(y))
+									{
+										if(e==z&&d==y)
+											help2++;
+									}
+								}
+							}
+						}	
 					}
-					
-				}	
-			}		 	
+				}
+						
+			}	
+					if(help2==s2.getSentence(i).getAnnotations().get(j).getTokens().size())
+						t2=1;
+					if(t1==1&&t2==1)
+						kp++;
+					setKp(kp);
 		}
-		return kp; 
+				
+		for(int a=0;a<s2.getSentence(i).getAnnotations().size();a++)
+		{
+				
+			help=0;
+			for(int c=0;c<s1.getSentence(i).getAnnotations().size();c++)
+			{
+				if(!(s2.getSentence(i).getAnnotations().get(a).toString().equals(s1.getSentence(i).getAnnotations().get(c).toString())))
+				{
+					help++;
+				}
+									
+			}
+			if(help==s1.getSentence(i).getAnnotations().size())
+			{
+				fp++;
+			}
+			setFp(fp);
+			
+		}
+	}
 }
-	
+
+/**
+ * 
+ * @param kp2
+ */
+private void setKp(double kp2)
+{
+	this.kp = kp2; 
+}
+
+/**
+ * 
+ * @return
+ */
+private double getKp()
+{
+	return kp; 
+}
+
 /**
  * Count all Annotations in goldstandard.xml
  * @return number of Annotations in goldstandard.xml
@@ -124,35 +192,16 @@ public double calculateGoldAnno()
  * Count all wrong Annotations made in process
  * @return number of all wrong made annotations 
  */
-public double calculateFp()
+public void setFp(double fp2)
 {
-	kp =0; 
-		//calculate fp 
-		for(int b=0;b<s2.getSentenceCount();b++)
-		{	
-			for(int a=0;a<s2.getSentence(b).getAnnotations().size();a++)
-			{
-					
-				help=0;
-				for(int c=0;c<s1.getSentence(b).getAnnotations().size();c++)
-				{
-					if(!(s2.getSentence(b).getAnnotations().get(a).toString().equals(s1.getSentence(b).getAnnotations().get(c).toString())))
-					{
-						help++;
-					}
-										
-				}
-				if(help==s1.getSentence(b).getAnnotations().size())
-				{
-					fp++;
-				}
-				
-			}
-			
-		}
-		return fp; 
+	this.fp = fp2; 
 }
-		
+
+public double getFp()
+{
+	return fp; 
+}
+	
 
 
 /**
@@ -191,9 +240,10 @@ public static  void main(String args[])
 				
 		Scoring score = new Scoring("testResultOfAnnotation.xml");
 		
-		score.fp = score.calculateFp();
-		score.precision = score.setPrecision(score.calculateKp(), score.calculateFp());
-		score.recall = score.setRecall(score.calculateKp(), score.calculateGoldAnno());
+		score.calculate();
+		score.fp = score.getFp();
+		score.precision = score.setPrecision(score.getKp(), score.getFp());
+		score.recall = score.setRecall(score.getKp(), score.calculateGoldAnno());
 		score.setFscore(score.recall, score.precision);
 		
 		System.out.println(score.kp);
