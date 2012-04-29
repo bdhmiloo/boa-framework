@@ -48,7 +48,7 @@ public class Scoring
 		//Call for SentenceLoader with Exception Handling
 		try
 		{
-			s1 = new SentenceLoader(new File(FileString));
+			s1 = new SentenceLoader(new File("goldstandard.xml"));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -66,7 +66,7 @@ public class Scoring
 		//Call for SentenceLoader with Exception Handling
 		try
 		{
-			s2 = new SentenceLoader(new File("goldstandard.xml"));
+			s2 = new SentenceLoader(new File(FileString));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -126,6 +126,7 @@ public double calculateGoldAnno()
  */
 public double calculateFp()
 {
+	kp =0; 
 		//calculate fp 
 		for(int b=0;b<s2.getSentenceCount();b++)
 		{	
@@ -190,8 +191,7 @@ public static  void main(String args[])
 				
 		Scoring score = new Scoring("testResultOfAnnotation.xml");
 		
-		score.kp =score.calculateKp();
-		score.countGoldAnno = score.calculateGoldAnno();
+		score.fp = score.calculateFp();
 		score.precision = score.setPrecision(score.calculateKp(), score.calculateFp());
 		score.recall = score.setRecall(score.calculateKp(), score.calculateGoldAnno());
 		score.setFscore(score.recall, score.precision);
