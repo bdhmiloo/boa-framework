@@ -22,12 +22,12 @@ import java.util.Iterator;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
-import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
-import de.uni_leipzig.informatik.pcai042.boa.BoaSentence;
-import de.uni_leipzig.informatik.pcai042.boa.LabelSearcher;
-import de.uni_leipzig.informatik.pcai042.boa.NaiveAlgorithm;
-import de.uni_leipzig.informatik.pcai042.boa.SearchThread;
-import de.uni_leipzig.informatik.pcai042.boa.SentenceLoader;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.LabelSearcher;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.NaiveAlgorithm;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchThread;
 
 public class TestClass
 {	

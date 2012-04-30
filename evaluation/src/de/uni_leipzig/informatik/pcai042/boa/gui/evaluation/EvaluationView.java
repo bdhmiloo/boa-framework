@@ -27,7 +27,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 
-import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
 /**
  * 

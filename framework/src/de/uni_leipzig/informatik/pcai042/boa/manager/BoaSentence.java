@@ -13,11 +13,12 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.uni_leipzig.informatik.pcai042.boa;
+package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 
 import nu.xom.Document;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
