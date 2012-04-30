@@ -30,11 +30,12 @@ public class LabelSearcher
 		try
 		{
 			LabelSearcher.annoType = annoType;
-			surfaceForms  = new ConfigLoader().openConfigSurfaceForms(sForms);
+		    surfaceForms  = new ConfigLoader().openConfigSurfaceForms(sForms);
 			
 			algo = algorithm.getClass().newInstance();
 			algo.setSurForms(surfaceForms);
 			algo.setAnnoType(annoType);
+			System.out.println(algo + " " + annoType.toString());
 		}
 		catch(Exception e)
 		{

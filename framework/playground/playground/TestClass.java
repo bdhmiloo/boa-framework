@@ -32,10 +32,12 @@ import de.uni_leipzig.informatik.pcai042.boa.SentenceLoader;
 public class TestClass
 {	
 	public static void main(String[] args)
-	{
+	{		
 		int count = 0;
 		ArrayList<BoaSentence> sentences = new ArrayList<BoaSentence>();
 		SentenceLoader sentenceLoader = null;
+		BoaSentence nextSentence;
+		
 		try
 		{
 			sentenceLoader = new SentenceLoader(new File("goldstandard.xml"));
@@ -54,40 +56,44 @@ public class TestClass
 		}
 		sentences = sentenceLoader.getSentences();
 		
+		SearchThread thread1, thread2, thread3;
+		
 		try
 		{
 			//create Searchers
 			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, "LINEAR_MEASURE_N", new NaiveAlgorithm());
-			SearchThread thread1 = new SearchThread(lsLinMeasure, sentences);
+			thread1 = new SearchThread(lsLinMeasure, sentences);
 			thread1.start();
 			
+			/*
 			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT,"WEIGHT_N", new NaiveAlgorithm());
-			SearchThread thread2 = new SearchThread(lsWeight, sentences);
+			thread2 = new SearchThread(lsWeight, sentences);
 			thread2.start();
 			
 			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, "TEMPERATURE_N", new NaiveAlgorithm());
-			SearchThread thread3 = new SearchThread(lsTemp, sentences);
-			thread3.start();
+			thread3 = new SearchThread(lsTemp, sentences);
+			thread3.start();*/
+			
+			while(thread1.isAlive()/*&&thread2.isAlive()&&thread3.isAlive()*/)
+			{
+				//wait
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		
-		///while(thread1.isAlive()&&thread2.isAlive()&&thread3.isAlive())
-		//{
-			//wait
-		//}
-		
-		/*Iterator<BoaSentence> it = sentences.iterator();
+		Iterator<BoaSentence> it = sentences.iterator();
 		
 		while(it.hasNext())
 		{
 			count++;
+			nextSentence = it.next();
 			
 			System.out.println("\nSentence " + count + "\n");
-			System.out.println(it.next().getAnnotations().toString());
+			System.out.println(nextSentence.getSentence() + "\n" + nextSentence.getAnnotations().toString());
 			
-		}*/
+		}
 	}
 }
