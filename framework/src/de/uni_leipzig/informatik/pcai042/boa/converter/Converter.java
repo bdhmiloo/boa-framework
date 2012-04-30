@@ -13,11 +13,13 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.uni_leipzig.informatik.pcai042.boa;
+package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
 /**
  * 

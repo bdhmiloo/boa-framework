@@ -13,10 +13,12 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.uni_leipzig.informatik.pcai042.boa;
+package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 
 public class SearchThread extends Thread
 {

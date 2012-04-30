@@ -13,13 +13,14 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.uni_leipzig.informatik.pcai042.boa;
+package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
 public abstract class SearchAlgorithm
 {
