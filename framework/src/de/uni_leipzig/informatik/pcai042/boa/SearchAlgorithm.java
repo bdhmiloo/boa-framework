@@ -47,8 +47,6 @@ public abstract class SearchAlgorithm
 	 * The nature of this patterns is defined in each subclass.
 	 * On success objects of type BoaAnnotation will be added to sentence.
 	 * @param sentence
-	 * @param surForms
-	 * @param annoType
 	 */
 	//subclasses will have to overwrite this
 	public void search(BoaSentence sentence)
@@ -143,6 +141,5 @@ public abstract class SearchAlgorithm
 	public void setAnnoType(Type annoType2)
 	{
 		annoType = annoType2;
-		//System.out.println(annoType.toString());
 	}
 }
