@@ -16,6 +16,7 @@
 package de.uni_leipzig.informatik.pcai042.boa;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 
@@ -28,7 +29,12 @@ import de.uni_leipzig.informatik.pcai042.boa.BoaAnnotation.Type;
 
 public class NaiveAlgorithm extends SearchAlgorithm
 {	
-	public NaiveAlgorithm(){}
+	private Set<String> mathSymbols;
+	
+	public NaiveAlgorithm()
+	{
+		mathSymbols = new ConfigLoader().openConfigSurfaceForms("MATH");
+	}
 	
 	public NaiveAlgorithm(Set<String> surfaceForms, Type annoType)
 	{
@@ -40,7 +46,8 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	{	
 		//System.out.println(annoType.toString());
 		String currentToken = "";
-		String match, suffix, prefix;
+		String match, suffix, prefix, part;
+		String[] parts;
 		int position;
 		Boolean replaced = false;	//need this when a token representing a number is replaced with another token representing a number
 									//replacement isn't actually needed but makes algorithm faster
@@ -69,10 +76,11 @@ public class NaiveAlgorithm extends SearchAlgorithm
 				while(findMatch.hasNext())
 				{
 					match = findMatch.next();
+					
 					//if it is a number there wont be any Annotations based on currentToken as
 					//any further occurring units will be related to match instead
 					if(this.checkIfNumber(match))
-					{
+					{	
 						while(!currentToken.equals(match))
 						{
 							if(!tokenIt.hasNext()) break;
@@ -81,25 +89,65 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						}
 						break;
 					}
+					//else check if match is a mathematical symbol
+					else if(mathSymbols.contains(match))
+					{	
+						StringBuilder combinedNumber = new StringBuilder();
+						combinedNumber.append(currentToken);
+						combinedNumber.append(";" + match);
+						
+						while(findMatch.hasNext())
+						{
+							part = findMatch.next();
+							//System.out.println("CHECKING: " + part);
+							if(checkIfNumber(part) || mathSymbols.contains(part))
+							{
+								combinedNumber.append(";" + part);
+								//System.out.println(" true");
+							}
+							else
+							{
+								match = part;
+								while(!tokenIt.next().equals(match));
+								
+								currentToken = combinedNumber.toString();
+								//System.out.println(" false");
+								//System.out.println(currentToken);
+								break;
+							}
+						}
+					}
 					
 					//checks if match is equal to any known surface form of the units we look for
-					if(surForms.contains(match))
+					if(surForms.contains(match.toLowerCase()))
 					{
 							//create Annotation
 							ArrayList<String> annoTokens = new ArrayList<String>();
-							annoTokens.add(currentToken);
+							parts = currentToken.split(";");
+							
+							for(int i = 0; i< parts.length; i++)
+							{
+								annoTokens.add(parts[i]);	
+							}
+							
 							annoTokens.add(match);
 							
 							sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 							
 							//this is for tests only
-							System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
+							//System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
 					}
 					//else check if match is the prefix of any surface form
 					else
 					{
-						ArrayList<String> annoTokens = new ArrayList<String>();
-						annoTokens.add(currentToken);
+						ArrayList<String> annoTokens = new ArrayList<String>();	
+						parts = currentToken.split(";");
+						
+						for(int i = 0; i< parts.length; i++)
+						{
+							annoTokens.add(parts[i]);	
+						}
+						
 						annoTokens.add(match);
 						
 						StringBuilder stringBuilder = new StringBuilder();
@@ -113,7 +161,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							annoTokens.add(suffix);
 							stringBuilder.append(suffix);
 							
-							if(surForms.contains(stringBuilder.toString()))
+							if(surForms.contains(stringBuilder.toString().toLowerCase()))
 							{
 								//create Annotation
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
@@ -134,7 +182,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					prefix = currentToken.substring(0, position-1);
 					suffix = currentToken.substring(position-1);
 					
-					if(surForms.contains(suffix))
+					if(surForms.contains(suffix.toLowerCase()))
 					{
 						//create Annotation
 						ArrayList<String> annoTokens = new ArrayList<String>();

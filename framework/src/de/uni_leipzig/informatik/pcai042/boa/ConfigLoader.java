@@ -68,7 +68,8 @@ public class ConfigLoader
 		
 		for(int i=0; i<unityTemp.length;i++) 
 		{
-			unityTemp[i] = unityTemp[i].trim();
+			unityTemp[i] = unityTemp[i].trim().toLowerCase();
+			if(unityTemp[i].contains(" ")) unityTemp[i] = unityTemp[i].replace(" ", "");
 			unity.add(unityTemp[i]);
 		}
 		return unity;
