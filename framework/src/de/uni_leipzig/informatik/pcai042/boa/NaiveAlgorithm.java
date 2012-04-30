@@ -39,7 +39,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	public NaiveAlgorithm(Set<String> surfaceForms, Type annoType)
 	{
 		super(surfaceForms, annoType);
-		// TODO Auto-generated constructor stub
+		mathSymbols = new ConfigLoader().openConfigSurfaceForms("MATH");
 	}
 
 	public void search(BoaSentence sentence)
@@ -138,9 +138,9 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							//System.out.println("Annotation: " + currentToken + " " + match + " Type: " + annoType);
 					}
 					//else check if match is the prefix of any surface form
-					else
+					else if(this.isPrefix(match, surForms))
 					{
-						ArrayList<String> annoTokens = new ArrayList<String>();	
+						ArrayList<String> annoTokens = new ArrayList<String>();
 						parts = currentToken.split(";");
 						
 						for(int i = 0; i< parts.length; i++)
@@ -169,6 +169,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							}
 						}
 					}
+					else break;
 				}
 			}
 			else
