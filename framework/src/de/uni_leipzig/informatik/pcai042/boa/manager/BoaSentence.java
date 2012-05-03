@@ -18,7 +18,6 @@ package de.uni_leipzig.informatik.pcai042.boa.manager;
 import java.util.ArrayList;
 
 import nu.xom.Attribute;
-import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -39,7 +38,7 @@ public class BoaSentence
 	private ArrayList<Integer> beginPos;
 	private ArrayList<Integer> endPos;
 	private ArrayList<BoaAnnotation> annotations;
-	private Document xmlDoc = null;
+	private Element xmlElem = null;
 	
 	/**
 	 * Tokenizes a sentence.
@@ -56,7 +55,7 @@ public class BoaSentence
 	}
 	
 	/**
-	 * Tokenizes a sentence by using a certain tokenizer.
+	 * Tokenizes a sentence by using a certain {@link Tokenizer}.
 	 * 
 	 * @param sentence
 	 *            the original text of the sentence
@@ -72,7 +71,7 @@ public class BoaSentence
 	}
 	
 	/**
-	 * Creates a sentence from a CoreMap returned by a Tokenizer.
+	 * Creates a sentence from a CoreMap returned by a {@link Tokenizer}.
 	 * 
 	 * @param sentence
 	 *            the original text of the sentence
@@ -95,10 +94,36 @@ public class BoaSentence
 		annotations = new ArrayList<BoaAnnotation>();
 	}
 	
-	public BoaSentence(Document xmlDoc)
+	/**
+	 * Creates a sentence from a {@link nu.xom.Element} object that contains the
+	 * sentence's XML representation in the following form:
+	 * 
+	 * <pre>
+	 * {@code
+	 * <tokens>
+	 *     <token id="1">
+	 *         <word>someString</word>
+	 *         <CharacterOffsetBegin>someOffset</CharacterOffsetBegin>
+	 *         <CharacterOffsetEnd>anotherOffset</CharacterOffsetEnd>
+	 *     </token>
+	 *     <!-- additional tokens -->
+	 * </tokens>
+	 * <annotation>
+	 *     <token>someTokenId</token>
+	 *     <token>anotherId</token>
+	 *     <type>BoaAnnotation.Type</type>
+	 * </annotation>
+	 * <!-- additional annotations -->
+	 * }
+	 * </pre>
+	 * 
+	 * @param elem
+	 *            the sentence element
+	 * @see BoaSentence#getXmlElem()
+	 */
+	public BoaSentence(Element elem)
 	{
-		Element root = xmlDoc.getRootElement();
-		Elements tokenElems = root.getFirstChildElement("tokens").getChildElements("token");
+		Elements tokenElems = elem.getFirstChildElement("tokens").getChildElements("token");
 		tokens = new ArrayList<String>(tokenElems.size());
 		beginPos = new ArrayList<Integer>(tokenElems.size());
 		endPos = new ArrayList<Integer>(tokenElems.size());
@@ -110,7 +135,7 @@ public class BoaSentence
 			endPos.add(Integer.parseInt(tokenElems.get(i).getFirstChildElement("CharacterOffsetEnd").getValue()));
 		}
 		
-		Elements annotationElems = root.getChildElements("annotation");
+		Elements annotationElems = elem.getChildElements("annotation");
 		annotations = new ArrayList<BoaAnnotation>(annotationElems.size());
 		for (int i = 0; i < annotationElems.size(); i++)
 		{
@@ -156,6 +181,12 @@ public class BoaSentence
 		return annotations;
 	}
 	
+	/**
+	 * Returns the zero-based id of a token
+	 * 
+	 * @param token
+	 * @return
+	 */
 	public int getTokenId(String token)
 	{
 		for (int i = 0; i < tokens.size(); i++)
@@ -176,12 +207,17 @@ public class BoaSentence
 		return endPos.get(getTokenId(token));
 	}
 	
-	public Document getXmlDoc()
+	/**
+	 * Returns a {@link nu.xom.Element} representing the sentence.
+	 * 
+	 * @return the XML element
+	 * @see BoaSentence#BoaSentence(Element)
+	 */
+	public Element getXmlElem()
 	{
-		Element root;
-		if (xmlDoc == null)
+		if (xmlElem == null)
 		{
-			root = new Element("sentence");
+			xmlElem = new Element("sentence");
 			Element tokensElem = new Element("tokens");
 			for (int i = 0; i < tokens.size(); i++)
 			{
@@ -198,15 +234,13 @@ public class BoaSentence
 				tokenElem.appendChild(endPosElem);
 				tokensElem.appendChild(tokenElem);
 			}
-			root.appendChild(tokensElem);
-			xmlDoc = new Document(root);
+			xmlElem.appendChild(tokensElem);
 		} else
 		{
-			root = xmlDoc.getRootElement();
-			Elements annos = root.getChildElements("annotation");
+			Elements annos = xmlElem.getChildElements("annotation");
 			for (int i = 0; i < annos.size(); i++)
 			{
-				xmlDoc.getRootElement().removeChild(annos.get(i));
+				xmlElem.removeChild(annos.get(i));
 			}
 		}
 		
@@ -221,19 +255,17 @@ public class BoaSentence
 				tokenElem.appendChild("" + (getTokenId(token) + 1));
 				annoElem.appendChild(tokenElem);
 			}
-			// add annotation type
 			Element annoType = new Element("type");
 			annoType.appendChild("" + annotation.getType());
 			annoElem.appendChild(annoType);
 			
-			// add annotation to sentence
-			root.appendChild(annoElem);
+			xmlElem.appendChild(annoElem);
 		}
-		return xmlDoc;
+		return xmlElem;
 	}
 	
 	/**
-	 * Creates a copy of the sentence without annotations.
+	 * Creates a copy of the sentence with an empty list of annotations.
 	 * 
 	 * @return a new instance of BoaSentence
 	 */

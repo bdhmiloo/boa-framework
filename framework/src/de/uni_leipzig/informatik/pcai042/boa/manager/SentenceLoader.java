@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import nu.xom.Builder;
 import nu.xom.Document;
-import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -36,14 +35,13 @@ public class SentenceLoader
 	
 	private void createSentences(Document doc)
 	{
-		
 		Elements sentenceElems = doc.getRootElement().getFirstChildElement("document")
 				.getFirstChildElement("sentences").getChildElements();
 		sentences = new ArrayList<BoaSentence>(sentenceElems.size());
 		
 		for (int i = 0; i < sentenceElems.size(); i++)
 		{
-			sentences.add(new BoaSentence(new Document((Element) sentenceElems.get(i).copy())));
+			sentences.add(new BoaSentence(sentenceElems.get(i)));
 		}
 	}
 	
@@ -70,32 +68,5 @@ public class SentenceLoader
 	public int getSentenceCount()
 	{
 		return sentences.size();
-	}
-	
-	public static void main(String[] args)
-	{
-		SentenceLoader sl = null;
-		try
-		{
-			sl = new SentenceLoader(new File("goldstandard.xml"));
-		} catch (ValidityException e)
-		{
-			e.printStackTrace();
-		} catch (ParsingException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		if (sl == null)
-			return;
-		
-		for (BoaSentence s : sl.getSentences())
-		{
-			System.out.println(s.getSentence());
-			System.out.println(" Annotations: " + s.getAnnotations().size());
-		}
 	}
 }

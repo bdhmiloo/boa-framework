@@ -24,8 +24,15 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+/**
+ * This class encapsulates a StanfordCoreNLP pipeline which is used to tokenize
+ * text and split it in sentences. It can generate {@link BoaSentence} objects
+ * from the pipeline's output.
+ * 
+ * @author Simon Suiter
+ */
 public class Tokenizer
-{	
+{
 	private StanfordCoreNLP pipeline;
 	
 	public Tokenizer()
