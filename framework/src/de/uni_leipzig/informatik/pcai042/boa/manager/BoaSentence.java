@@ -16,16 +16,13 @@
 package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 
 import nu.xom.Document;
-import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import nu.xom.Element;
+import nu.xom.Elements;
+import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
 /**
@@ -38,92 +35,108 @@ public class BoaSentence
 {
 	private String sentence;
 	private ArrayList<String> tokens;
+	private ArrayList<Integer> beginPos;
+	private ArrayList<Integer> endPos;
 	private ArrayList<BoaAnnotation> annotations;
-	/**
-	 * the StanfordCoreNLP output of the sentence
-	 */
-	private Document xmlDoc;
-	
-	private static StanfordCoreNLP pipeline = null;
+	private Document xmlDoc = null;
 	
 	/**
-	 * Tokenizes the sentence and generates an XML representation.
+	 * Tokenizes a sentence.
 	 * 
 	 * @param sentence
+	 *            the original text of the sentence
 	 * @throws IllegalArgumentException
-	 *             thrown when StanfordCoreNLP couldn't tokenize the sentence
-	 *             properly
+	 *             thrown when sentence is a text not containing a single
+	 *             sentence.
 	 */
 	public BoaSentence(String sentence) throws IllegalArgumentException
 	{
-		this.sentence = sentence;
-		annotations = new ArrayList<BoaAnnotation>();
-		tokens = new ArrayList<String>();
+		this(sentence, new Tokenizer());
+	}
+	
+	/**
+	 * Tokenizes a sentence by using a certain tokenizer.
+	 * 
+	 * @param sentence
+	 *            the original text of the sentence
+	 * @param tokenizer
+	 *            the tokenizer
+	 * @throws IllegalArgumentException
+	 *             thrown when sentence is a text not containing a single
+	 *             sentence.
+	 */
+	public BoaSentence(String sentence, Tokenizer tokenizer) throws IllegalArgumentException
+	{
+		this(tokenizer.annotateSingleSentence(sentence));
+	}
+	
+	/**
+	 * Creates a sentence from a CoreMap returned by a Tokenizer.
+	 * 
+	 * @param sentence
+	 *            the original text of the sentence
+	 * @param coreMap
+	 *            the CoreMap
+	 */
+	public BoaSentence(CoreMap coreMap)
+	{
+		sentence = coreMap.get(CoreAnnotations.TextAnnotation.class);
+		tokens = new ArrayList<String>(coreMap.get(TokensAnnotation.class).size());
+		beginPos = new ArrayList<Integer>(coreMap.get(TokensAnnotation.class).size());
+		endPos = new ArrayList<Integer>(coreMap.get(TokensAnnotation.class).size());
+		for (CoreLabel token : coreMap.get(TokensAnnotation.class))
+		{
+			String word = token.originalText();
+			tokens.add(word);
+			beginPos.add(token.beginPosition());
+			endPos.add(token.endPosition());
+		}
+	}
+	
+	public BoaSentence(Document xmlDoc)
+	{
+		Element root = xmlDoc.getRootElement();
+		Elements tokenElems = root.getFirstChildElement("tokens").getChildElements("token");
+		tokens = new ArrayList<String>(tokenElems.size());
+		beginPos = new ArrayList<Integer>(tokenElems.size());
+		endPos = new ArrayList<Integer>(tokenElems.size());
 		
-		// double checked locking
-		if (pipeline == null)
-			initPipeline();
-		synchronized (pipeline)
+		for (int i = 0; i < tokenElems.size(); i++)
 		{
-			// generate tokens with StanfordCoreNLP
-			Annotation document = new Annotation(sentence);
-			pipeline.annotate(document);
-			
-			List<CoreMap> sentences = document.get(SentencesAnnotation.class);
-			
-			// since we always deal with single sentences, there can be only one
-			// sentence in the output
-			// otherwise StanfordCoreNLP had problems to tokenize the sentence
-			if (sentences.size() != 1)
-			{
-				throw new IllegalArgumentException();
-			}
-			
-			for (CoreLabel token : sentences.get(0).get(TokensAnnotation.class))
-			{
-				// this is the text of the token
-				String word = token.originalText();
-				tokens.add(word);
-			}
-			xmlDoc = pipeline.annotationToDoc(document);
+			tokens.add(tokenElems.get(i).getFirstChildElement("word").getValue());
+			beginPos.add(Integer.parseInt(tokenElems.get(i).getFirstChildElement("CharacterOffsetBegin").getValue()));
+			endPos.add(Integer.parseInt(tokenElems.get(i).getFirstChildElement("CharacterOffsetEnd").getValue()));
 		}
-	}
-	
-	public BoaSentence(ArrayList<String> tokens)
-	{
-		this(tokens, null);
-	}
-	
-	public BoaSentence(ArrayList<String> tokens, ArrayList<BoaAnnotation> annotations)
-	{
-		this.tokens = tokens;
-		this.annotations = annotations;
+		
+		Elements annotationElems = root.getChildElements("annotation");
+		annotations = new ArrayList<BoaAnnotation>(annotationElems.size());
+		for (int i = 0; i < annotationElems.size(); i++)
+		{
+			ArrayList<String> annotationTokens = new ArrayList<String>();
+			Elements annotationTokenElems = annotationElems.get(i).getChildElements("token");
+			for (int k = 0; k < annotationTokenElems.size(); k++)
+			{
+				annotationTokens.add(tokens.get(Integer.parseInt(annotationTokenElems.get(k).getValue()) - 1));
+			}
+			annotations.add(new BoaAnnotation(BoaAnnotation.Type.valueOf(annotationElems.get(i)
+					.getFirstChildElement("type").getValue()), annotationTokens));
+		}
+		
 		StringBuilder sb = new StringBuilder();
-		for (String token : tokens)
+		for (int i = 0; i < tokens.size() - 1; i++)
 		{
-			sb.append(token);
-			sb.append(" ");
+			sb.append(tokens.get(i));
+			for (int j = endPos.get(i); j < beginPos.get(i + 1); j++)
+			{
+				sb.append(" ");
+			}
 		}
-		// cut last space
-		if (tokens.size() > 0)
-			sb.setLength(sb.length() - 1);
+		sb.append(tokens.get(tokens.size() - 1));
 		sentence = sb.toString();
 	}
 	
-	@SuppressWarnings("unused")
 	private BoaSentence()
 	{
-		
-	}
-	
-	private static synchronized void initPipeline()
-	{
-		if (pipeline == null)
-		{
-			Properties props = new Properties();
-			props.put("annotators", "tokenize, ssplit");
-			pipeline = new StanfordCoreNLP(props);
-		}
 	}
 	
 	public String getSentence()
@@ -141,8 +154,43 @@ public class BoaSentence
 		return annotations;
 	}
 	
+	public int getTokenId(String token)
+	{
+		for (int i = 0; i < tokens.size(); i++)
+		{
+			if (token == tokens.get(i))
+				return i;
+		}
+		throw new IllegalArgumentException("Argument is not a token of this sentence.");
+	}
+	
+	public int getTokenBeginPos(String token)
+	{
+		return beginPos.get(getTokenId(token));
+	}
+	
+	public int getTokenEndPos(String token)
+	{
+		return endPos.get(getTokenId(token));
+	}
+	
 	public Document getXmlDoc()
 	{
+		if (xmlDoc == null)
+		{
+			Element root = new Element("sentence");
+			// TODO add tokens
+			xmlDoc = new Document(root);
+		} else
+		{
+			Elements annos = xmlDoc.getRootElement().getChildElements("annotation");
+			for (int i = 0; i < annos.size(); i++)
+			{
+				xmlDoc.getRootElement().removeChild(annos.get(i));
+			}
+		}
+		
+		// TODO add annos
 		return xmlDoc;
 	}
 	
@@ -153,8 +201,12 @@ public class BoaSentence
 	 */
 	public BoaSentence copy()
 	{
-		BoaSentence bs = new BoaSentence(tokens);
-		bs.xmlDoc = xmlDoc;
+		BoaSentence bs = new BoaSentence();
+		bs.sentence = sentence;
+		bs.tokens = tokens;
+		bs.beginPos = beginPos;
+		bs.endPos = endPos;
+		bs.annotations = new ArrayList<BoaAnnotation>();
 		return bs;
 	}
 }

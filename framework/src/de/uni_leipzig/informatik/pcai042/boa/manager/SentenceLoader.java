@@ -19,9 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import nu.xom.Builder;
 import nu.xom.Document;
+import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -36,34 +36,14 @@ public class SentenceLoader
 	
 	private void createSentences(Document doc)
 	{
-		sentences = new ArrayList<BoaSentence>();
+		
 		Elements sentenceElems = doc.getRootElement().getFirstChildElement("document")
 				.getFirstChildElement("sentences").getChildElements();
+		sentences = new ArrayList<BoaSentence>(sentenceElems.size());
 		
 		for (int i = 0; i < sentenceElems.size(); i++)
 		{
-			ArrayList<String> tokens = new ArrayList<String>();
-			Elements tokenElems = sentenceElems.get(i).getFirstChildElement("tokens").getChildElements("token");
-			for (int j = 0; j < tokenElems.size(); j++)
-			{
-				tokens.add(tokenElems.get(j).getFirstChildElement("word").getValue());
-			}
-			
-			ArrayList<BoaAnnotation> annotations = new ArrayList<BoaAnnotation>();
-			Elements annotationElems = sentenceElems.get(i).getChildElements("annotation");
-			for (int j = 0; j < annotationElems.size(); j++)
-			{
-				ArrayList<String> annotationTokens = new ArrayList<String>();
-				Elements annotationTokenElems = annotationElems.get(j).getChildElements("token");
-				for (int k = 0; k < annotationTokenElems.size(); k++)
-				{
-					annotationTokens.add(tokens.get(Integer.parseInt(annotationTokenElems.get(k).getValue()) - 1));
-				}
-				annotations.add(new BoaAnnotation(BoaAnnotation.Type.valueOf(annotationElems.get(j)
-						.getFirstChildElement("type").getValue()), annotationTokens));
-			}
-			
-			sentences.add(new BoaSentence(tokens, annotations));
+			sentences.add(new BoaSentence(new Document((Element) sentenceElems.get(i).copy())));
 		}
 	}
 	

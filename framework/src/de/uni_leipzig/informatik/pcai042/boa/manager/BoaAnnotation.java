@@ -54,11 +54,14 @@ public class BoaAnnotation
 	@Override
 	public String toString()
 	{
-		String r = "";
+		StringBuilder sb = new StringBuilder();
 		for (String s : tokens)
 		{
-			r += s;
+			sb.append(s);
+			sb.append(" ");
 		}
-		return r + ": " + type;
+		sb.setCharAt(sb.length() - 1, ':');
+		sb.append(type);
+		return sb.toString();
 	}
 }
