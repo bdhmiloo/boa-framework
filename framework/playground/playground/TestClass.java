@@ -33,7 +33,7 @@ public class TestClass
 {	
 	public static void main(String[] args)
 	{		
-		int count = 0;
+		int count = 0, annoCount = 0, lmCount = 0, wCount = 0, tCount = 0, hilfsCount = 0;
 		ArrayList<BoaSentence> sentences = new ArrayList<BoaSentence>();
 		SentenceLoader sentenceLoader = null;
 		BoaSentence nextSentence;
@@ -90,17 +90,32 @@ public class TestClass
 		{
 			count++;
 			nextSentence = it.next();
+			annoCount-= nextSentence.getAnnotations().size();
+			hilfsCount+= nextSentence.getAnnotations().size();
 			
 			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, "LINEAR_MEASURE_N", new NaiveAlgorithm());
 			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT,"WEIGHT_N", new NaiveAlgorithm());
 			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, "TEMPERATURE_N", new NaiveAlgorithm());
+			
 			lsLinMeasure.searchUnit(nextSentence);
+			lmCount+= nextSentence.getAnnotations().size();
+			
 			lsWeight.searchUnit(nextSentence);
+			wCount+= nextSentence.getAnnotations().size();
+			
 			lsTemp.searchUnit(nextSentence);
 			
-			System.out.println("\nSentence " + count + "\n");
-			System.out.println(nextSentence.getSentence() + "\n" + nextSentence.getAnnotations().toString());
+			annoCount+= nextSentence.getAnnotations().size();
 			
+			System.out.println("\nSentence " + count + "\n");
+			System.out.println(nextSentence.getSentence() + "\n" + nextSentence.getAnnotations().toString());		
 		}
+		
+		lmCount = -hilfsCount + lmCount;
+		wCount = -hilfsCount - lmCount + wCount;
+		tCount = annoCount - lmCount - wCount;
+		
+		System.out.println("\nHinzugefügte Annotationen (Gesamt): " + annoCount);
+		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight \n" + tCount + " Temperature");
 	}
 }
