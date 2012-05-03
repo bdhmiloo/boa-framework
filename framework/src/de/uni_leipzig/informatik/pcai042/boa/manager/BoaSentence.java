@@ -17,6 +17,7 @@ package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.util.ArrayList;
 
+import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -91,6 +92,7 @@ public class BoaSentence
 			beginPos.add(token.beginPosition());
 			endPos.add(token.endPosition());
 		}
+		annotations = new ArrayList<BoaAnnotation>();
 	}
 	
 	public BoaSentence(Document xmlDoc)
@@ -176,21 +178,57 @@ public class BoaSentence
 	
 	public Document getXmlDoc()
 	{
+		Element root;
 		if (xmlDoc == null)
 		{
-			Element root = new Element("sentence");
-			// TODO add tokens
+			root = new Element("sentence");
+			Element tokensElem = new Element("tokens");
+			for (int i = 0; i < tokens.size(); i++)
+			{
+				Element tokenElem = new Element("token");
+				tokenElem.addAttribute(new Attribute("id", "" + (i + 1)));
+				Element wordElem = new Element("word");
+				wordElem.appendChild(tokens.get(i));
+				Element beginPosElem = new Element("CharacterOffsetBegin");
+				beginPosElem.appendChild(beginPos.get(i).toString());
+				Element endPosElem = new Element("CharacterOffsetEnd");
+				endPosElem.appendChild(endPos.get(i).toString());
+				tokenElem.appendChild(wordElem);
+				tokenElem.appendChild(beginPosElem);
+				tokenElem.appendChild(endPosElem);
+				tokensElem.appendChild(tokenElem);
+			}
+			root.appendChild(tokensElem);
 			xmlDoc = new Document(root);
 		} else
 		{
-			Elements annos = xmlDoc.getRootElement().getChildElements("annotation");
+			root = xmlDoc.getRootElement();
+			Elements annos = root.getChildElements("annotation");
 			for (int i = 0; i < annos.size(); i++)
 			{
 				xmlDoc.getRootElement().removeChild(annos.get(i));
 			}
 		}
 		
-		// TODO add annos
+		for (BoaAnnotation annotation : annotations)
+		{
+			Element annoElem = new Element("annotation");
+			for (String token : annotation.getTokens())
+			{
+				Element tokenElem = new Element("token");
+				// inserts id of token; start with 1 since Stanford's ids aren't
+				// zero-based
+				tokenElem.appendChild("" + (getTokenId(token) + 1));
+				annoElem.appendChild(tokenElem);
+			}
+			// add annotation type
+			Element annoType = new Element("type");
+			annoType.appendChild("" + annotation.getType());
+			annoElem.appendChild(annoType);
+			
+			// add annotation to sentence
+			root.appendChild(annoElem);
+		}
 		return xmlDoc;
 	}
 	
