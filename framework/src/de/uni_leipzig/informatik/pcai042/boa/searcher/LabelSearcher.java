@@ -23,9 +23,9 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
 public class LabelSearcher
 {
-	private static Set<String> surfaceForms;
+	private Set<String> surfaceForms;
 	private static Type annoType;
-	private static SearchAlgorithm algo;
+	private SearchAlgorithm algo;
 	
 	public LabelSearcher(Type annoType, String sForms, SearchAlgorithm algorithm)
 	{
@@ -37,7 +37,7 @@ public class LabelSearcher
 			algo = algorithm.getClass().newInstance();
 			algo.setSurForms(surfaceForms);
 			algo.setAnnoType(annoType);
-			System.out.println(algo + " " + annoType.toString());
+			//System.out.println(algo + " " + annoType.toString());
 		}
 		catch(Exception e)
 		{

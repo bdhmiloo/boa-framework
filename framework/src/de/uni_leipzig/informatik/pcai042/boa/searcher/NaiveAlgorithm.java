@@ -52,7 +52,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 		String currentToken = "";
 		String match, suffix, prefix, part;
 		String[] parts;
-		int position;
+		int position, count = 0;
 		Boolean replaced = false; // need this when a token representing a
 									// number is replaced with another token
 									// representing a number
@@ -62,9 +62,13 @@ public class NaiveAlgorithm extends SearchAlgorithm
 		Iterator<String> tokenIt = sentence.getTokens().iterator();
 		
 		while (tokenIt.hasNext())
-		{
+		{	
 			if (!replaced)
+			{
 				currentToken = tokenIt.next();
+				count ++;
+			}
+			
 			replaced = false;
 			
 			// Step one a): Check if any token is a number.
@@ -77,10 +81,10 @@ public class NaiveAlgorithm extends SearchAlgorithm
 				Iterator<String> findMatch = sentence.getTokens().iterator();
 				
 				// go to first token after currentToken
-				do
+				for(int i = 0; i < count;i++)
 				{
-					match = findMatch.next();
-				} while (!match.equals(currentToken));
+					if(findMatch.hasNext())match = findMatch.next();
+				}
 				
 				// for each token right from currentToken
 				while (findMatch.hasNext())
@@ -98,6 +102,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							if (!tokenIt.hasNext())
 								break;
 							currentToken = tokenIt.next();
+							count++;
 							replaced = true;
 						}
 						break;
@@ -120,8 +125,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							} else
 							{
 								match = part;
-								while (!tokenIt.next().equals(match))
-									;
+								while (!tokenIt.next().equals(match));
 								
 								currentToken = combinedNumber.toString();
 								// System.out.println(" false");
@@ -154,7 +158,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					}
 					// else check if match is the prefix of any surface form
 					else if (this.isPrefix(match, surForms))
-					{
+					{	
 						ArrayList<String> annoTokens = new ArrayList<String>();
 						parts = currentToken.split(";");
 						
@@ -182,6 +186,15 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							{
 								// create Annotation
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+								
+								while (!currentToken.equals(suffix))
+								{
+									if (!tokenIt.hasNext())
+										break;
+									currentToken = tokenIt.next();
+									count++;
+								}
+								
 								break;
 							}
 						}

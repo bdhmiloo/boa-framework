@@ -50,10 +50,7 @@ public abstract class SearchAlgorithm
 	 * @param sentence
 	 */
 	//subclasses will have to overwrite this
-	public void search(BoaSentence sentence)
-	{
-		return;
-	}
+	public abstract void search(BoaSentence sentence);
 	
 	/**
 	 * Checks if a String representation of a token is a number
