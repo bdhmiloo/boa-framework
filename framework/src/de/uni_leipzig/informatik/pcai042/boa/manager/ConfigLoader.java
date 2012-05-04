@@ -84,10 +84,10 @@ public class ConfigLoader
 	 * @param unitName Name of Unit (Weight, Temperature, ...), first letter must be written large
 	 */
 	
-	public HashMap<String, Double> openConfigConversion(String specific, String unitName)
+	public HashMap<String, BigDecimal> openConfigConversion(String specific, String unitName)
 	{
 		Properties properties = new Properties();
-		HashMap<String, Double> conversionMap;
+		HashMap<String, BigDecimal> conversionMap;
 		
 		//Try to create the full file name with merging. Only for default path (file in project directory)
 		String fileName="conversion"+specific+unitName+".properties";
@@ -98,7 +98,7 @@ public class ConfigLoader
 			properties.load(stream);
 			stream.close();
 			
-			conversionMap = new HashMap<String, Double>((Map) properties);
+			conversionMap = new HashMap<String, BigDecimal>((Map) properties);
 			
 			return conversionMap;
 		}
