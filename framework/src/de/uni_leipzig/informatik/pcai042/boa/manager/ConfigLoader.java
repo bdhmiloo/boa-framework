@@ -98,7 +98,11 @@ public class ConfigLoader
 			properties.load(stream);
 			stream.close();
 			
-			conversionMap = new HashMap<String, BigDecimal>((Map) properties);
+			conversionMap = new HashMap<String, BigDecimal>();
+			for (String key : properties.stringPropertyNames())
+			{
+				conversionMap.put(key, new BigDecimal(properties.getProperty(key)));
+			}
 			
 			return conversionMap;
 		}
