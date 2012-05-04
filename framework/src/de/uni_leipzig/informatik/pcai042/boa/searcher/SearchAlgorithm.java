@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javatools.parsers.NumberParser;
+
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
@@ -61,7 +63,7 @@ public abstract class SearchAlgorithm
 	
 	protected boolean checkIfNumber(String token)
 	{	
-		try
+		/*try
 		{
 			Integer.parseInt(token);
 			return true;
@@ -73,7 +75,14 @@ public abstract class SearchAlgorithm
 			Double.parseDouble(token);
 			return true;
 		}
-		catch(NumberFormatException e){}
+		catch(NumberFormatException e){}*/
+		
+		NumberParser np = new NumberParser();
+		
+		try
+		{
+			if(np.getLong(token)!=null || np.getDouble(token)!=null) return true;
+		}
 				
 		return false;
 	}
