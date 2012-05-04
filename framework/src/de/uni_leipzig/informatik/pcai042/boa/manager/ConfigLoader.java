@@ -106,6 +106,10 @@ public class ConfigLoader
 			
 			return conversionMap;
 		}
+		catch(NumberFormatException e)
+		{
+			logger.error("NumberFormatException when creating BigDecimal from "+fileName);
+		}
 		catch(Exception e)
 		{
 			logger.error(e.getMessage());
