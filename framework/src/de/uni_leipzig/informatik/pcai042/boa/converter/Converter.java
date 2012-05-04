@@ -573,6 +573,6 @@ public abstract class Converter
 			
 		}
 		System.out.println(count+"oberflaechenformen erzeugt");
-		System.out.println("konnte "+count2+" von "+count3+"annotationen bearbeiten");
+		System.out.println("konnte "+count2+" von "+count3+ "annotationen bearbeiten");
 	}
 }
