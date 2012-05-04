@@ -82,7 +82,7 @@ public abstract class SearchAlgorithm
 		try
 		{
 			if(np.getLong(token)!=null || np.getDouble(token)!=null) return true;
-		}
+		}finally{}// please dont push errors, since it causes annoying messages when runnning other classes
 				
 		return false;
 	}

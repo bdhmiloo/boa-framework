@@ -101,7 +101,7 @@ public class ConfigLoader
 			conversionMap = new HashMap<String, BigDecimal>();
 			for (String key : properties.stringPropertyNames())
 			{
-				conversionMap.put(key, new BigDecimal(properties.getProperty(key)));
+				conversionMap.put(key, new BigDecimal(properties.getProperty(key).trim()));
 			}
 			
 			return conversionMap;
