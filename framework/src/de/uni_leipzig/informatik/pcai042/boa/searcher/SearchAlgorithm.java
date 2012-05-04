@@ -19,17 +19,20 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javatools.parsers.NumberParser;
-
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
 public abstract class SearchAlgorithm
 {
 	protected Set<String> surForms;
 	protected Type annoType;
+	private Set<String> numbers;
 	
-	public SearchAlgorithm(){}
+	public SearchAlgorithm()
+	{
+		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
+	}
 	
 	public SearchAlgorithm(Set<String> surfaceForms, Type annoType)
 	{
@@ -38,6 +41,7 @@ public abstract class SearchAlgorithm
 			this.annoType = annoType;
 			surForms = new HashSet<String>();
 			surForms.addAll(surfaceForms);
+			numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 		}
 		catch(NullPointerException e)
 		{
@@ -63,7 +67,7 @@ public abstract class SearchAlgorithm
 	
 	protected boolean checkIfNumber(String token)
 	{	
-		/*try
+		try
 		{
 			Integer.parseInt(token);
 			return true;
@@ -75,16 +79,9 @@ public abstract class SearchAlgorithm
 			Double.parseDouble(token);
 			return true;
 		}
-		catch(NumberFormatException e){}*/
-		
-		NumberParser np = new NumberParser();
-		
-		try
-		{
-			if(np.getLong(token)!=null || np.getDouble(token)!=null) return true;
-		}finally{}// please dont push errors, since it causes annoying messages when runnning other classes
+		catch(NumberFormatException e){}
 				
-		return false;
+		return numbers.contains(token);
 	}
 	
 	
