@@ -75,6 +75,7 @@ public abstract class SearchAlgorithm
 		catch(NumberFormatException e){}
 		try
 		{
+			if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float", similar i as imaginary
 			if(token.contains(",")) token = token.replace(",", ".");
 			Double.parseDouble(token);
 			return true;

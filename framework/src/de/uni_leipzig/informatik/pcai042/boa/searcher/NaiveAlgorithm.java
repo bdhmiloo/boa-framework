@@ -49,10 +49,10 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	public void search(BoaSentence sentence)
 	{
 		// System.out.println(annoType.toString());
-		String currentToken = "";
+		String currentToken = "", dsfNumber = "", dsfUnit = "", dsfTemp = "";
 		String match, suffix, prefix, part;
 		String[] parts;
-		int position, count = 0;
+		int position, positionDsf, count = 0;
 		Boolean replaced = false; // need this when a token representing a
 									// number is replaced with another token
 									// representing a number
@@ -135,6 +135,48 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						}
 					}
 					
+					//check if match is part of a combined surface form
+					//this has to be checked first, else there might occur 2 Annotations 
+					//for same label, 1 for uncombined and 1 for combined
+					if(this.isPrefix(match+"&&", surForms))
+					{
+						//System.out.println("probable double sForm: " + match);
+						Iterator<String> dsfFinder = sentence.getTokens().iterator();
+						
+						for(int j = 0; j < count +2; j++)
+						{
+							if(dsfFinder.hasNext()) dsfNumber = dsfFinder.next();
+						}
+						
+						//System.out.println("Checking: " +dsfNumber);
+						
+						if(this.checkIfNumber(dsfNumber)&&dsfFinder.hasNext())
+						{
+							dsfUnit = dsfFinder.next();
+							//System.out.println("Checking: " +match+"&&"+dsfUnit);
+							
+							if(surForms.contains(match+"&&"+dsfUnit))
+							{
+								//make Annotation
+								ArrayList<String> annoTokens = new ArrayList<String>();
+								parts = currentToken.split(";");
+								
+								for (int i = 0; i < parts.length; i++)
+								{
+									annoTokens.add(parts[i]);
+								}
+								
+								annoTokens.add(match);
+								annoTokens.add(dsfNumber);
+								annoTokens.add(dsfUnit);
+								
+								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+								//System.out.println("Annotated: " + currentToken + match + dsfNumber + dsfUnit+  " " + annoType);
+								break;
+							}
+						}
+					}	
+					
 					// checks if match is equal to any known surface form of the
 					// units we look for
 					if (surForms.contains(match.toLowerCase()))
@@ -213,6 +255,62 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					// searched units
 					prefix = currentToken.substring(0, position - 1);
 					suffix = currentToken.substring(position - 1);
+					
+					if(this.isPrefix(suffix+"&&", surForms))
+					{
+						Iterator<String> dsfFinder = sentence.getTokens().iterator();
+						
+						for(int j = 0; j < count +1; j++)
+						{
+							if(dsfFinder.hasNext()) dsfNumber = dsfFinder.next();
+						}
+						
+						if(this.checkIfNumber(dsfNumber)&&dsfFinder.hasNext())
+						{
+							dsfUnit = dsfFinder.next();
+							System.out.println("Checking: " +suffix+"&&"+dsfUnit);
+							
+							if(surForms.contains(suffix+"&&"+dsfUnit))
+							{
+								//make Annotation
+								ArrayList<String> annoTokens = new ArrayList<String>();
+
+								annoTokens.add(prefix);
+								annoTokens.add(suffix);
+								annoTokens.add(dsfNumber);
+								annoTokens.add(dsfUnit);
+								
+								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+								break;
+							}
+						}
+						else
+						{	
+							//System.out.println("Checking: " + dsfNumber);
+							positionDsf = this.checkIfStartsWithNumber(dsfNumber);
+							if(positionDsf!=-1)
+							{	
+								dsfTemp = dsfNumber;
+								dsfNumber = dsfTemp.substring(0, positionDsf - 1);
+								dsfUnit = dsfTemp.substring(positionDsf - 1);
+								
+								//System.out.println("here we go " + suffix +"&&"+ dsfUnit + " -- " + positionDsf );
+								if(surForms.contains(suffix+"&&"+dsfUnit))
+								{
+									//make Annotation
+									ArrayList<String> annoTokens = new ArrayList<String>();
+
+									annoTokens.add(prefix);
+									annoTokens.add(suffix);
+									annoTokens.add(dsfNumber);
+									annoTokens.add(dsfUnit);
+									
+									sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+									break;
+								}
+							}
+						}
+					}
 					
 					if (surForms.contains(suffix.toLowerCase()))
 					{

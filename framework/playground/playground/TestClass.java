@@ -108,7 +108,8 @@ public class TestClass
 			annoCount+= nextSentence.getAnnotations().size();
 			
 			System.out.println("\nSentence " + count + "\n");
-			System.out.println(nextSentence.getSentence() + "\n" + nextSentence.getAnnotations().toString());		
+			System.out.println(nextSentence.getSentence() + "\n" + nextSentence.getAnnotations().toString());	
+			//if(count > 40) break;
 		}
 		
 		lmCount = -hilfsCount + lmCount;
@@ -117,5 +118,8 @@ public class TestClass
 		
 		System.out.println("\nHinzugefügte Annotationen (Gesamt): " + annoCount);
 		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight \n" + tCount + " Temperature");
+		
+		//check numbertest
+		//System.out.println(new NaiveAlgorithm().checkIfStartsWithNumber("fourteenhundred"));
 	}
 }
