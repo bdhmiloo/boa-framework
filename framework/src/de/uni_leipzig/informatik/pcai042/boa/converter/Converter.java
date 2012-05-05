@@ -17,6 +17,9 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,17 +31,12 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
 /**
  * 
  * @author Duc Huy Bui; Christian Kahmann
  */
 public abstract class Converter
 {
-	
 	private static HashMap<String, BigDecimal> conversionStandardw;
 	private static HashMap<String, BigDecimal> conversionUnitw;
 	private static HashMap<String, BigDecimal> conversionStandardl;
@@ -56,35 +54,42 @@ public abstract class Converter
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public Converter()
 	{
 		
 	}
 	
 	/**
+	 * Checks whether token is a number or not.
 	 * 
-	 * @param annotation
-	 * @return
+	 * @param token
+	 * @return true - if token is a number, false - if token is not a number
 	 */
 	protected static boolean checkIfNumber(String token)
 	{
 		int help = 0;
+		
 		try
 		{
 			Integer.parseInt(token);
 			help++;
 		} catch (NumberFormatException e)
 		{
+			e.printStackTrace();
 		}
+		
 		try
 		{
 			if (token.contains(","))
 				token = token.replace(",", ".");
 			Double.parseDouble(token);
 			help++;
-			
 		} catch (NumberFormatException e)
 		{
+			e.printStackTrace();
 		}
 		
 		if (help == 0)
@@ -93,6 +98,11 @@ public abstract class Converter
 			return true;
 	}
 	
+	/**
+	 * 
+	 * @param annotation
+	 * @return
+	 */
 	public ArrayList<String> convertUnit(BoaAnnotation annotation)
 	{
 		
@@ -115,15 +125,15 @@ public abstract class Converter
 			e.printStackTrace();
 		}
 		int count = 0;
-		int count2=0;
-		int count3=0;
+		int count2 = 0;
+		int count3 = 0;
 		String[] mm = { "nm", "nanometer", "nanometers" };
 		String[] cm = { "cm", "centimeter", "centimeters" };
 		String[] dm = { "dm", "decimeters", "decimeter" };
 		String[] m = { "m", "meter", "meters", "metres" };
 		String[] km = { "km", "kilometer", "kilometers" };
-		String[] ft = { "ft", "feet", "feets", "'" };
-		String[] insh = { "insh", "in", "inshes", };
+		String[] ft = { "ft", "feet", "feet", "'" };
+		String[] inch = { "inch", "in", "inches", };
 		String[] yard = { "yard", "yards", "yd", "yds" };
 		String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
 		String[] mile = { "mile", "miles" };
@@ -157,21 +167,21 @@ public abstract class Converter
 		
 		if (s1 == null)
 			return;
+		
 		String[][] ausgabe = new String[s1.getSentenceCount()][20];
 		
 		for (int i = 0; i < s1.getSentenceCount(); i++)
 		{
-			
 			for (int k = 0; k < s1.getSentence(i).getAnnotations().size(); k++)
 			{
 				count3++;
 				String help2 = null;
 				String help5 = null;
+				
 				if (s1.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					conversionStandardw = new ConfigLoader().openConfigConversion("Standard", "WEIGHT");
 					conversionUnitw = new ConfigLoader().openConfigConversion("Unit", "WEIGHT");
-					
 					
 					for (int j = 0; j < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); j++)
 					{
@@ -181,7 +191,6 @@ public abstract class Converter
 						{
 							if (g[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 							{
-								
 								help2 = "g";
 								help++;
 							}
@@ -251,17 +260,13 @@ public abstract class Converter
 									help++;
 									help2 = "lbs";
 								}
-								
 							}
-						
 					}
 					
 					if (help2 != null)
 					{
-						
 						count2++;
 						double z = 0;
-						
 						
 						for (int w = 0; w < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
 						{
@@ -448,9 +453,9 @@ public abstract class Converter
 								
 							}
 						if (help == 0)
-							for (int l = 0; l < insh.length; l++)
+							for (int l = 0; l < inch.length; l++)
 							{
-								if (insh[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (inch[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -464,7 +469,6 @@ public abstract class Converter
 							
 							count2++;
 							double z = 0;
-							
 							
 							for (int w = 0; w < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
 							{
@@ -554,8 +558,8 @@ public abstract class Converter
 									}
 									if (help4[d].equals("insh"))
 									{
-										for (int l = 0; l < insh.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + insh[l] + "  //  ");
+										for (int l = 0; l < inch.length; l++)
+											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + inch[l] + "  //  ");
 										count++;
 									}
 									
@@ -566,13 +570,14 @@ public abstract class Converter
 						}
 					}
 					
-					
 				}
+				
 				System.out.println(ausgabe[i][k]);
 			}
 			
 		}
-		System.out.println(count+"oberflaechenformen erzeugt");
-		System.out.println("konnte "+count2+" von "+count3+ "annotationen bearbeiten");
+		
+		System.out.println(count + "oberflaechenformen erzeugt");
+		System.out.println("konnte " + count2 + " von " + count3 + "annotationen bearbeiten");
 	}
 }
