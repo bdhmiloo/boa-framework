@@ -15,21 +15,12 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
-import java.io.File;
-import java.io.IOException;
-//import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
-//import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
-
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
 /**
  * Abstract class
@@ -38,10 +29,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
  */
 public abstract class Converter
 {
-	private static HashMap<String, BigDecimal> conversionStandard;
-	private static HashMap<String, BigDecimal> conversionUnit;
-	
-	SentenceLoader sentence;
+	protected static HashMap<String, BigDecimal> conversionStandard;
+	protected static HashMap<String, BigDecimal> conversionUnit;
 	
 	/**
 	 * Constructor loads all necessary files for unit conversion.
@@ -55,23 +44,6 @@ public abstract class Converter
 	{
 		conversionStandard = new ConfigLoader().openConfigConversion("Standard", unit);
 		conversionUnit = new ConfigLoader().openConfigConversion("Unit", unit);
-		
-		try
-		{
-			sentence = new SentenceLoader(new File(file));
-		} catch (ValidityException e)
-		{
-			e.printStackTrace();
-		} catch (ParsingException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		if (sentence == null)
-			return;
 	}
 	
 	/**
@@ -122,16 +94,9 @@ public abstract class Converter
 	
 	/**
 	 * 
-	 * @param annotation
+	 * 
+	 * @param annotation 
 	 * @return list with all surfaceforms of an unit inclusive all conversion
 	 */
-	public ArrayList<String> convertUnit(BoaAnnotation annotation)
-	{
-		ArrayList<String> list = new ArrayList<String>();
-		
-		
-		
-
-		return list;
-	}
+	public abstract ArrayList<String> convertUnit(BoaAnnotation annotation);
 }

@@ -15,27 +15,41 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
+import java.util.ArrayList;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+
 public class ConverterLinearMeasure extends Converter
 {
-	String[] mm = { "nm", "nanometer", "nanometers" };
-	String[] cm = { "cm", "centimeter", "centimeters" };
-	String[] dm = { "dm", "decimeters", "decimeter" };
-	String[] m = { "m", "meter", "meters", "metres" };
-	String[] km = { "km", "kilometer", "kilometers" };
-	String[] ft = { "ft", "feet", "feet", "'" };
-	String[] inch = { "inch", "in", "inches", };
-	String[] yard = { "yard", "yards", "yd", "yds" };
-	String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
-	String[] mile = { "mile", "miles" };
+	private String[] mm = { "nm", "nanometer", "nanometers" };
+	private String[] cm = { "cm", "centimeter", "centimeters" };
+	private String[] dm = { "dm", "decimeters", "decimeter" };
+	private String[] m = { "m", "meter", "meters", "metres" };
+	private String[] km = { "km", "kilometer", "kilometers" };
+	private String[] ft = { "ft", "feet", "feet", "'" };
+	private String[] inch = { "inch", "in", "inches", };
+	private String[] yard = { "yard", "yards", "yd", "yds" };
+	private String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
+	private String[] mile = { "mile", "miles" };
 	
-	String[] help4 = { "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
+	private String[] help4 = { "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
 	
 	/**
+	 * Constructor loads all necessary files for unit weight.
 	 * 
+	 * @param unit
+	 * @param file
 	 */
-	public ConverterLinearMeasure()
+	public ConverterLinearMeasure(String unit, String file)
 	{
-		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	@Override
+	public ArrayList<String> convertUnit(BoaAnnotation annotation)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
