@@ -133,19 +133,23 @@ public class TestConverter
 		
 		String[][] result = new String[sentence.getSentenceCount()][20];
 		
+		// get all sentences
 		for (int i = 0; i < sentence.getSentenceCount(); i++)
 		{
+			// get all annotations
 			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
 				countTotalAnnotations++;
 				String help2 = null;
 				String help5 = null;
 				
+				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					conversionStandardw = new ConfigLoader().openConfigConversion("Standard", "WEIGHT");
 					conversionUnitw = new ConfigLoader().openConfigConversion("Unit", "WEIGHT");
 					
+					// get all tokens
 					for (int j = 0; j < sentence.getSentence(i).getAnnotations().get(k).getTokens().size(); j++)
 					{
 						int helpChooseOption = 0;
@@ -226,10 +230,11 @@ public class TestConverter
 							}
 					}
 					
+					// option was selected
 					if (help2 != null)
 					{
 						countProcessibleAnnotations++;
-						double z = 0;
+						double number = 0;
 						
 						for (int w = 0; w < sentence.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
 						{
@@ -241,23 +246,25 @@ public class TestConverter
 								if (token.contains(","))
 									token = token.replace(",", ".");
 								if (token.contains("."))
-									z = Double.parseDouble(token);
+									number = Double.parseDouble(token);
 								
 								else
 								{
-									z = (double) Integer.parseInt(token);
+									number = (double) Integer.parseInt(token);
 									
 								}
 							}
 						}
 						
-						BigDecimal a = new BigDecimal(z);
+						BigDecimal a = new BigDecimal(number);
 						BigDecimal standard = a.multiply(conversionStandardw.get(help2));
 						
 						result[i][k] = "satz" + i + " annotation" + k + ":";
 						
+						// get multiplication factor
 						for (int d = 0; d < help3.length; d++)
 						{
+							// get all units
 							BigDecimal neu = standard.multiply(conversionUnitw.get(help3[d]));
 							
 							if (help3[d].equals("kg"))
@@ -308,6 +315,9 @@ public class TestConverter
 					}
 					
 				}
+				
+				
+				// conversion LINEAR MEASURE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
 				{
 					conversionStandardl = new ConfigLoader().openConfigConversion("Standard", "LINEAR_MEASURE");

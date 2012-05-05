@@ -17,9 +17,9 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+//import java.io.FileNotFoundException;
+//import java.io.FileOutputStream;
+//import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +32,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
 /**
+ * Abstract class
  * 
  * @author Duc Huy Bui; Christian Kahmann
  */
@@ -40,20 +41,41 @@ public abstract class Converter
 	private static HashMap<String, BigDecimal> conversionStandard;
 	private static HashMap<String, BigDecimal> conversionUnit;
 	
-	/**
-	 * 
-	 * 
-	 * @param token
-	 * @param number
-	 */
+	SentenceLoader sentence;
 	
-	public Converter(File file)
+	/**
+	 * Constructor loads all necessary files for unit conversion.
+	 * 
+	 * @param unit
+	 *            - String: WEIGHT, LINEAR MEASURE, TEMPERATURE or DATE
+	 * @param file
+	 *            - String: name of file with annotations that should be loaded
+	 */
+	public Converter(String unit, String file)
 	{
+		conversionStandard = new ConfigLoader().openConfigConversion("Standard", unit);
+		conversionUnit = new ConfigLoader().openConfigConversion("Unit", unit);
 		
+		try
+		{
+			sentence = new SentenceLoader(new File(file));
+		} catch (ValidityException e)
+		{
+			e.printStackTrace();
+		} catch (ParsingException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if (sentence == null)
+			return;
 	}
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public Converter()
 	{
@@ -68,13 +90,13 @@ public abstract class Converter
 	 */
 	protected static boolean checkIfNumber(String token)
 	{
-		int help = 0;
+		int i = 0;
 		
 		// testing integer
 		try
 		{
 			Integer.parseInt(token);
-			help++;
+			i++;
 		} catch (NumberFormatException e)
 		{
 			e.printStackTrace();
@@ -86,13 +108,13 @@ public abstract class Converter
 			if (token.contains(","))
 				token = token.replace(",", ".");
 			Double.parseDouble(token);
-			help++;
+			i++;
 		} catch (NumberFormatException e)
 		{
 			e.printStackTrace();
 		}
 		
-		if (help == 0)
+		if (i == 0)
 			return false;
 		else
 			return true;
@@ -101,12 +123,15 @@ public abstract class Converter
 	/**
 	 * 
 	 * @param annotation
-	 * @return
+	 * @return list with all surfaceforms of an unit inclusive all conversion
 	 */
 	public ArrayList<String> convertUnit(BoaAnnotation annotation)
 	{
+		ArrayList<String> list = new ArrayList<String>();
 		
-		// null --> placeholder for return
-		return null;
+		
+		
+
+		return list;
 	}
 }
