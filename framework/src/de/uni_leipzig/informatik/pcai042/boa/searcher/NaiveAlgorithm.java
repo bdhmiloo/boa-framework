@@ -68,6 +68,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 				currentToken = tokenIt.next();
 				count ++;
 			}
+			//System.out.println(currentToken + " " + count);
 			
 			replaced = false;
 			
@@ -125,9 +126,12 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							} else
 							{
 								match = part;
-								while (!tokenIt.next().equals(match));
+								while (!tokenIt.next().equals(match))count++;
 								
 								currentToken = combinedNumber.toString();
+								count++;
+								replaced = true;
+								//System.out.println("combined Number: " + currentToken);
 								// System.out.println(" false");
 								// System.out.println(currentToken);
 								break;
@@ -172,7 +176,6 @@ public class NaiveAlgorithm extends SearchAlgorithm
 								
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 								//System.out.println("Annotated: " + currentToken + match + dsfNumber + dsfUnit+  " " + annoType);
-								break;
 							}
 						}
 					}	
@@ -193,6 +196,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						annoTokens.add(match);
 						
 						sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+						break;
 						
 						// this is for tests only
 						// System.out.println("Annotation: " + currentToken +
