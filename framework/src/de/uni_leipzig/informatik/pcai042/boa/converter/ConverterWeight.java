@@ -25,17 +25,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
  * @author Duc Huy Bui; Christian Kahmann
  */
 public class ConverterWeight extends Converter
-{
-	private String[] mg = { "mg", "milligram", "milligrams" };
-	private String[] Kt = { "Kt", "carat" };
-	private String[] lbs = { "lbs", "lb", "labs", "pound", "pounds" };
-	private String[] oz = { "oz", "ounze" };
-	private String[] g = { "g", "gram" };
-	private String[] t = { "t", "ton", "metric ton", "metric tons", "tons" };
-	private String[] kg = { "kg", "kilogram", "kilo", "kg." };
-	
-	private String[] allUnitsOfWeight = { "g", "t", "kg", "oz", "lbs", "Kt", "mg" };
-	
+{	
 	/**
 	 * Constructor loads all necessary files for unit weight.
 	 * 
@@ -57,6 +47,16 @@ public class ConverterWeight extends Converter
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
+		
+		String[] mg = { "mg", "milligram", "milligrams" };
+		String[] Kt = { "Kt", "carat" };
+		String[] lbs = { "lbs", "lb", "labs", "pound", "pounds" };
+		String[] oz = { "oz", "ounze" };
+		String[] g = { "g", "gram" };
+		String[] t = { "t", "ton", "metric ton", "metric tons", "tons" };
+		String[] kg = { "kg", "kilogram", "kilo", "kg." };
+		
+		String[] allUnitsOfWeight = { "g", "t", "kg", "oz", "lbs", "Kt", "mg" };
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
@@ -214,4 +214,5 @@ public class ConverterWeight extends Converter
 		
 		return list;
 	}
+	
 }
