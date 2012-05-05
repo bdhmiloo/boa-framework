@@ -15,7 +15,7 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
-public class ConverterLinearMeasure
+public class ConverterLinearMeasure extends Converter
 {
 	
 	/**

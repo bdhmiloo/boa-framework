@@ -37,10 +37,15 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
  */
 public abstract class Converter
 {
+//	private static HashMap<String, BigDecimal> conversionStandard;
+//	private static HashMap<String, BigDecimal> conversionUnit;
+	
 	private static HashMap<String, BigDecimal> conversionStandardw;
 	private static HashMap<String, BigDecimal> conversionUnitw;
 	private static HashMap<String, BigDecimal> conversionStandardl;
 	private static HashMap<String, BigDecimal> conversionUnitl;
+	
+	
 	
 	/**
 	 * 
@@ -49,8 +54,9 @@ public abstract class Converter
 	 * @param number
 	 */
 	
-	public Converter(String token, double number)
+	public Converter(String unit)
 	{
+		
 		
 	}
 	
@@ -72,6 +78,7 @@ public abstract class Converter
 	{
 		int help = 0;
 		
+		// testing integer
 		try
 		{
 			Integer.parseInt(token);
@@ -81,6 +88,7 @@ public abstract class Converter
 			e.printStackTrace();
 		}
 		
+		// testing double
 		try
 		{
 			if (token.contains(","))
@@ -115,7 +123,6 @@ public abstract class Converter
 	 */
 	public static void main(String arg[])
 	{
-		
 		File file = new File("test.txt");
 		try
 		{
@@ -124,9 +131,10 @@ public abstract class Converter
 		{
 			e.printStackTrace();
 		}
-		int count = 0;
-		int count2 = 0;
-		int count3 = 0;
+		int countCreatedSurfaceForms = 0;
+		int countProcessibleAnnotations = 0;
+		int countTotalAnnotations = 0;
+		
 		String[] mm = { "nm", "nanometer", "nanometers" };
 		String[] cm = { "cm", "centimeter", "centimeters" };
 		String[] dm = { "dm", "decimeters", "decimeter" };
@@ -145,15 +153,15 @@ public abstract class Converter
 		String[] g = { "g", "gram" };
 		String[] t = { "t", "ton", "metric ton", "metric tons", "tons" };
 		String[] kg = { "kg", "kilogram", "kilo", "kg." };
+		
 		String[] help3 = { "g", "t", "kg", "oz", "lbs", "Kt", "mg" };
+		String[] help4 = { "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
 		
-		String[] help4 = { "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "insh" };
-		SentenceLoader s1;
+		SentenceLoader sentence = null;
 		
-		s1 = null;
 		try
 		{
-			s1 = new SentenceLoader(new File("goldstandard.xml"));
+			sentence = new SentenceLoader(new File("goldstandard.xml"));
 		} catch (ValidityException e)
 		{
 			e.printStackTrace();
@@ -165,31 +173,31 @@ public abstract class Converter
 			e.printStackTrace();
 		}
 		
-		if (s1 == null)
+		if (sentence == null)
 			return;
 		
-		String[][] ausgabe = new String[s1.getSentenceCount()][20];
+		String[][] printOut = new String[sentence.getSentenceCount()][20];
 		
-		for (int i = 0; i < s1.getSentenceCount(); i++)
+		for (int i = 0; i < sentence.getSentenceCount(); i++)
 		{
-			for (int k = 0; k < s1.getSentence(i).getAnnotations().size(); k++)
+			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
-				count3++;
+				countTotalAnnotations++;
 				String help2 = null;
 				String help5 = null;
 				
-				if (s1.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					conversionStandardw = new ConfigLoader().openConfigConversion("Standard", "WEIGHT");
 					conversionUnitw = new ConfigLoader().openConfigConversion("Unit", "WEIGHT");
 					
-					for (int j = 0; j < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); j++)
+					for (int j = 0; j < sentence.getSentence(i).getAnnotations().get(k).getTokens().size(); j++)
 					{
 						int help = 0;
 						
 						for (int l = 0; l < g.length; l++)
 						{
-							if (g[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+							if (g[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 							{
 								help2 = "g";
 								help++;
@@ -198,7 +206,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < t.length; l++)
 							{
-								if (t[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (t[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									
 									help++;
@@ -209,7 +217,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < kg.length; l++)
 							{
-								if (kg[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (kg[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									
 									help++;
@@ -220,7 +228,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < Kt.length; l++)
 							{
-								if (Kt[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (Kt[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									
 									help++;
@@ -231,7 +239,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < oz.length; l++)
 							{
-								if (oz[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (oz[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									
 									help++;
@@ -243,7 +251,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < mg.length; l++)
 							{
-								if (mg[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (mg[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									
 									help++;
@@ -254,7 +262,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < lbs.length; l++)
 							{
-								if (lbs[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (lbs[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									
 									help++;
@@ -265,14 +273,14 @@ public abstract class Converter
 					
 					if (help2 != null)
 					{
-						count2++;
+						countProcessibleAnnotations++;
 						double z = 0;
 						
-						for (int w = 0; w < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
+						for (int w = 0; w < sentence.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
 						{
-							if (checkIfNumber(s1.getSentence(i).getAnnotations().get(k).getTokens().get(w)))
+							if (checkIfNumber(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(w)))
 							{
-								String token = s1.getSentence(i).getAnnotations().get(k).getTokens().get(w);
+								String token = sentence.getSentence(i).getAnnotations().get(k).getTokens().get(w);
 								if (token.contains("+"))
 									token = token.replace("+", "");
 								if (token.contains(","))
@@ -291,7 +299,7 @@ public abstract class Converter
 						BigDecimal a = new BigDecimal(z);
 						BigDecimal standard = a.multiply(conversionStandardw.get(help2));
 						
-						ausgabe[i][k] = "satz" + i + " annotation" + k + ":";
+						printOut[i][k] = "satz" + i + " annotation" + k + ":";
 						
 						for (int d = 0; d < help3.length; d++)
 						{
@@ -300,44 +308,44 @@ public abstract class Converter
 							if (help3[d].equals("kg"))
 							{
 								for (int l = 0; l < kg.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + kg[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + kg[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							if (help3[d].equals("g"))
 							{
 								for (int l = 0; l < g.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + g[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + g[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							if (help3[d].equals("t"))
 							{
 								for (int l = 0; l < t.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + t[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + t[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							if (help3[d].equals("Kt"))
 							{
 								for (int l = 0; l < Kt.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + Kt[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + Kt[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							if (help3[d].equals("oz"))
 							{
 								for (int l = 0; l < oz.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + oz[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + oz[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							if (help3[d].equals("lbs"))
 							{
 								for (int l = 0; l < lbs.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + lbs[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + lbs[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							if (help3[d].equals("mg"))
 							{
 								for (int l = 0; l < mg.length; l++)
-									ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + mg[l] + "  //  ");
-								count++;
+									printOut[i][k] = printOut[i][k].concat(neu + " " + mg[l] + "  //  ");
+								countCreatedSurfaceForms++;
 							}
 							
 						}
@@ -345,18 +353,18 @@ public abstract class Converter
 					}
 					
 				}
-				if (s1.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
 				{
 					conversionStandardl = new ConfigLoader().openConfigConversion("Standard", "LINEAR_MEASURE");
 					conversionUnitl = new ConfigLoader().openConfigConversion("Unit", "LINEAR_MEASURE");
 					
-					for (int j = 0; j < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); j++)
+					for (int j = 0; j < sentence.getSentence(i).getAnnotations().get(k).getTokens().size(); j++)
 					{
 						int help = 0;
 						
 						for (int l = 0; l < m.length; l++)
 						{
-							if (m[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+							if (m[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 							{
 								// System.out.println("satz"+i+g[l]+"und"+s1.getSentence(i).getAnnotations().get(k).getTokens().get(j));
 								help5 = "m";
@@ -367,7 +375,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < mm.length; l++)
 							{
-								if (mm[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (mm[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"kg");
 									help++;
@@ -378,7 +386,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < cm.length; l++)
 							{
-								if (cm[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (cm[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -389,7 +397,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < dm.length; l++)
 							{
-								if (dm[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (dm[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -400,7 +408,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < km.length; l++)
 							{
-								if (km[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (km[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -411,7 +419,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < mile.length; l++)
 							{
-								if (mile[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (mile[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -422,7 +430,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < yard.length; l++)
 							{
-								if (yard[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (yard[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -433,7 +441,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < seamile.length; l++)
 							{
-								if (seamile[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (seamile[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -444,7 +452,7 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < ft.length; l++)
 							{
-								if (ft[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (ft[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
@@ -455,11 +463,11 @@ public abstract class Converter
 						if (help == 0)
 							for (int l = 0; l < inch.length; l++)
 							{
-								if (inch[l].equals(s1.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
+								if (inch[l].equals(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(j)))
 								{
 									// System.out.println("satz"+i+"ton");
 									help++;
-									help5 = "insh";
+									help5 = "inch";
 								}
 								
 							}
@@ -467,14 +475,14 @@ public abstract class Converter
 						if (help5 != null)
 						{
 							
-							count2++;
+							countProcessibleAnnotations++;
 							double z = 0;
 							
-							for (int w = 0; w < s1.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
+							for (int w = 0; w < sentence.getSentence(i).getAnnotations().get(k).getTokens().size(); w++)
 							{
-								if (checkIfNumber(s1.getSentence(i).getAnnotations().get(k).getTokens().get(w)))
+								if (checkIfNumber(sentence.getSentence(i).getAnnotations().get(k).getTokens().get(w)))
 								{
-									String token = s1.getSentence(i).getAnnotations().get(k).getTokens().get(w);
+									String token = sentence.getSentence(i).getAnnotations().get(k).getTokens().get(w);
 									if (token.contains("+"))
 										token = token.replace("+", "");
 									if (token.contains(","))
@@ -496,7 +504,7 @@ public abstract class Converter
 								
 								BigDecimal standard = a.multiply(conversionStandardl.get(help5));
 								
-								ausgabe[i][k] = "satz" + i + " annotation" + k + ":";
+								printOut[i][k] = "satz" + i + " annotation" + k + ":";
 								
 								for (int d = 0; d < help4.length; d++)
 								{
@@ -505,62 +513,62 @@ public abstract class Converter
 									if (help4[d].equals("mm"))
 									{
 										for (int l = 0; l < mm.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + mm[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + mm[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("cm"))
 									{
 										for (int l = 0; l < cm.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + cm[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + cm[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("dm"))
 									{
 										for (int l = 0; l < dm.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + dm[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + dm[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("m"))
 									{
 										for (int l = 0; l < m.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + m[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + m[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("km"))
 									{
 										for (int l = 0; l < km.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + km[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + km[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("mile"))
 									{
 										for (int l = 0; l < mile.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + mile[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + mile[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("seamile"))
 									{
 										for (int l = 0; l < seamile.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + seamile[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + seamile[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("yard"))
 									{
 										for (int l = 0; l < yard.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + yard[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + yard[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									if (help4[d].equals("ft"))
 									{
 										for (int l = 0; l < ft.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + ft[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + ft[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
-									if (help4[d].equals("insh"))
+									if (help4[d].equals("inch"))
 									{
 										for (int l = 0; l < inch.length; l++)
-											ausgabe[i][k] = ausgabe[i][k].concat(neu + " " + inch[l] + "  //  ");
-										count++;
+											printOut[i][k] = printOut[i][k].concat(neu + " " + inch[l] + "  //  ");
+										countCreatedSurfaceForms++;
 									}
 									
 								}
@@ -572,12 +580,12 @@ public abstract class Converter
 					
 				}
 				
-				System.out.println(ausgabe[i][k]);
+				System.out.println(printOut[i][k]);
 			}
 			
 		}
 		
-		System.out.println(count + "oberflaechenformen erzeugt");
-		System.out.println("konnte " + count2 + " von " + count3 + "annotationen bearbeiten");
+		System.out.println(countCreatedSurfaceForms + "oberflaechenformen erzeugt");
+		System.out.println("konnte " + countProcessibleAnnotations + " von " + countTotalAnnotations + "annotationen bearbeiten");
 	}
 }

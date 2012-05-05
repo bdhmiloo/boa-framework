@@ -15,8 +15,15 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
-public class ConverterWeight
+public class ConverterWeight extends Converter
 {
+	/**
+	 * 
+	 */
+	public ConverterWeight()
+	{
+		
+	}
 	
 	/**
 	 * @param args
