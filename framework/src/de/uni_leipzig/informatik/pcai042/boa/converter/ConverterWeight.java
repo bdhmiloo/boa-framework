@@ -17,6 +17,16 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 public class ConverterWeight extends Converter
 {
+	String[] mg = { "mg", "milligram", "milligrams" };
+	String[] Kt = { "Kt", "carat" };
+	String[] lbs = { "lbs", "lb", "labs", "pound", "pounds" };
+	String[] oz = { "oz", "ounze" };
+	String[] g = { "g", "gram" };
+	String[] t = { "t", "ton", "metric ton", "metric tons", "tons" };
+	String[] kg = { "kg", "kilogram", "kilo", "kg." };
+	
+	String[] help3 = { "g", "t", "kg", "oz", "lbs", "Kt", "mg" };
+	
 	/**
 	 * 
 	 */
@@ -24,14 +34,7 @@ public class ConverterWeight extends Converter
 	{
 		
 	}
+
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
-	{
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

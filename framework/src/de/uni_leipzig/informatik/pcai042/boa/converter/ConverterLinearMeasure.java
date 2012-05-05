@@ -17,6 +17,18 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 public class ConverterLinearMeasure extends Converter
 {
+	String[] mm = { "nm", "nanometer", "nanometers" };
+	String[] cm = { "cm", "centimeter", "centimeters" };
+	String[] dm = { "dm", "decimeters", "decimeter" };
+	String[] m = { "m", "meter", "meters", "metres" };
+	String[] km = { "km", "kilometer", "kilometers" };
+	String[] ft = { "ft", "feet", "feet", "'" };
+	String[] inch = { "inch", "in", "inches", };
+	String[] yard = { "yard", "yards", "yd", "yds" };
+	String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
+	String[] mile = { "mile", "miles" };
+	
+	String[] help4 = { "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
 	
 	/**
 	 * 
@@ -26,13 +38,5 @@ public class ConverterLinearMeasure extends Converter
 		// TODO Auto-generated constructor stub
 	}
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
-	{
-		// TODO Auto-generated method stub
-		
-	}
 	
 }
