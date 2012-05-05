@@ -28,7 +28,7 @@ import nu.xom.ValidityException;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
-public class TestConverter
+public class ConverterAlgo
 {
 	private static HashMap<String, BigDecimal> conversionStandardw;
 	private static HashMap<String, BigDecimal> conversionUnitw;
