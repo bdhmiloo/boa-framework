@@ -15,6 +15,18 @@
 
 package playground;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
+import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
+
 public class TestConverter
 {
 	
@@ -23,7 +35,36 @@ public class TestConverter
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
+		File file = new File("testConverterWeight.txt");
+		SentenceLoader sentence = null;
+		ConverterWeight cw = new ConverterWeight("WEIGHT", "goldstandard.xml");
+		
+		try
+		{
+			System.setOut(new PrintStream(new FileOutputStream(file, true)));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			sentence = new SentenceLoader(new File("goldstandard.xml"));
+		} catch (ValidityException e)
+		{
+			e.printStackTrace();
+		} catch (ParsingException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if (sentence == null)
+			return;
+		
+		
 		
 	}
 	
