@@ -29,8 +29,8 @@ public class ConverterWeight extends Converter
 	/**
 	 * Constructor loads all necessary files for unit weight.
 	 * 
-	 * @param unit
-	 * @param file
+	 * @param unit - WEIGHT
+	 * @param file - name of file with annotations that should be loaded
 	 */
 	public ConverterWeight(String unit, String file)
 	{

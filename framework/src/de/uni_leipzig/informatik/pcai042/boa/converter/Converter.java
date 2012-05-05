@@ -36,7 +36,7 @@ public abstract class Converter
 	 * Constructor loads all necessary files for unit conversion.
 	 * 
 	 * @param unit
-	 *            - String: WEIGHT, LINEAR MEASURE, TEMPERATURE or DATE
+	 *            - String: WEIGHT, LINEAR_MEASURE, TEMPERATURE or DATE
 	 * @param file
 	 *            - String: name of file with annotations that should be loaded
 	 */
