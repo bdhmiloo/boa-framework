@@ -29,8 +29,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public abstract class Converter
 {
-	protected static HashMap<String, BigDecimal> conversionStandard;
-	protected static HashMap<String, BigDecimal> conversionUnit;
+	protected HashMap<String, BigDecimal> conversionStandard;
+	protected HashMap<String, BigDecimal> conversionUnit;
 	
 	/**
 	 * Constructor loads all necessary files for unit conversion.
@@ -60,7 +60,7 @@ public abstract class Converter
 	 * @param token
 	 * @return true - if token is a number, false - if token is not a number
 	 */
-	protected static boolean checkIfNumber(String token)
+	protected boolean checkIfNumber(String token)
 	{
 		int i = 0;
 		
