@@ -84,13 +84,13 @@ public class TestConverter
 				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
-					
+					// test method here
 				}
 				
 				// conversion LINEAR MEASURE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
 				{
-					
+					// test method here
 				}
 			}
 		}

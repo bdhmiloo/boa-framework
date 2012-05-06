@@ -98,5 +98,5 @@ public abstract class Converter
 	 * @param annotation 
 	 * @return list with all surfaceforms of an unit inclusive all conversion
 	 */
-	public abstract ArrayList<String> convertUnit(BoaAnnotation annotation);
+	public abstract ArrayList<String> convertUnits(BoaAnnotation annotation);
 }

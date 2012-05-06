@@ -15,9 +15,16 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
-public class ConverterDate
+import java.util.ArrayList;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+
+/**
+ * 
+ * @author 
+ */
+public class ConverterDate extends Converter
 {
-	
 	/**
 	 * 
 	 */
@@ -25,14 +32,15 @@ public class ConverterDate
 	{
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
-	 * @param args
+	 * 
 	 */
-	public static void main(String[] args)
+	@Override
+	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 }
