@@ -19,6 +19,10 @@ import java.util.ArrayList;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
+/**
+ * 
+ * @author 
+ */
 public class ConverterTemperature extends Converter
 {
 	/**
@@ -38,7 +42,7 @@ public class ConverterTemperature extends Converter
 	 * @return list with all surfaceforms of an unit inclusive all conversions
 	 */
 	@Override
-	public ArrayList<String> convertUnit(BoaAnnotation annotation)
+	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;

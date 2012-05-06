@@ -43,7 +43,7 @@ public class ConverterWeight extends Converter
 	 * @return list with all surfaceforms of an unit inclusive all conversions
 	 */
 	@Override
-	public ArrayList<String> convertUnit(BoaAnnotation annotation)
+	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
