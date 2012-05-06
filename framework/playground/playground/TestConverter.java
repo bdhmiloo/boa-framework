@@ -20,13 +20,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterLinearMeasure;
 import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
+/**
+ * 
+ * @author Duc Huy Bui; Christian Kahmann
+ */
 public class TestConverter
 {
 	
@@ -35,18 +41,23 @@ public class TestConverter
 	 */
 	public static void main(String[] args)
 	{
-		File file = new File("testConverterWeight.txt");
-		SentenceLoader sentence = null;
 		ConverterWeight cw = new ConverterWeight("goldstandard.xml");
+		ConverterLinearMeasure clm = new ConverterLinearMeasure("goldstandard.xml");
 		
+		ArrayList<String> result = new ArrayList<String>();
+		
+		SentenceLoader sentence = null;
+		
+		// initializes output file
 		try
 		{
-			System.setOut(new PrintStream(new FileOutputStream(file, true)));
+			System.setOut(new PrintStream(new FileOutputStream(new File("testConverter.txt"), true)));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
 		
+		// load annotations
 		try
 		{
 			sentence = new SentenceLoader(new File("goldstandard.xml"));
@@ -64,7 +75,25 @@ public class TestConverter
 		if (sentence == null)
 			return;
 		
-		
+		// get all sentences
+		for (int i = 0; i < sentence.getSentenceCount(); i++)
+		{
+			// get all annotations
+			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
+			{
+				// conversion WEIGHT
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
+				{
+					
+				}
+				
+				// conversion LINEAR MEASURE
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
+				{
+					
+				}
+			}
+		}
 		
 	}
 	
