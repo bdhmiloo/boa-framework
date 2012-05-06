@@ -37,7 +37,7 @@ public class TestConverter
 	{
 		File file = new File("testConverterWeight.txt");
 		SentenceLoader sentence = null;
-		ConverterWeight cw = new ConverterWeight("WEIGHT", "goldstandard.xml");
+		ConverterWeight cw = new ConverterWeight("goldstandard.xml");
 		
 		try
 		{

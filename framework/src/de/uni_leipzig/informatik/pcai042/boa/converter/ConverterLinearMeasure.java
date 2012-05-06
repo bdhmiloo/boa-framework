@@ -29,12 +29,12 @@ public class ConverterLinearMeasure extends Converter
 	/**
 	 * Constructor loads all necessary files for unit linear measure.
 	 * 
-	 * @param unit - LINEAR_MEASURE
-	 * @param file - name of file with annotations that should be loaded
+	 * @param file
+	 *            - name of file with annotations that should be loaded
 	 */
-	public ConverterLinearMeasure(String unit, String file)
+	public ConverterLinearMeasure(String file)
 	{
-		super();
+		super("LINEAR_MEASURE", file);
 	}
 	
 	/**
