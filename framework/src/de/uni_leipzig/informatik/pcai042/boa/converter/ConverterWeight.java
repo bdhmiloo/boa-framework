@@ -48,6 +48,7 @@ public class ConverterWeight extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
+		String[] mikrog = { "" };
 		String[] mg = { "mg", "milligram", "milligrams" };
 		String[] Kt = { "Kt", "carat" };
 		String[] lbs = { "lbs", "lb", "labs", "pound", "pounds" };
