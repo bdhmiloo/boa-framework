@@ -48,7 +48,8 @@ public class ConverterLinearMeasure extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
-		String[] mm = { "nm", "nanometer", "nanometers" };
+		String[] mikrom = { "" };
+		String[] mm = { "mm", "millimeter", "millimeters" };
 		String[] cm = { "cm", "centimeter", "centimeters" };
 		String[] dm = { "dm", "decimeters", "decimeter" };
 		String[] m = { "m", "meter", "meters", "metres" };
