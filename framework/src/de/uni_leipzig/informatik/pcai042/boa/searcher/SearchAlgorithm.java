@@ -65,7 +65,7 @@ public abstract class SearchAlgorithm
 	 */
 	
 	
-	protected boolean checkIfNumber(String token)
+	public boolean checkIfNumber(String token)
 	{	
 		try
 		{
@@ -92,7 +92,7 @@ public abstract class SearchAlgorithm
 	 * @return -1 if no combined number else position of first non-numerical char
 	 */
 	
-	protected int checkIfStartsWithNumber(String token)
+	public int checkIfStartsWithNumber(String token)
 	{
 		String prefix;
 		int length = 1;
@@ -120,7 +120,7 @@ public abstract class SearchAlgorithm
 	 * @return true if prefix, else false
 	 */
 	
-	protected boolean isPrefix(String token, Set<String> words)
+	public boolean isPrefix(String token, Set<String> words)
 	{
 		Iterator<String> it = words.iterator();
 		String nextWord;
