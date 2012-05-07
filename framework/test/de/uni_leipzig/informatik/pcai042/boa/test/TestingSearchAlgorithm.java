@@ -34,10 +34,7 @@ import org.junit.*;
 public class TestingSearchAlgorithm extends TestCase
 {
    private SearchAlgorithm searching;
-   private  String token = "4" ;
-   private String positioncheck = "1233.4x";
    private  Set<String> words = new HashSet<String>();
-   private String tokenword = "kg";
   
    
    
@@ -61,10 +58,20 @@ public class TestingSearchAlgorithm extends TestCase
    public void testIfNumber() 
    {
 	   
-	   
-	 assertTrue("It is a Number", true == searching.checkIfNumber(token) );
-   
+	 assertTrue("It is a Number", true == searching.checkIfNumber("4") && searching.checkIfNumber("1234"));
+
    }
+   /**
+    *Checks if Token is a number. This method works properly, if the return Value is false.
+    **/
+   @Test
+   public void testIfNumberFalse() 
+   {
+	   
+	 assertFalse("It is a Number", false == searching.checkIfNumber("23f") && searching.checkIfNumber("e3"));
+
+   }
+   
    
    /**
     *Checks the Position of the first non numeric Character. 
@@ -73,9 +80,23 @@ public class TestingSearchAlgorithm extends TestCase
    public void testIfStartsWithANumber() 
    {
 	   
-	 assertEquals( testPosition(positioncheck) ,searching.checkIfStartsWithNumber(positioncheck));
+	 assertEquals( testPosition("1233.4x") ,searching.checkIfStartsWithNumber("1233.4x"));
    
    }
+   
+   /**
+    *Checks the Position of the first non numeric Character. 
+    **/
+   @Test
+   public void testIfStartsWithANumberFalse() 
+   {
+	   
+	 assertEquals( testPosition("xxr") ,searching.checkIfStartsWithNumber("xxr"));
+   
+   }
+   
+   
+   
    
    
    
@@ -86,7 +107,7 @@ public class TestingSearchAlgorithm extends TestCase
    @Test
    public void testIfPrefix()
    {
-	   assertTrue( true == searching.isPrefix(tokenword, words));
+	   assertTrue( true == searching.isPrefix("kg", words));
    }
  
  /**
@@ -99,13 +120,15 @@ public class TestingSearchAlgorithm extends TestCase
 	  String m;
 	  int i;
 	  
-	   for (i=0; 1<=token.length(); i++)
+	   for (i=-1; i<=token.length(); i++)
 		{
-			m =token.substring(0, i+1);
+			m =token.substring(0, i+2);
 			if (isNumeric(m)== false)
 			break;
 	    }
-	   return (i+1);
+	   // for the fall that the sting starts with a Character
+	   if (i == -1) return i;
+	   return (i+2);
 	}
    
    
