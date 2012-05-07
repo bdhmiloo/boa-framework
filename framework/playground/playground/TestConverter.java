@@ -92,6 +92,18 @@ public class TestConverter
 				{
 					// test method here
 				}
+				
+				// conversion TEMPERATURE
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
+				{
+					// test method here
+				}
+				
+				// conversion DATE
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
+				{
+					// test method here
+				}
 			}
 		}
 		
