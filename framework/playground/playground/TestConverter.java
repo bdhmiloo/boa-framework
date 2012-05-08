@@ -30,6 +30,8 @@ import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
 /**
+ * Testing functionality of all Converter classes focused on convertUnits(..)
+ * methods.
  * 
  * @author Duc Huy Bui; Christian Kahmann
  */
@@ -84,25 +86,25 @@ public class TestConverter
 				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
-					// test method here
+					// TODO test method here
 				}
 				
 				// conversion LINEAR MEASURE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
 				{
-					// test method here
+					// TODO test method here
 				}
 				
 				// conversion TEMPERATURE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
 				{
-					// test method here
+					// TODO test method here
 				}
 				
 				// conversion DATE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
-					// test method here
+					// TODO test method here
 				}
 			}
 		}
