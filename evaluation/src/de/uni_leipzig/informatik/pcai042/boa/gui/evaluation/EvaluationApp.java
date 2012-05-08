@@ -30,13 +30,16 @@ import com.vaadin.ui.Button.ClickListener;
 
 /**
  * 
- * @author Simon Suiter
+ * @author Simon Suiter, Duc Huy Bui
  */
 @SuppressWarnings("serial")
 public class EvaluationApp extends Application implements ItemClickListener, ClickListener, /*SelectedTabChangeListener,*/ ValueChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void init()
 	{
@@ -62,15 +65,18 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		
 		if (button == view.getButtonAnnotate())
 		{
+			// TODO add code here
 			
 		} else if (button == view.getButtonNew())
 		{
 			view.resetComponents();
 		} else if (button == view.getButtonNext())
 		{
+			// TODO add code here
 			
 		} else if (button == view.getButtonNext2())
 		{
+			// TODO add code here
 			
 		}
 	}
@@ -80,7 +86,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	 */
 	public void itemClick(ItemClickEvent event)
 	{
-		
+		// TODO add code here
 	}
 	
 	/**
@@ -89,7 +95,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	public void valueChange(ValueChangeEvent event)
 	{
 		// https://vaadin.com/book/-/page/components.table.html
-		
+		// TODO add code here
 	}
 	
 //	/**

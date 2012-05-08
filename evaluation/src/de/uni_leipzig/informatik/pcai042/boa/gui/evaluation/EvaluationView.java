@@ -31,7 +31,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
 /**
  * 
- * @author Duc Huy Bui
+ * @author Duc Huy Bui, Simon Suiter
  */
 @SuppressWarnings("serial")
 public class EvaluationView extends VerticalLayout
@@ -218,7 +218,7 @@ public class EvaluationView extends VerticalLayout
 		tableEvaluation.addContainerProperty("F-Score", Double.class, null);
 		tab3Content.addComponent(tableEvaluation);
 		
-		// testing table
+		// TODO remove this test if not used anymore
 		for (int i = 1; i <= 10; i++)
 		{
 			// last "new Integer()" represents position of object in table!
@@ -230,7 +230,7 @@ public class EvaluationView extends VerticalLayout
 		buttonNext2.setImmediate(true);
 		tab3Content.addComponent(buttonNext2);
 		
-		// printout needed here
+		// TODO print-out for evaluation needed here
 		
 		return tab3Content;
 	}
