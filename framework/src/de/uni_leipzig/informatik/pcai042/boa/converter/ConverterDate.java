@@ -20,27 +20,43 @@ import java.util.ArrayList;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
 /**
+ * Converter class for unit type DATE.
  * 
- * @author 
+ * @author
  */
 public class ConverterDate extends Converter
 {
 	/**
+	 * Constructor.
 	 * 
 	 */
 	public ConverterDate()
 	{
-		// TODO Auto-generated constructor stub
+		// TODO add code here
 	}
-
+	
+	@Override
+	protected void loadSurfaceForms(String file)
+	{
+		// do nothing, because DATE does not need to load surface forms
+	}
+	
 	/**
+	 * Derived method of superclass Converter for unit type DATE.
 	 * 
+	 * @param annotation
+	 *            one annotation
+	 * @return list with all surface forms of an unit inclusive all
+	 *         corresponding conversions
 	 */
 	@Override
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> list = new ArrayList<String>();
+		
+		// TODO add code here
+		
+		return list;
 	}
 	
 }

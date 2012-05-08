@@ -20,26 +20,43 @@ import java.util.ArrayList;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
 /**
+ * Converter class for unit type TEMPERATURE.
  * 
- * @author 
+ * @author
  */
 public class ConverterTemperature extends Converter
 {
 	/**
-	 * Constructor loads all necessary files for unit temperature.
+	 * Constructor loads all necessary files for unit TEMPERATURE.
 	 * 
 	 * @param file
-	 *            - name of file with annotations that should be loaded
+	 *            name of file with annotations that should be loaded
 	 */
 	public ConverterTemperature(String file)
 	{
 		super("TEMPERATURE", file);
 	}
-
+	
 	/**
+	 * Derived method for loading a file with all surface forms of TEMPERATURE.
+	 * 
+	 * @param file
+	 *            name of file with surface forms of all unit types
+	 */
+	@Override
+	protected void loadSurfaceForms(String file)
+	{
+		// TODO add code here
+		
+	}
+	
+	/**
+	 * Derived method of superclass Converter for unit type TEMPERATURE.
 	 * 
 	 * @param annotation
-	 * @return list with all surfaceforms of an unit inclusive all conversions
+	 *            one annotation
+	 * @return list with all surface forms of an unit inclusive all
+	 *         corresponding conversions
 	 */
 	@Override
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
@@ -53,8 +70,7 @@ public class ConverterTemperature extends Converter
 		
 		String[] allUnitsOfTemperature = { "K", "C", "F" };
 		
-		// add algo here
-		
+		// TODO add code here
 		
 		return list;
 	}

@@ -23,7 +23,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
- * Abstract class
+ * Abstract class for converting units. Each unit type (WEIGHT, LINEAR_MEASURE,
+ * TEMPERATURE, DATE) is a subclass of Converter.
  * 
  * @author Duc Huy Bui; Christian Kahmann
  */
@@ -33,12 +34,12 @@ public abstract class Converter
 	protected HashMap<String, BigDecimal> conversionUnit;
 	
 	/**
-	 * Constructor loads all necessary files for unit conversion.
+	 * Constructor loads all necessary files for unit conversions.
 	 * 
 	 * @param unit
-	 *            - String: WEIGHT, LINEAR_MEASURE, TEMPERATURE or DATE
+	 *            choose between WEIGHT, LINEAR_MEASURE, TEMPERATURE or DATE
 	 * @param file
-	 *            - String: name of file with annotations that should be loaded
+	 *            name of file with annotations that should be loaded
 	 */
 	public Converter(String unit, String file)
 	{
@@ -58,6 +59,7 @@ public abstract class Converter
 	 * Checks whether token is a number or not.
 	 * 
 	 * @param token
+	 *            one token
 	 * @return true - if token is a number, false - if token is not a number
 	 */
 	protected boolean checkIfNumber(String token)
@@ -93,10 +95,21 @@ public abstract class Converter
 	}
 	
 	/**
+	 * Abstract method for loading a file with all surface forms of all unit
+	 * types.
 	 * 
+	 * @param file
+	 *            name of file with surface forms of all unit types
+	 */
+	protected abstract void loadSurfaceForms(String file);
+	
+	/**
+	 * Abstract method for converting units in one annotation.
 	 * 
-	 * @param annotation 
-	 * @return list with all surfaceforms of an unit inclusive all conversion
+	 * @param annotation
+	 *            one annotation
+	 * @return list with all surface forms of an unit inclusive all
+	 *         corresponding conversions
 	 */
 	public abstract ArrayList<String> convertUnits(BoaAnnotation annotation);
 }
