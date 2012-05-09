@@ -93,9 +93,9 @@ public class TestClass
 			annoCount-= nextSentence.getAnnotations().size();
 			hilfsCount+= nextSentence.getAnnotations().size();
 			
-			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, "LINEAR_MEASURE", new NaiveAlgorithm());
-			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT,"WEIGHT", new NaiveAlgorithm());
-			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, "TEMPERATURE", new NaiveAlgorithm());
+			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, new NaiveAlgorithm());
+			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT, new NaiveAlgorithm());
+			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, new NaiveAlgorithm());
 			
 			lsLinMeasure.searchUnit(nextSentence);
 			lmCount+= nextSentence.getAnnotations().size();
