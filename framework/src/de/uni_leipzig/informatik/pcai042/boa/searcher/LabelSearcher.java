@@ -15,6 +15,8 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
@@ -23,25 +25,29 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
 public class LabelSearcher
 {
-	private Set<String> surfaceForms;
-	private static Type annoType;
 	private SearchAlgorithm algo;
 	
 	public LabelSearcher(Type annoType, String sForms, SearchAlgorithm algorithm)
 	{
 		try
 		{
-			LabelSearcher.annoType = annoType;
-		    surfaceForms  = new ConfigLoader().openConfigSurfaceForms(sForms);
+		    ConfigLoader load = new ConfigLoader();
+			Set<String> unitNames = load.openConfigSurfaceForms(sForms);
+			Set<String> surfaceForms = new HashSet<String>();
+			
+			Iterator<String> it = unitNames.iterator();
+			while(it.hasNext())
+			{
+				surfaceForms.addAll(load.openConfigSurfaceForms(it.next().toUpperCase()));
+			}
 			
 			algo = algorithm.getClass().newInstance();
 			algo.setSurForms(surfaceForms);
 			algo.setAnnoType(annoType);
-			//System.out.println(algo + " " + annoType.toString());
 		}
 		catch(Exception e)
 		{
-			//do sth
+			e.printStackTrace();
 		}
 	}
 
