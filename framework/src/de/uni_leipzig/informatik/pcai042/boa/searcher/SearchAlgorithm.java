@@ -82,7 +82,7 @@ public abstract class SearchAlgorithm
 		}
 		catch(NumberFormatException e){}
 				
-		return numbers.contains(token);
+		return numbers.contains(token.toLowerCase());
 	}
 	
 	
