@@ -27,12 +27,12 @@ public class LabelSearcher
 {
 	private SearchAlgorithm algo;
 	
-	public LabelSearcher(Type annoType, String sForms, SearchAlgorithm algorithm)
+	public LabelSearcher(Type annoType, SearchAlgorithm algorithm)
 	{
 		try
 		{
 		    ConfigLoader load = new ConfigLoader();
-			Set<String> unitNames = load.openConfigSurfaceForms(sForms);
+			Set<String> unitNames = load.openConfigSurfaceForms(annoType.toString());
 			Set<String> surfaceForms = new HashSet<String>();
 			
 			Iterator<String> it = unitNames.iterator();
