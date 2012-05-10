@@ -179,68 +179,68 @@ public class ConverterWeight extends Converter
 				}
 			}
 			
-			BigDecimal a = new BigDecimal(number);
-			BigDecimal standard = a.multiply(conversionStandard.get(tempUnit));
+			BigDecimal tempNumber = new BigDecimal(number);
+			BigDecimal standard = tempNumber.multiply(conversionStandard.get(tempUnit));
 			
 			// get multiplication factor for conversion
 			for (int d = 0; d < allUnitsOfWeight.length; d++)
 			{
-				BigDecimal neu = standard.multiply(conversionUnit.get(allUnitsOfWeight[d]));
+				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfWeight[d]));
 				
 				if (allUnitsOfWeight[d].equals("kg"))
 				{
 					for (int l = 0; l < kg.length; l++)
 					{
-						list.add(neu + " " + kg[l]);
+						list.add(newNumber + " " + kg[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("µg"))
 				{
 					for (int l = 0; l < microg.length; l++)
 					{
-						list.add(neu + " " + microg[l]);
+						list.add(newNumber + " " + microg[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("g"))
 				{
 					for (int l = 0; l < g.length; l++)
 					{
-						list.add(neu + " " + g[l]);
+						list.add(newNumber + " " + g[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("t"))
 				{
 					for (int l = 0; l < t.length; l++)
 					{
-						list.add(neu + " " + t[l]);
+						list.add(newNumber + " " + t[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("Kt"))
 				{
 					for (int l = 0; l < Kt.length; l++)
 					{
-						list.add(neu + " " + Kt[l]);
+						list.add(newNumber + " " + Kt[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("oz"))
 				{
 					for (int l = 0; l < oz.length; l++)
 					{
-						list.add(neu + " " + oz[l]);
+						list.add(newNumber + " " + oz[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("lbs"))
 				{
 					for (int l = 0; l < lbs.length; l++)
 					{
-						list.add(neu + " " + lbs[l]);
+						list.add(newNumber + " " + lbs[l]);
 					}
 				}
 				if (allUnitsOfWeight[d].equals("mg"))
 				{
 					for (int l = 0; l < mg.length; l++)
 					{
-						list.add(neu + " " + mg[l]);
+						list.add(newNumber + " " + mg[l]);
 					}
 				}
 			}
