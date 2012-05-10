@@ -72,11 +72,11 @@ public class ConverterLinearMeasure extends Converter
 		String[] dm = { "dm", "decimeters", "decimeter" };
 		String[] m = { "m", "meter", "meters", "metres" };
 		String[] km = { "km", "kilometer", "kilometers" };
-		String[] ft = { "ft", "feet", "feet", "'" };
 		String[] inch = { "inch", "in", "inches", };
+		String[] ft = { "ft", "feet", "feet", "'" };
 		String[] yard = { "yard", "yards", "yd", "yds" };
-		String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
 		String[] mile = { "mile", "miles" };
+		String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
 		
 		String[] allUnitsOfLinearMeasure = { "µm", "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
 		
