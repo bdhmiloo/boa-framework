@@ -66,7 +66,7 @@ public class ConverterLinearMeasure extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
-		String[] mikrom = { "" };
+		String[] microm = { "µm", "micrometer", "micrometre" };
 		String[] mm = { "mm", "millimeter", "millimeters" };
 		String[] cm = { "cm", "centimeter", "centimeters" };
 		String[] dm = { "dm", "decimeters", "decimeter" };
@@ -78,21 +78,30 @@ public class ConverterLinearMeasure extends Converter
 		String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
 		String[] mile = { "mile", "miles" };
 		
-		String[] allUnitsOfLinearMeasure = { "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
+		String[] allUnitsOfLinearMeasure = { "µm", "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
 			int chooseOption = 0;
 			
-			for (int l = 0; l < mm.length; l++)
+			for (int l = 0; l < microm.length; l++)
 			{
-				if (mm[l].equals(annotation.getTokens().get(i)))
+				if (microm[l].equals(annotation.getTokens().get(i)))
 				{
-					tempUnit = "mm";
+					tempUnit = "µm";
 					chooseOption++;
 				}
 			}
+			if (chooseOption == 0)
+				for (int l = 0; l < mm.length; l++)
+				{
+					if (mm[l].equals(annotation.getTokens().get(i)))
+					{
+						chooseOption++;
+						tempUnit = "mm";
+					}
+				}
 			if (chooseOption == 0)
 				for (int l = 0; l < cm.length; l++)
 				{
@@ -201,82 +210,89 @@ public class ConverterLinearMeasure extends Converter
 				}
 			}
 			
-			BigDecimal a = new BigDecimal(number);
-			BigDecimal standard = a.multiply(conversionStandard.get(tempUnit));
+			BigDecimal tempNumber = new BigDecimal(number);
+			BigDecimal standard = tempNumber.multiply(conversionStandard.get(tempUnit));
 			
 			// get multiplication factor for conversion
 			for (int d = 0; d < allUnitsOfLinearMeasure.length; d++)
 			{
-				BigDecimal neu = standard.multiply(conversionUnit.get(allUnitsOfLinearMeasure[d]));
+				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfLinearMeasure[d]));
 				
+				if (allUnitsOfLinearMeasure[d].equals("µm"))
+				{
+					for (int l = 0; l < microm.length; l++)
+					{
+						list.add(newNumber + " " + microm[l]);
+					}
+				}
 				if (allUnitsOfLinearMeasure[d].equals("mm"))
 				{
 					for (int l = 0; l < mm.length; l++)
 					{
-						list.add(neu + " " + mm[l]);
+						list.add(newNumber + " " + mm[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("cm"))
 				{
 					for (int l = 0; l < cm.length; l++)
 					{
-						list.add(neu + " " + cm[l]);
+						list.add(newNumber + " " + cm[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("dm"))
 				{
 					for (int l = 0; l < dm.length; l++)
 					{
-						list.add(neu + " " + dm[l]);
+						list.add(newNumber + " " + dm[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("m"))
 				{
 					for (int l = 0; l < m.length; l++)
 					{
-						list.add(neu + " " + m[l]);
+						list.add(newNumber + " " + m[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("km"))
 				{
 					for (int l = 0; l < km.length; l++)
 					{
-						list.add(neu + " " + km[l]);
+						list.add(newNumber + " " + km[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("ft"))
 				{
 					for (int l = 0; l < ft.length; l++)
 					{
-						list.add(neu + " " + ft[l]);
+						list.add(newNumber + " " + ft[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("inch"))
 				{
 					for (int l = 0; l < inch.length; l++)
 					{
-						list.add(neu + " " + inch[l]);
+						list.add(newNumber + " " + inch[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("yard"))
 				{
 					for (int l = 0; l < yard.length; l++)
 					{
-						list.add(neu + " " + yard[l]);
+						list.add(newNumber + " " + yard[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("seamile"))
 				{
 					for (int l = 0; l < seamile.length; l++)
 					{
-						list.add(neu + " " + seamile[l]);
+						list.add(newNumber + " " + seamile[l]);
 					}
 				}
 				if (allUnitsOfLinearMeasure[d].equals("mile"))
 				{
 					for (int l = 0; l < mile.length; l++)
 					{
-						list.add(neu + " " + mile[l]);
+						list.add(newNumber + " " + mile[l]);
 					}
 				}
 			}

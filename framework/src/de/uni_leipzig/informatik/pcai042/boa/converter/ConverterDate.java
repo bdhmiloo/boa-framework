@@ -22,7 +22,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 /**
  * Converter class for unit type DATE.
  * 
- * @author
+ * @author Duc Huy Bui
  */
 public class ConverterDate extends Converter
 {
@@ -55,6 +55,14 @@ public class ConverterDate extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		
 		// TODO add code here
+		// get all tokens of annotation and choose unit
+		for (int i = 0; i < annotation.getTokens().size(); i++)
+		{
+			
+			
+			
+			
+		}
 		
 		return list;
 	}
