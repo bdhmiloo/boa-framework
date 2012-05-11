@@ -16,6 +16,9 @@
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
@@ -35,10 +38,17 @@ public class ConverterDate extends Converter
 		// TODO add code here
 	}
 	
+	/**
+	 * Derived method for loading a file with all surface forms of DATE.
+	 * 
+	 * @param file
+	 *            name of file with surface forms of all unit types
+	 */
 	@Override
 	protected void loadSurfaceForms(String file)
 	{
-		// do nothing, because DATE does not need to load surface forms
+		// do nothing, because DATE does not need to load surface forms file
+		// currently
 	}
 	
 	/**
@@ -54,17 +64,41 @@ public class ConverterDate extends Converter
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		
-		// TODO add code here
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
 			
+			// annotation.getTokens().get(i).replaceAll("'|\"|,|-|\\.|/|~", "");
 			
+			// TODO test if token is a number
 			
+			// TODO token is not a number --> must be some kind of string
+			
+			// TODO convert to other surfaceforms (numbers)
+			
+			// TODO convert to other surfacforms (strings)
 			
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param dateString
+	 * @param fromPattern
+	 * @param toPattern
+	 * @return
+	 * @throws ParseException
+	 */
+	private String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException
+	{
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromPattern);
+		Date date1 = simpleDateFormat.parse(dateString);
+		simpleDateFormat.applyPattern(toPattern);
+		
+		return simpleDateFormat.format(date1);
 	}
 	
 }
