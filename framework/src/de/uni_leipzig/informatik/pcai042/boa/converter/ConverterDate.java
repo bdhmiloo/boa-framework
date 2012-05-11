@@ -55,7 +55,7 @@ public class ConverterDate extends Converter
 	 * Derived method of superclass Converter for unit type DATE.
 	 * 
 	 * @param annotation
-	 *            one annotation
+	 *            one annotation comprising at least one token of type DATE
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 */

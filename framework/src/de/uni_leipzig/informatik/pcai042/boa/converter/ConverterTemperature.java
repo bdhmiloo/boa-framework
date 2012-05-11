@@ -54,7 +54,7 @@ public class ConverterTemperature extends Converter
 	 * Derived method of superclass Converter for unit type TEMPERATURE.
 	 * 
 	 * @param annotation
-	 *            one annotation
+	 *            one annotation comprising at least one token of type TEMPERATURE
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 */
