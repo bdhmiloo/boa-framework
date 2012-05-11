@@ -15,9 +15,13 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
  * Converter class for unit type TEMPERATURE.
@@ -51,7 +55,8 @@ public class ConverterTemperature extends Converter
 	 * Derived method of superclass Converter for unit type TEMPERATURE.
 	 * 
 	 * @param annotation
-	 *            one annotation comprising at least one token of type TEMPERATURE
+	 *            one annotation comprising at least one token of type
+	 *            TEMPERATURE
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 */
@@ -61,13 +66,124 @@ public class ConverterTemperature extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
-		String[] K = {};
-		String[] C = {};
-		String[] F = {};
+		ConfigLoader load = new ConfigLoader();
+		Set<String> unitNames = load.openConfigSurfaceForms("TEMPERATURE".toString());
+		Set<String> Celsius = load.openConfigSurfaceForms("CELSIUS".toString());
+		Set<String> Fahrenheit = load.openConfigSurfaceForms("FAHRENHEIT".toString());
+		Set<String> Kelvin = load.openConfigSurfaceForms("KELVIN".toString());
 		
-		String[] allUnitsOfTemperature = { "K", "C", "F" };
+		List<String> list1 = new ArrayList<String>(unitNames);
+		Object[] allUnitsofTemperature = list1.toArray();
 		
-		// TODO add code here
+		List<String> list2 = new ArrayList<String>(Celsius);
+		Object[] C = list2.toArray();
+		
+		List<String> list3 = new ArrayList<String>(Fahrenheit);
+		Object[] F = list3.toArray();
+		
+		List<String> list4 = new ArrayList<String>(Kelvin);
+		Object[] K = list4.toArray();
+		
+		for (int i = 0; i < annotation.getTokens().size(); i++)
+		{
+			int chooseOption = 0;
+			
+			for (int l = 0; l < C.length; l++)
+			{
+				if (C[l].toString().equals(annotation.getTokens().get(i)))
+				{
+					tempUnit = "C";
+					chooseOption++;
+				}
+			}
+			if (chooseOption == 0)
+				for (int l = 0; l < F.length; l++)
+				{
+					if (F[l].toString().equals(annotation.getTokens().get(i)))
+					{
+						chooseOption++;
+						tempUnit = "F";
+					}
+				}
+			if (chooseOption == 0)
+				for (int l = 0; l < K.length; l++)
+				{
+					if (K[l].toString().equals(annotation.getTokens().get(i)))
+					{
+						chooseOption++;
+						tempUnit = "K";
+					}
+				}
+			
+		}
+		
+		// option was selected
+		if (tempUnit != null)
+		{
+			double number = 0;
+			
+			// looking for any numbers in annotation
+			for (int w = 0; w < annotation.getTokens().size(); w++)
+			{
+				if (checkIfNumber(annotation.getTokens().get(w)))
+				{
+					String token = annotation.getTokens().get(w);
+					
+					if (token.contains("+"))
+						token = token.replace("+", "");
+					if (token.contains(","))
+						token = token.replace(",", ".");
+					if (token.contains("."))
+						number = Double.parseDouble(token);
+					else
+					{
+						number = (double) Integer.parseInt(token);
+					}
+				}
+			}
+			
+			BigDecimal tempNumber = new BigDecimal(number);
+			String help = conversionStandard.get(tempUnit).toString();
+			String help2 =conversionStandard.get(tempUnit+"f").toString();
+			
+			BigDecimal add = new BigDecimal(help);
+			BigDecimal faktor = new BigDecimal(help2);
+			BigDecimal standard = tempNumber.add(add).multiply(faktor);
+			
+			for (int d = 0; d < allUnitsofTemperature.length; d++)
+			{
+				String help3 = conversionUnit.get(allUnitsofTemperature[d]+"f").toString();
+				String help4 = conversionUnit.get(allUnitsofTemperature[d]+"f").toString();
+				
+				BigDecimal add2 = new BigDecimal(help3);
+				BigDecimal faktor2 = new BigDecimal(help4);
+				BigDecimal newNumber = standard.add(add2).multiply(faktor2);
+				
+				if (allUnitsofTemperature[d].equals("CELSIUS"))
+				{
+					for (int l = 0; l < C.length; l++)
+					{
+						list.add(newNumber + " " + C[l]);
+					}
+				}
+				if (allUnitsofTemperature[d].equals("FAHRENHEIT"))
+				{
+					for (int l = 0; l < F.length; l++)
+					{
+						list.add(newNumber + " " + F[l]);
+					}
+				}
+				if (allUnitsofTemperature[d].equals("KELVIN"))
+				{
+					for (int l = 0; l < K.length; l++)
+					{
+						list.add(newNumber + " " + K[l]);
+					}
+				}
+				
+			}
+			
+		}
 		
 		return list;
 	}
