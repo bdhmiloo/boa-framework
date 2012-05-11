@@ -119,7 +119,7 @@ public class TestConverter
 			}
 		}
 		
-		// Printout
+		// Printout to file 'testConverter.txt'
 		Iterator<String> it = result.iterator();
 		
 		while(it.hasNext())
