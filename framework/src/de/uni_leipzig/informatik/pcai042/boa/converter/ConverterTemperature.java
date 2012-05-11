@@ -39,19 +39,6 @@ public class ConverterTemperature extends Converter
 	}
 	
 	/**
-	 * Derived method for loading a file with all surface forms of TEMPERATURE.
-	 * 
-	 * @param file
-	 *            name of file with surface forms of all unit types
-	 */
-	@Override
-	protected void loadSurfaceForms(String file)
-	{
-		// TODO add code here
-		
-	}
-	
-	/**
 	 * Derived method of superclass Converter for unit type TEMPERATURE.
 	 * 
 	 * @param annotation
@@ -64,9 +51,10 @@ public class ConverterTemperature extends Converter
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
+		ConfigLoader load = new ConfigLoader();
 		String tempUnit = null;
 		
-		ConfigLoader load = new ConfigLoader();
+		// load surface forms
 		Set<String> unitNames = load.openConfigSurfaceForms("TEMPERATURE".toString());
 		Set<String> Celsius = load.openConfigSurfaceForms("CELSIUS".toString());
 		Set<String> Fahrenheit = load.openConfigSurfaceForms("FAHRENHEIT".toString());

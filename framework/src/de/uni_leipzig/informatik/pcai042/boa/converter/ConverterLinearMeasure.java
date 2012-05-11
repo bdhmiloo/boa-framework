@@ -34,21 +34,7 @@ public class ConverterLinearMeasure extends Converter
 	{
 		super("LINEAR_MEASURE");
 	}
-	
-	/**
-	 * Derived method for loading a file with all surface forms of
-	 * LINEAR_MEASURE.
-	 * 
-	 * @param file
-	 *            name of file with surface forms of all unit types
-	 */
-	@Override
-	protected void loadSurfaceForms(String file)
-	{
-		// TODO add code here
 		
-	}
-	
 	/**
 	 * Derived method of superclass Converter for unit type LINEAR_MEASURE.
 	 * 

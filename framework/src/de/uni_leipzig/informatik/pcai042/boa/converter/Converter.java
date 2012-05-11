@@ -97,15 +97,6 @@ public abstract class Converter
 	}
 	
 	/**
-	 * Abstract method for loading a file with all surface forms of all unit
-	 * types.
-	 * 
-	 * @param file
-	 *            name of file with surface forms of all unit types
-	 */
-	protected abstract void loadSurfaceForms(String file);
-	
-	/**
 	 * Abstract method for converting units in one annotation.
 	 * 
 	 * @param annotation
