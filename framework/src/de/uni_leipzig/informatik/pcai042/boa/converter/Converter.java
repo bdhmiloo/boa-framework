@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
@@ -31,6 +34,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public abstract class Converter
 {
+	private static final Logger logger = LoggerFactory.getLogger(Converter.class);
+	
 	protected HashMap<String, BigDecimal> conversionStandard;
 	protected HashMap<String, BigDecimal> conversionUnit;
 	
@@ -63,26 +68,33 @@ public abstract class Converter
 	 */
 	public boolean checkIfNumber(String token)
 	{
-		Set<String> numbers;
-		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
+		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
+		
+		// try to parse as Integer
 		try
 		{
 			Integer.parseInt(token);
+			
 			return true;
 		} catch (NumberFormatException e)
 		{
+			logger.error("Failed to parse" + token + "as Integer.");
 		}
+		
+		// try to parse as Double
 		try
 		{
-			// if(token.endsWith("f")) return numbers.contains(token); //else f
-			// at end of String is interpreted as "float", similar i as
+			// if(token.endsWith("f")) return numbers.contains(token);
+			// else f at end of String is interpreted as "float", similar i as
 			// imaginary
 			if (token.contains(","))
 				token = token.replace(",", ".");
 			Double.parseDouble(token);
+			
 			return true;
 		} catch (NumberFormatException e)
 		{
+			logger.error("Failed to parse" + token + "as Double.");
 		}
 		
 		return false;
