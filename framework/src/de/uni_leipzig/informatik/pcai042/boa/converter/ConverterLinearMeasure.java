@@ -64,7 +64,7 @@ public class ConverterLinearMeasure extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
-		String[] microm = { "µm", "micrometer", "micrometre" };
+//		String[] microm = { "µm", "micrometer", "micrometre" };
 		String[] mm = { "mm", "millimeter", "millimeters" };
 		String[] cm = { "cm", "centimeter", "centimeters" };
 		String[] dm = { "dm", "decimeters", "decimeter" };
@@ -76,21 +76,21 @@ public class ConverterLinearMeasure extends Converter
 		String[] mile = { "mile", "miles" };
 		String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
 		
-		String[] allUnitsOfLinearMeasure = { "µm", "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
+		String[] allUnitsOfLinearMeasure = { /*"µm",*/ "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
 			int chooseOption = 0;
 			
-			for (int l = 0; l < microm.length; l++)
-			{
-				if (microm[l].equals(annotation.getTokens().get(i)))
-				{
-					tempUnit = "µm";
-					chooseOption++;
-				}
-			}
+//			for (int l = 0; l < microm.length; l++)
+//			{
+//				if (microm[l].equals(annotation.getTokens().get(i)))
+//				{
+//					tempUnit = "µm";
+//					chooseOption++;
+//				}
+//			}
 			if (chooseOption == 0)
 				for (int l = 0; l < mm.length; l++)
 				{
@@ -216,13 +216,13 @@ public class ConverterLinearMeasure extends Converter
 			{
 				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfLinearMeasure[d]));
 				
-				if (allUnitsOfLinearMeasure[d].equals("µm"))
-				{
-					for (int l = 0; l < microm.length; l++)
-					{
-						list.add(newNumber + " " + microm[l]);
-					}
-				}
+//				if (allUnitsOfLinearMeasure[d].equals("µm"))
+//				{
+//					for (int l = 0; l < microm.length; l++)
+//					{
+//						list.add(newNumber + " " + microm[l]);
+//					}
+//				}
 				if (allUnitsOfLinearMeasure[d].equals("mm"))
 				{
 					for (int l = 0; l < mm.length; l++)
