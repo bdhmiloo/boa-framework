@@ -67,38 +67,24 @@ public abstract class Converter
 	 * @return true - if token is a number, false - if token is not a number
 	 */
 	public boolean checkIfNumber(String token)
-	{
-		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
-		
-		// try to parse as Integer
+	{	Set<String> numbers;
+		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 		try
 		{
 			Integer.parseInt(token);
-			
 			return true;
-		} catch (NumberFormatException e)
-		{
-			logger.error("Failed to parse" + token + "as Integer.");
 		}
-		
-		// try to parse as Double
+		catch(NumberFormatException e){}
 		try
 		{
-			// if(token.endsWith("f")) return numbers.contains(token);
-			// else f at end of String is interpreted as "float", similar i as
-			// imaginary
-			if (token.contains(","))
-				token = token.replace(",", ".");
+			//if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float", similar i as imaginary
+			if(token.contains(",")) token = token.replace(",", ".");
 			Double.parseDouble(token);
-			
 			return true;
-		} catch (NumberFormatException e)
-		{
-			logger.error("Failed to parse" + token + "as Double.");
 		}
-		
-		return false;
-		// return numbers.contains(token.toLowerCase());
+		catch(NumberFormatException e){}
+			return false;	
+		//return numbers.contains(token.toLowerCase());
 	}
 	
 	/**
