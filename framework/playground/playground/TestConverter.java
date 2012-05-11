@@ -107,14 +107,14 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
 				{
 					// TODO test method here
-					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+//					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 				
 				// conversion DATE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
-					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+//					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 			}
 		}

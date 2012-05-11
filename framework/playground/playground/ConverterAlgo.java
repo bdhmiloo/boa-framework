@@ -83,7 +83,7 @@ public class ConverterAlgo
 	 */
 	public static void main(String[] args)
 	{
-		File file = new File("test.txt");
+		File file = new File("testConverterAlgo.txt");
 		try
 		{
 			System.setOut(new PrintStream(new FileOutputStream(file, true)));
@@ -320,7 +320,6 @@ public class ConverterAlgo
 					}
 					
 				}
-				
 				
 				// conversion LINEAR MEASURE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")

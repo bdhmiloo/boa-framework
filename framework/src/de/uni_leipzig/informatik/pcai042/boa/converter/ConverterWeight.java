@@ -62,7 +62,7 @@ public class ConverterWeight extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
-		String[] microg = { "µg", "microgram" };
+//		String[] microg = { "µg", "microgram" };
 		String[] mg = { "mg", "milligram", "milligrams" };
 		String[] g = { "g", "gram" };
 		String[] kg = { "kg", "kilogram", "kilo", "kg." };
@@ -71,7 +71,7 @@ public class ConverterWeight extends Converter
 		String[] oz = { "oz", "ounze" };
 		String[] Kt = { "Kt", "carat" };
 		
-		String[] allUnitsOfWeight = { "µm", "mg", "g", "t", "kg", "lbs", "oz", "Kt" };
+		String[] allUnitsOfWeight = { /*"µm" ,*/ "mg", "g", "t", "kg", "lbs", "oz", "Kt" };
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
@@ -86,15 +86,15 @@ public class ConverterWeight extends Converter
 					chooseOption++;
 				}
 			}
-			if (chooseOption == 0)
-				for (int l = 0; l < microg.length; l++)
-				{
-					if (microg[l].equals(annotation.getTokens().get(i)))
-					{
-						chooseOption++;
-						tempUnit = "µg";
-					}
-				}
+//			if (chooseOption == 0)
+//				for (int l = 0; l < microg.length; l++)
+//				{
+//					if (microg[l].equals(annotation.getTokens().get(i)))
+//					{
+//						chooseOption++;
+//						tempUnit = "µg";
+//					}
+//				}
 			if (chooseOption == 0)
 				for (int l = 0; l < t.length; l++)
 				{
@@ -191,13 +191,13 @@ public class ConverterWeight extends Converter
 						list.add(newNumber + " " + kg[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("µg"))
-				{
-					for (int l = 0; l < microg.length; l++)
-					{
-						list.add(newNumber + " " + microg[l]);
-					}
-				}
+//				if (allUnitsOfWeight[d].equals("µg"))
+//				{
+//					for (int l = 0; l < microg.length; l++)
+//					{
+//						list.add(newNumber + " " + microg[l]);
+//					}
+//				}
 				if (allUnitsOfWeight[d].equals("g"))
 				{
 					for (int l = 0; l < g.length; l++)
