@@ -56,7 +56,8 @@ public class ConverterLinearMeasure extends Converter
 	 * Derived method of superclass Converter for unit type LINEAR_MEASURE.
 	 * 
 	 * @param annotation
-	 *            one annotation
+	 *            one annotation comprising at least one token of type
+	 *            LINEAR_MEASURE
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 */

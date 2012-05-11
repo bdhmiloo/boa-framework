@@ -55,7 +55,7 @@ public class ConverterWeight extends Converter
 	 * Derived method of superclass Converter for unit type WEIGHT.
 	 * 
 	 * @param annotation
-	 *            one annotation
+	 *            one annotation comprising at least one token of type WEIGHT
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 */
@@ -65,7 +65,7 @@ public class ConverterWeight extends Converter
 		ArrayList<String> list = new ArrayList<String>();
 		String tempUnit = null;
 		
-		String[] microg = { "µg" , "microgram" };
+		String[] microg = { "µg", "microgram" };
 		String[] mg = { "mg", "milligram", "milligrams" };
 		String[] g = { "g", "gram" };
 		String[] kg = { "kg", "kilogram", "kilo", "kg." };
@@ -74,7 +74,7 @@ public class ConverterWeight extends Converter
 		String[] oz = { "oz", "ounze" };
 		String[] Kt = { "Kt", "carat" };
 		
-		String[] allUnitsOfWeight = { "µm" , "mg" , "g", "t", "kg", "lbs" , "oz", "Kt" };
+		String[] allUnitsOfWeight = { "µm", "mg", "g", "t", "kg", "lbs", "oz", "Kt" };
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
