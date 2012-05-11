@@ -51,6 +51,7 @@ public class TestConverter
 		ConverterTemperature conTEMPERATURE = new ConverterTemperature();
 		ConverterDate conDATE = new ConverterDate();
 		
+		// result of conversions
 		ArrayList<String> result = new ArrayList<String>();
 		
 		SentenceLoader sentence = null;
@@ -99,6 +100,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
 				{
 					// TODO test method here
+					result.addAll(conLINEAR_MEASURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 				
 				// conversion TEMPERATURE
@@ -112,13 +114,18 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
+					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 			}
 		}
 		
 		// Printout
+		Iterator<String> it = result.iterator();
 		
-		
+		while(it.hasNext())
+		{
+			System.out.println(it.next());
+		}
 	}
 	
 }
