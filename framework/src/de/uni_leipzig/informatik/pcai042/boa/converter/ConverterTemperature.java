@@ -144,23 +144,19 @@ public class ConverterTemperature extends Converter
 			
 			BigDecimal tempNumber = new BigDecimal(number);
 			String help = conversionStandard.get(tempUnit).toString();
+			String help2 =conversionStandard.get(tempUnit+"f").toString();
 			
-			int a = help.indexOf(",");
-			String help1 = help.substring(0, a - 1);
-			String help2 = help.substring(a + 1);
-			BigDecimal add = new BigDecimal(help1);
+			BigDecimal add = new BigDecimal(help);
 			BigDecimal faktor = new BigDecimal(help2);
 			BigDecimal standard = tempNumber.add(add).multiply(faktor);
 			
 			for (int d = 0; d < allUnitsofTemperature.length; d++)
 			{
-				String help3 = conversionUnit.get(allUnitsofTemperature[d]).toString();
+				String help3 = conversionUnit.get(allUnitsofTemperature[d]+"f").toString();
+				String help4 = conversionUnit.get(allUnitsofTemperature[d]+"f").toString();
 				
-				int b = help3.indexOf(",");
-				String help4 = help.substring(0, b - 1);
-				String help5 = help.substring(b + 1);
-				BigDecimal add2 = new BigDecimal(help4);
-				BigDecimal faktor2 = new BigDecimal(help5);
+				BigDecimal add2 = new BigDecimal(help3);
+				BigDecimal faktor2 = new BigDecimal(help4);
 				BigDecimal newNumber = standard.add(add2).multiply(faktor2);
 				
 				if (allUnitsofTemperature[d].equals("CELSIUS"))
