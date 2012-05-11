@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -91,6 +92,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					// TODO test method here
+					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 				
 				// conversion LINEAR MEASURE
@@ -103,6 +105,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
 				{
 					// TODO test method here
+					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 				
 				// conversion DATE
@@ -112,6 +115,9 @@ public class TestConverter
 				}
 			}
 		}
+		
+		// Printout
+		
 		
 	}
 	
