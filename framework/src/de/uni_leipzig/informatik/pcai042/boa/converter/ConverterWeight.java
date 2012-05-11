@@ -29,13 +29,10 @@ public class ConverterWeight extends Converter
 {
 	/**
 	 * Constructor loads all necessary files for unit WEIGHT.
-	 * 
-	 * @param file
-	 *            name of file with annotations that should be loaded
 	 */
-	public ConverterWeight(String file)
+	public ConverterWeight()
 	{
-		super("WEIGHT", file);
+		super("WEIGHT");
 	}
 	
 	/**

@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterDate;
 import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterLinearMeasure;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterTemperature;
 import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
@@ -43,8 +45,10 @@ public class TestConverter
 	 */
 	public static void main(String[] args)
 	{
-		ConverterWeight cw = new ConverterWeight("goldstandard.xml");
-		ConverterLinearMeasure clm = new ConverterLinearMeasure("goldstandard.xml");
+		ConverterWeight conWEIGHT = new ConverterWeight();
+		ConverterLinearMeasure conLINEAR_MEASURE = new ConverterLinearMeasure();
+		ConverterTemperature conTEMPERATURE = new ConverterTemperature();
+		ConverterDate conDATE = new ConverterDate();
 		
 		ArrayList<String> result = new ArrayList<String>();
 		
