@@ -18,6 +18,7 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
@@ -60,36 +61,26 @@ public abstract class Converter
 	 *            one token
 	 * @return true - if token is a number, false - if token is not a number
 	 */
-	protected boolean checkIfNumber(String token)
-	{
-		int i = 0;
-		
-		// testing integer
+	public boolean checkIfNumber(String token)
+	{	Set<String> numbers;
+		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 		try
 		{
 			Integer.parseInt(token);
-			i++;
-		} catch (NumberFormatException e)
-		{
-			e.printStackTrace();
+			return true;
 		}
-		
-		// testing double
+		catch(NumberFormatException e){}
 		try
 		{
-			if (token.contains(","))
-				token = token.replace(",", ".");
+			//if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float", similar i as imaginary
+			if(token.contains(",")) token = token.replace(",", ".");
 			Double.parseDouble(token);
-			i++;
-		} catch (NumberFormatException e)
-		{
-			e.printStackTrace();
-		}
-		
-		if (i == 0)
-			return false;
-		else
 			return true;
+		}
+		catch(NumberFormatException e){}
+				
+		return false;
+		//return numbers.contains(token.toLowerCase());
 	}
 	
 	/**
