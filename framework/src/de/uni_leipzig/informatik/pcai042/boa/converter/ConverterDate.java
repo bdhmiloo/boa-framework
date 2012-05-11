@@ -37,20 +37,7 @@ public class ConverterDate extends Converter
 	{
 		// TODO add code here
 	}
-	
-	/**
-	 * Derived method for loading a file with all surface forms of DATE.
-	 * 
-	 * @param file
-	 *            name of file with surface forms of all unit types
-	 */
-	@Override
-	protected void loadSurfaceForms(String file)
-	{
-		// do nothing, because DATE does not need to load surface forms file
-		// currently
-	}
-	
+
 	/**
 	 * Derived method of superclass Converter for unit type DATE.
 	 * 

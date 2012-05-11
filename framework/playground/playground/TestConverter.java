@@ -82,7 +82,9 @@ public class TestConverter
 		
 		if (sentence == null)
 			return;
+		
 		int count = 0;
+		
 		// get all sentences
 		for (int i = 0; i < sentence.getSentenceCount(); i++)
 		{
@@ -90,8 +92,9 @@ public class TestConverter
 			// get all annotations
 			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
-				result.add("Satz:" + i + "  Anno:" + k);
+				result.add("sentence:" + i + "  anno:" + k);
 				result.add("________________________");
+				
 				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
@@ -120,7 +123,8 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
-					// result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					 result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					 count++;
 				}
 				result.add("________________________");
 			}
@@ -133,8 +137,9 @@ public class TestConverter
 		{
 			System.out.println(it.next());
 		}
-		System.out.println("es können " + count + " annotationen von 981 möglichen bearbeitet werden");
-		System.out.println("er wurden " + result.size() + " oberflachenformen erstellt");
+		
+		System.out.println(count + " annotations of 981 in total could be processed");
+		System.out.println(result.size() + " surface forms could be loaded");
 	}
 	
 }

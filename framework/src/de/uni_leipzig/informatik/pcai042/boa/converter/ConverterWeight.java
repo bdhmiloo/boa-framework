@@ -36,19 +36,6 @@ public class ConverterWeight extends Converter
 	}
 	
 	/**
-	 * Derived method for loading a file with all surface forms of WEIGHT.
-	 * 
-	 * @param file
-	 *            name of file with surface forms of all unit types
-	 */
-	@Override
-	protected void loadSurfaceForms(String file)
-	{
-		// TODO add code here
-		
-	}
-	
-	/**
 	 * Derived method of superclass Converter for unit type WEIGHT.
 	 * 
 	 * @param annotation
