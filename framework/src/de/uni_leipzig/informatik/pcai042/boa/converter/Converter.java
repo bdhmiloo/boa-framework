@@ -38,10 +38,8 @@ public abstract class Converter
 	 * 
 	 * @param unit
 	 *            choose between WEIGHT, LINEAR_MEASURE, TEMPERATURE or DATE
-	 * @param file
-	 *            name of file with annotations that should be loaded
 	 */
-	public Converter(String unit, String file)
+	public Converter(String unit)
 	{
 		conversionStandard = new ConfigLoader().openConfigConversion("Standard", unit);
 		conversionUnit = new ConfigLoader().openConfigConversion("Unit", unit);

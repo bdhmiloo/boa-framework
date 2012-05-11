@@ -28,13 +28,10 @@ public class ConverterTemperature extends Converter
 {
 	/**
 	 * Constructor loads all necessary files for unit TEMPERATURE.
-	 * 
-	 * @param file
-	 *            name of file with annotations that should be loaded
 	 */
-	public ConverterTemperature(String file)
+	public ConverterTemperature()
 	{
-		super("TEMPERATURE", file);
+		super("TEMPERATURE");
 	}
 	
 	/**
