@@ -82,18 +82,22 @@ public class TestConverter
 		
 		if (sentence == null)
 			return;
-		
+		int count=0;
 		// get all sentences
 		for (int i = 0; i < sentence.getSentenceCount(); i++)
 		{
+			
 			// get all annotations
 			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
+				result.add("Satz:"+i+"  Anno:"+k);
+				result.add("________________________");
 				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					// TODO test method here
 					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					count++;
 				}
 				
 				// conversion LINEAR MEASURE
@@ -101,13 +105,15 @@ public class TestConverter
 				{
 					// TODO test method here
 					result.addAll(conLINEAR_MEASURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					count++;
 				}
 				
 				// conversion TEMPERATURE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
 				{
 					// TODO test method here
-//					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					count++;
 				}
 				
 				// conversion DATE
@@ -116,6 +122,7 @@ public class TestConverter
 					// TODO test method here
 //					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
+				result.add("________________________");
 			}
 		}
 		
@@ -126,6 +133,8 @@ public class TestConverter
 		{
 			System.out.println(it.next());
 		}
+		System.out.println("es können "+count+" annotationen von 981 möglichen bearbeitet werden" );
+		System.out.println("er wurden "+result.size()+" oberflächenformen erstellt");
 	}
 	
 }
