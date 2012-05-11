@@ -90,28 +90,28 @@ public class ConverterTemperature extends Converter
 			
 			for (int l = 0; l < C.length; l++)
 			{
-				if (C[l].toString().equals(annotation.getTokens().get(i)))
+				if (C[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 				{
-					tempUnit = "C";
+					tempUnit = "celsius";
 					chooseOption++;
 				}
 			}
 			if (chooseOption == 0)
 				for (int l = 0; l < F.length; l++)
 				{
-					if (F[l].toString().equals(annotation.getTokens().get(i)))
+					if (F[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "F";
+						tempUnit = "fahrenheit";
 					}
 				}
 			if (chooseOption == 0)
 				for (int l = 0; l < K.length; l++)
 				{
-					if (K[l].toString().equals(annotation.getTokens().get(i)))
+					if (K[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "K";
+						tempUnit = "kelvin";
 					}
 				}
 			
@@ -152,28 +152,28 @@ public class ConverterTemperature extends Converter
 			
 			for (int d = 0; d < allUnitsofTemperature.length; d++)
 			{
-				String help3 = conversionUnit.get(allUnitsofTemperature[d]+"f").toString();
+				String help3 = conversionUnit.get(allUnitsofTemperature[d]).toString();
 				String help4 = conversionUnit.get(allUnitsofTemperature[d]+"f").toString();
 				
 				BigDecimal add2 = new BigDecimal(help3);
 				BigDecimal faktor2 = new BigDecimal(help4);
-				BigDecimal newNumber = standard.add(add2).multiply(faktor2);
+				BigDecimal newNumber = standard.multiply(faktor2).add(add2);
 				
-				if (allUnitsofTemperature[d].equals("CELSIUS"))
+				if (allUnitsofTemperature[d].equals("celsius"))
 				{
 					for (int l = 0; l < C.length; l++)
 					{
 						list.add(newNumber + " " + C[l]);
 					}
 				}
-				if (allUnitsofTemperature[d].equals("FAHRENHEIT"))
+				if (allUnitsofTemperature[d].equals("fahrenheit"))
 				{
 					for (int l = 0; l < F.length; l++)
 					{
 						list.add(newNumber + " " + F[l]);
 					}
 				}
-				if (allUnitsofTemperature[d].equals("KELVIN"))
+				if (allUnitsofTemperature[d].equals("kelvin"))
 				{
 					for (int l = 0; l < K.length; l++)
 					{
@@ -188,3 +188,4 @@ public class ConverterTemperature extends Converter
 		return list;
 	}
 }
+ 
