@@ -82,7 +82,7 @@ public class TestConverter
 		
 		if (sentence == null)
 			return;
-		int count=0;
+		int count = 0;
 		// get all sentences
 		for (int i = 0; i < sentence.getSentenceCount(); i++)
 		{
@@ -90,7 +90,7 @@ public class TestConverter
 			// get all annotations
 			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
-				result.add("Satz:"+i+"  Anno:"+k);
+				result.add("Satz:" + i + "  Anno:" + k);
 				result.add("________________________");
 				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
@@ -120,7 +120,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
-//					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					// result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 				}
 				result.add("________________________");
 			}
@@ -129,12 +129,12 @@ public class TestConverter
 		// Printout to file 'testConverter.txt'
 		Iterator<String> it = result.iterator();
 		
-		while(it.hasNext())
+		while (it.hasNext())
 		{
 			System.out.println(it.next());
 		}
-		System.out.println("es können "+count+" annotationen von 981 möglichen bearbeitet werden" );
-		System.out.println("er wurden "+result.size()+" oberflächenformen erstellt");
+		System.out.println("es kÃ¶nnen " + count + " annotationen von 981 mÃ¶glichen bearbeitet werden");
+		System.out.println("er wurden " + result.size() + " oberflachenformen erstellt");
 	}
 	
 }

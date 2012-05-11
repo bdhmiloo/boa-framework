@@ -34,7 +34,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public abstract class Converter
 {
-	private static final Logger logger = LoggerFactory.getLogger(Converter.class);
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(Converter.class);
 	
 	protected HashMap<String, BigDecimal> conversionStandard;
 	protected HashMap<String, BigDecimal> conversionUnit;
@@ -67,24 +68,32 @@ public abstract class Converter
 	 * @return true - if token is a number, false - if token is not a number
 	 */
 	public boolean checkIfNumber(String token)
-	{	Set<String> numbers;
-		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
+	{
+		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
+		
 		try
 		{
 			Integer.parseInt(token);
 			return true;
+		} catch (NumberFormatException e)
+		{
+			// TODO catch exception or log
 		}
-		catch(NumberFormatException e){}
 		try
 		{
-			//if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float", similar i as imaginary
-			if(token.contains(",")) token = token.replace(",", ".");
+			// if(token.endsWith("f")) return numbers.contains(token); //else f
+			// at end of String is interpreted as "float", similar i as
+			// imaginary
+			if (token.contains(","))
+				token = token.replace(",", ".");
 			Double.parseDouble(token);
 			return true;
+		} catch (NumberFormatException e)
+		{
+			// TODO catch exception or log
 		}
-		catch(NumberFormatException e){}
-			return false;	
-		//return numbers.contains(token.toLowerCase());
+		return false;
+		// return numbers.contains(token.toLowerCase());
 	}
 	
 	/**
