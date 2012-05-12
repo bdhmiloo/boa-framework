@@ -1,5 +1,5 @@
 /*
- * ConverterDate.java
+ * ConverterDateAlgo.java
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -13,32 +13,30 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.uni_leipzig.informatik.pcai042.boa.converter;
+package playground;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
 /**
- * Converter class for unit type DATE.
  * 
  * @author Duc Huy Bui
+ * 
  */
-public class ConverterDate extends Converter
+public class ConverterDateAlgo
 {
 	/**
-	 * Constructor.
 	 * 
 	 */
-	public ConverterDate()
+	public ConverterDateAlgo()
 	{
-		// TODO add code here
-		super();
+		
 	}
-
+	
 	/**
 	 * Derived method of superclass Converter for unit type DATE.
 	 * 
@@ -47,7 +45,6 @@ public class ConverterDate extends Converter
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 */
-	@Override
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
@@ -87,6 +84,15 @@ public class ConverterDate extends Converter
 		simpleDateFormat.applyPattern(toPattern);
 		
 		return simpleDateFormat.format(date1);
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

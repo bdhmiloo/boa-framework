@@ -33,7 +33,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
  * @author Christian Kahmann
  * @version 0.1
  */
-public class ConverterAlgo
+public class ConverterWeightLinearMeasureAlgo
 {
 	private static HashMap<String, BigDecimal> conversionStandardw;
 	private static HashMap<String, BigDecimal> conversionUnitw;
