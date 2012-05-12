@@ -118,4 +118,30 @@ public class ConfigLoader
 		
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param label
+	 * @return value of the labeled property
+	 */
+	
+	public String returnValue(String label)
+	{
+		Properties configForms = new Properties();
+		
+		try 
+		{
+			configForms.load(new InputStreamReader(new FileInputStream(sForms), "UTF-8"));
+		} 
+		catch (FileNotFoundException e)
+		{	
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return configForms.getProperty(label);
+	}
 }
