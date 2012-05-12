@@ -23,6 +23,14 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.LabelSearcher;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
 
+/**
+ * Creates LabelSearchers for each Unit we want to find and makes the process
+ * on a given ArrayList of BoaSentence. Both the name of the units and the algorithm
+ * used to search for it are stored in the sForms.properties file.
+ * @author Jakob
+ *
+ */
+
 public class Annotater
 {
 	private boolean isInitialized = false;
@@ -53,6 +61,10 @@ public class Annotater
 			}
 			
 			isInitialized = true;
+		}
+		catch(ClassNotFoundException e)
+		{
+			//create logger message
 		}
 		catch(Exception e)
 		{
