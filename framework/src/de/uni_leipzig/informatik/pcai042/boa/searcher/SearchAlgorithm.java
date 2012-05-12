@@ -45,7 +45,7 @@ public abstract class SearchAlgorithm
 		}
 		catch(NullPointerException e)
 		{
-			//do sth
+			e.printStackTrace();
 		}
 	}
 	
@@ -69,13 +69,7 @@ public abstract class SearchAlgorithm
 	{	
 		try
 		{
-			Integer.parseInt(token);
-			return true;
-		}
-		catch(NumberFormatException e){}
-		try
-		{
-			if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float", similar i as imaginary
+			if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float"
 			if(token.contains(",")) token = token.replace(",", ".");
 			Double.parseDouble(token);
 			return true;
