@@ -20,13 +20,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -52,42 +51,119 @@ public class ConverterDateAlgo
 	}
 	
 	/**
+	 * Checks whether token is a number or not.
+	 * 
+	 * @param token
+	 *            one token
+	 * @return true - if token is a number, false - if token is not a number
+	 */
+	public boolean checkIfNumber(String token)
+	{
+		try
+		{
+			Integer.parseInt(token);
+			return true;
+		} catch (NumberFormatException e)
+		{
+			// TODO catch exception or log
+		}
+		
+		try
+		{
+			if (token.contains(","))
+				token = token.replace(",", ".");
+			Double.parseDouble(token);
+			return true;
+		} catch (NumberFormatException e)
+		{
+			// TODO catch exception or log
+		}
+		return false;
+	}
+	
+	/**
 	 * Derived method of superclass Converter for unit type DATE.
 	 * 
 	 * @param annotation
 	 *            one annotation comprising at least one token of type DATE
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
+	 * @throws ParseException
 	 */
-	public ArrayList<String> convertUnits(BoaAnnotation annotation)
+	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		
-		// ConfigLoader load = new ConfigLoader();
+		ConfigLoader load = new ConfigLoader();
 		
 		// TODO load all surfaceforms
-		// Set<String> month = load.openConfigSurfaceForms("MONTH".toString());
-		// Set<String> day = load.openConfigSurfaceForms("DAY".toString());
-		//
-		// ArrayList<String> monthList = new ArrayList<String>(month);
-		// ArrayList<String> dayList = new ArrayList<String>(day);
 		
 		// TODO remove string arrays if loading surface forms from file is
 		// possible
-		String[] month = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+		String[] monthList = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
 				"October", "November", "December" };
+		String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+				"Dec" };
+		String[] dateSeparater = { "/" , "|" , "-" , "'" , "~" , "."};
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
+			String currentToken = annotation.getTokens().get(i);
+			String copyOfToken = currentToken.replaceAll("\\W", "");
+			// replaceAll("'|\"|,|-|\|.|/|~", "");
 			
-			// annotation.getTokens().get(i).replaceAll("'|\"|,|-|\\.|/|~", "");
+			// date pattern
+			String pattern = null;
 			
-			// TODO test if token is a number
+			// position of d(ay), M(onth) or y(ear) in date pattern
+			String day = null, month = null, year = null;
 			
-			// TODO token is not a number --> must be some kind of string
+			if (checkIfNumber(copyOfToken))
+			{
+				// token consists just of numbers
+				currentToken.replaceAll("\\W", ".");
+				
+				String[] datePos = currentToken.split(".");
+				
+				day = datePos[1];
+				month = datePos[2];
+				year = datePos[3];
+				
+				// define date pattern
+				if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 
+					12 < Integer.valueOf(month) && Integer.valueOf(month) <= 31)
+				{
+					pattern = "MM.dd.yyyy";
+					String temp = day;
+					day = month;
+					month = temp;
+				} 
+				else if (31 < Integer.valueOf(day) && 
+						1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12 && 
+						1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
+				{
+					pattern = "yyyy.MM.dd";
+					String temp2 = day;
+					day = year;
+					year = temp2;
+					
+				} 
+				else
+				{
+					pattern = "dd.MM.yyyy";
+				}
+				
+			} else
+			{
+				// token consists of several strings
+				
+			}
+			
+			Format formatter;
 			
 			// TODO convert to other surfaceforms (numbers)
+			
 			
 			// TODO convert to other surfacforms (strings)
 			
@@ -99,6 +175,8 @@ public class ConverterDateAlgo
 	/**
 	 * 
 	 * 
+	 * @author Daniel Gerber
+	 * @see
 	 * @param dateString
 	 * @param fromPattern
 	 * @param toPattern
@@ -112,6 +190,36 @@ public class ConverterDateAlgo
 		simpleDateFormat.applyPattern(toPattern);
 		
 		return simpleDateFormat.format(date1);
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @author Daniel Gerber
+	 * @see
+	 * @param value
+	 * @return
+	 */
+	private String getOrdinalFor(int value)
+	{
+		int hundredRemainder = value % 100;
+		int tenRemainder = value % 10;
+		if (hundredRemainder - tenRemainder == 10)
+		{
+			return "th";
+		}
+		
+		switch (tenRemainder)
+		{
+			case 1:
+				return "st";
+			case 2:
+				return "nd";
+			case 3:
+				return "rd";
+			default:
+				return "th";
+		}
 	}
 	
 	/**
