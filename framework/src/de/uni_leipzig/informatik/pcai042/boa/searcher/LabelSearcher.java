@@ -59,7 +59,7 @@ public class LabelSearcher
 		}
 		catch(Exception e)
 		{
-			//do sth
+			e.printStackTrace();
 		}
 		
 		return;

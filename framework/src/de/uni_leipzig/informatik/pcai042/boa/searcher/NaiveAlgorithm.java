@@ -259,6 +259,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					prefix = currentToken.substring(0, position - 1);
 					suffix = currentToken.substring(position - 1);
 					
+					//checking if combined surface form
 					if(this.isPrefix(suffix+"&&", surForms))
 					{
 						Iterator<String> dsfFinder = sentence.getTokens().iterator();
@@ -314,7 +315,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							}
 						}
 					}
-					
+					//checking if ordinary surface form
 					if (surForms.contains(suffix.toLowerCase()))
 					{
 						// create Annotation
