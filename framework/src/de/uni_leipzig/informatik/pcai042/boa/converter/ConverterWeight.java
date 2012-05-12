@@ -17,8 +17,11 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
  * Converter class for unit type WEIGHT.
@@ -47,19 +50,48 @@ public class ConverterWeight extends Converter
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
+		ConfigLoader load = new ConfigLoader();
 		String tempUnit = null;
 		
-//		String[] microg = { "µg", "microgram" };
-		String[] mg = { "mg", "milligram", "milligrams" };
-		String[] g = { "g", "gram" };
-		String[] kg = { "kg", "kilogram", "kilo", "kg." };
-		String[] t = { "t", "ton", "metric ton", "metric tons", "tons" };
-		String[] lbs = { "lbs", "lb", "labs", "pound", "pounds" };
-		String[] oz = { "oz", "ounze" };
-		String[] Kt = { "Kt", "carat" };
+		// load surface forms
+		Set<String> unitNames = load.openConfigSurfaceForms("WEIGHT".toString());
+		Set<String> Microgram = load.openConfigSurfaceForms("MICROGRAM".toString());
+		Set<String> Milligram = load.openConfigSurfaceForms("MILLIGRAM".toString());
+		Set<String> Gram = load.openConfigSurfaceForms("GRAM".toString());
+		Set<String> Kilogram = load.openConfigSurfaceForms("KILOGRAM".toString());
+		Set<String> Ton = load.openConfigSurfaceForms("TON".toString());
+		Set<String> Pound = load.openConfigSurfaceForms("POUND".toString());
+		Set<String> Karat = load.openConfigSurfaceForms("KARAT".toString());
+		Set<String> Ounze = load.openConfigSurfaceForms("OUNZE".toString());
 		
-		String[] allUnitsOfWeight = { /*"µm" ,*/ "mg", "g", "t", "kg", "lbs", "oz", "Kt" };
+		List<String> list1 = new ArrayList<String>(unitNames);
+		Object[] allUnitsOfWeight = list1.toArray();
 		
+		List<String> list2 = new ArrayList<String>(Microgram);
+		Object[] microg = list2.toArray();
+		
+		List<String> list3 = new ArrayList<String>(Milligram);
+		Object[] mg = list3.toArray();
+		
+		List<String> list4 = new ArrayList<String>(Gram);
+		Object[] g = list4.toArray();
+		
+		List<String> list5 = new ArrayList<String>(Kilogram);
+		Object[] kg = list5.toArray();
+		
+		List<String> list6 = new ArrayList<String>(Ton);
+		Object[] t = list6.toArray();
+		
+		List<String> list7 = new ArrayList<String>(Pound);
+		Object[] lbs = list7.toArray();
+		
+		List<String> list8 = new ArrayList<String>(Karat);
+		Object[] Kt = list8.toArray();
+		
+		List<String> list9 = new ArrayList<String>(Ounze);
+		Object[] oz = list9.toArray();
+		
+	
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
@@ -69,71 +101,71 @@ public class ConverterWeight extends Converter
 			{
 				if (g[l].equals(annotation.getTokens().get(i)))
 				{
-					tempUnit = "g";
+					tempUnit = "gram";
 					chooseOption++;
 				}
 			}
-//			if (chooseOption == 0)
-//				for (int l = 0; l < microg.length; l++)
-//				{
-//					if (microg[l].equals(annotation.getTokens().get(i)))
-//					{
-//						chooseOption++;
-//						tempUnit = "µg";
-//					}
-//				}
+			if (chooseOption == 0)
+				for (int l = 0; l < microg.length; l++)
+				{
+					if (microg[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					{
+						chooseOption++;
+						tempUnit = "microgram";
+					}
+				}
 			if (chooseOption == 0)
 				for (int l = 0; l < t.length; l++)
 				{
-					if (t[l].equals(annotation.getTokens().get(i)))
+					if (t[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "t";
+						tempUnit = "ton";
 					}
 				}
 			if (chooseOption == 0)
 				for (int l = 0; l < kg.length; l++)
 				{
-					if (kg[l].equals(annotation.getTokens().get(i)))
+					if (kg[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "kg";
+						tempUnit = "kilogram";
 					}
 				}
 			if (chooseOption == 0)
 				for (int l = 0; l < Kt.length; l++)
 				{
-					if (Kt[l].equals(annotation.getTokens().get(i)))
+					if (Kt[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "Kt";
+						tempUnit = "karat";
 					}
 				}
 			if (chooseOption == 0)
 				for (int l = 0; l < oz.length; l++)
 				{
-					if (oz[l].equals(annotation.getTokens().get(i)))
+					if (oz[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "oz";
+						tempUnit = "ounze";
 					}
 				}
 			if (chooseOption == 0)
 				for (int l = 0; l < mg.length; l++)
 				{
-					if (mg[l].equals(annotation.getTokens().get(i)))
+					if (mg[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "mg";
+						tempUnit = "milligram";
 					}
 				}
 			if (chooseOption == 0)
 				for (int l = 0; l < lbs.length; l++)
 				{
-					if (lbs[l].equals(annotation.getTokens().get(i)))
+					if (lbs[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
 					{
 						chooseOption++;
-						tempUnit = "lbs";
+						tempUnit = "pound";
 					}
 				}
 		}
@@ -178,13 +210,13 @@ public class ConverterWeight extends Converter
 						list.add(newNumber + " " + kg[l]);
 					}
 				}
-//				if (allUnitsOfWeight[d].equals("µg"))
-//				{
-//					for (int l = 0; l < microg.length; l++)
-//					{
-//						list.add(newNumber + " " + microg[l]);
-//					}
-//				}
+				if (allUnitsOfWeight[d].equals("microg"))
+				{
+					for (int l = 0; l < microg.length; l++)
+					{
+						list.add(newNumber + " " + microg[l]);
+					}
+				}
 				if (allUnitsOfWeight[d].equals("g"))
 				{
 					for (int l = 0; l < g.length; l++)
