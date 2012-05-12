@@ -12,5 +12,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.6.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-log4j12-1.6.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javatools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Bosthorst/workspace/enum.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
