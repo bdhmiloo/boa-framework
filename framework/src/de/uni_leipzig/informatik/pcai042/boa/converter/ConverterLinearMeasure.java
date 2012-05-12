@@ -17,8 +17,11 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
  * Converter class for unit type LINEAR_MEASURE.
@@ -34,7 +37,7 @@ public class ConverterLinearMeasure extends Converter
 	{
 		super("LINEAR_MEASURE");
 	}
-		
+	
 	/**
 	 * Derived method of superclass Converter for unit type LINEAR_MEASURE.
 	 * 
@@ -48,35 +51,86 @@ public class ConverterLinearMeasure extends Converter
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
+		ConfigLoader load = new ConfigLoader();
 		String tempUnit = null;
 		
-//		String[] microm = { "µm", "micrometer", "micrometre" };
-		String[] mm = { "mm", "millimeter", "millimeters" };
-		String[] cm = { "cm", "centimeter", "centimeters" };
-		String[] dm = { "dm", "decimeters", "decimeter" };
-		String[] m = { "m", "meter", "meters", "metres" };
-		String[] km = { "km", "kilometer", "kilometers" };
-		String[] inch = { "inch", "in", "inches", };
-		String[] ft = { "ft", "feet", "feet", "'" };
-		String[] yard = { "yard", "yards", "yd", "yds" };
-		String[] mile = { "mile", "miles" };
-		String[] seamile = { "sm", "seamile", "seamiles", "nautic mile", "nautic miles" };
+		// load surface forms
+		Set<String> unitNames = load.openConfigSurfaceForms("LINEAR_MEASURE".toString());
+		Set<String> Micrometer = load.openConfigSurfaceForms("MICROMETER".toString());
+		Set<String> Millimeter = load.openConfigSurfaceForms("MILLIMETER".toString());
+		Set<String> Centimeter = load.openConfigSurfaceForms("CENTIMETER".toString());
+		Set<String> Decimeter = load.openConfigSurfaceForms("DECIMETER".toString());
+		Set<String> Meter = load.openConfigSurfaceForms("METER".toString());
+		Set<String> Kilometer = load.openConfigSurfaceForms("KILOMETER".toString());
+		Set<String> Mile = load.openConfigSurfaceForms("MILE".toString());
+		Set<String> Yard = load.openConfigSurfaceForms("YARD".toString());
+		Set<String> SeaMile = load.openConfigSurfaceForms("SEAMILE".toString());
+		Set<String> Inch = load.openConfigSurfaceForms("INCH".toString());
+		Set<String> Feet = load.openConfigSurfaceForms("FEET".toString());
 		
-		String[] allUnitsOfLinearMeasure = { /*"µm",*/ "mm", "cm", "dm", "m", "km", "mile", "seamile", "yard", "ft", "inch" };
+		List<String> list1 = new ArrayList<String>(unitNames);
+		Object[] allUnitsOfLinearMeasure = list1.toArray();
 		
+		List<String> list2 = new ArrayList<String>(Micrometer);
+		Object[] microm = list2.toArray();
+		
+		List<String> list3 = new ArrayList<String>(Millimeter);
+		Object[] mm = list3.toArray();
+		
+		List<String> list4 = new ArrayList<String>(Centimeter);
+		Object[] cm = list4.toArray();
+		
+		List<String> list5 = new ArrayList<String>(Decimeter);
+		Object[] dm = list5.toArray();
+		
+		List<String> list6 = new ArrayList<String>(Meter);
+		Object[] m = list6.toArray();
+		
+		List<String> list7 = new ArrayList<String>(Kilometer);
+		Object[] km = list7.toArray();
+		
+		List<String> list8 = new ArrayList<String>(Mile);
+		Object[] mile = list8.toArray();
+		
+		List<String> list9 = new ArrayList<String>(Yard);
+		Object[] yard = list9.toArray();
+		
+		List<String> list10 = new ArrayList<String>(SeaMile);
+		Object[] seamile = list10.toArray();
+		
+		List<String> list11 = new ArrayList<String>(Inch);
+		Object[] inch = list11.toArray();
+		
+		List<String> list12 = new ArrayList<String>(Feet);
+		Object[] ft = list12.toArray();
+		
+		/*
+		 * String[] microm = { "µm", "micrometer", "micrometre" }; String[] mm =
+		 * { "mm", "millimeter", "millimeters" }; String[] cm = { "cm",
+		 * "centimeter", "centimeters" }; String[] dm = { "dm", "decimeters",
+		 * "decimeter" }; String[] m = { "m", "meter", "meters", "metres" };
+		 * String[] km = { "km", "kilometer", "kilometers" }; String[] inch = {
+		 * "inch", "in", "inches", }; String[] ft = { "ft", "feet", "feet", "'"
+		 * }; String[] yard = { "yard", "yards", "yd", "yds" }; String[] mile =
+		 * { "mile", "miles" }; String[] seamile = { "sm", "seamile",
+		 * "seamiles", "nautic mile", "nautic miles" };
+		 * 
+		 * String[] allUnitsOfLinearMeasure = { "µm", "mm", "cm", "dm", "m",
+		 * "km", "mile", "seamile", "yard", "ft", "inch" };
+		 */
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
 			int chooseOption = 0;
 			
-//			for (int l = 0; l < microm.length; l++)
-//			{
-//				if (microm[l].equals(annotation.getTokens().get(i)))
-//				{
-//					tempUnit = "µm";
-//					chooseOption++;
-//				}
-//			}
+			for (int l = 0; l < microm.length; l++)
+			{
+				if (microm[l].equals(annotation.getTokens().get(i)))
+				{
+					tempUnit = "microm";
+					chooseOption++;
+				}
+			}
 			if (chooseOption == 0)
 				for (int l = 0; l < mm.length; l++)
 				{
@@ -202,13 +256,13 @@ public class ConverterLinearMeasure extends Converter
 			{
 				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfLinearMeasure[d]));
 				
-//				if (allUnitsOfLinearMeasure[d].equals("µm"))
-//				{
-//					for (int l = 0; l < microm.length; l++)
-//					{
-//						list.add(newNumber + " " + microm[l]);
-//					}
-//				}
+				// if (allUnitsOfLinearMeasure[d].equals("µm"))
+				// {
+				// for (int l = 0; l < microm.length; l++)
+				// {
+				// list.add(newNumber + " " + microm[l]);
+				// }
+				// }
 				if (allUnitsOfLinearMeasure[d].equals("mm"))
 				{
 					for (int l = 0; l < mm.length; l++)

@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Set;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public class ConfigLoader
 		
 		try 
 		{
-			configForms.load(new FileInputStream(sForms));
+			configForms.load(new InputStreamReader(new FileInputStream(sForms), "UTF-8"));
 		} 
 		catch (FileNotFoundException e)
 		{	
@@ -116,5 +117,31 @@ public class ConfigLoader
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @param label
+	 * @return value of the labeled property
+	 */
+	
+	public String returnValue(String label)
+	{
+		Properties configForms = new Properties();
+		
+		try 
+		{
+			configForms.load(new InputStreamReader(new FileInputStream(sForms), "UTF-8"));
+		} 
+		catch (FileNotFoundException e)
+		{	
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return configForms.getProperty(label);
 	}
 }

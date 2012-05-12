@@ -16,7 +16,6 @@
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 
@@ -260,6 +259,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					prefix = currentToken.substring(0, position - 1);
 					suffix = currentToken.substring(position - 1);
 					
+					//checking if combined surface form
 					if(this.isPrefix(suffix+"&&", surForms))
 					{
 						Iterator<String> dsfFinder = sentence.getTokens().iterator();
@@ -272,7 +272,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						if(this.checkIfNumber(dsfNumber)&&dsfFinder.hasNext())
 						{
 							dsfUnit = dsfFinder.next();
-							System.out.println("Checking: " +suffix+"&&"+dsfUnit);
+							//System.out.println("Checking: " +suffix+"&&"+dsfUnit);
 							
 							if(surForms.contains(suffix+"&&"+dsfUnit))
 							{
@@ -315,7 +315,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							}
 						}
 					}
-					
+					//checking if ordinary surface form
 					if (surForms.contains(suffix.toLowerCase()))
 					{
 						// create Annotation
