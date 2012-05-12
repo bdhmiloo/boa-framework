@@ -15,17 +15,31 @@
 
 package playground;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterDate;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
+import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
 /**
+ * Testing of ConverterDate.
  * 
  * @author Duc Huy Bui
- * 
  */
 public class ConverterDateAlgo
 {
@@ -48,6 +62,20 @@ public class ConverterDateAlgo
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
+		
+		// ConfigLoader load = new ConfigLoader();
+		
+		// TODO load all surfaceforms
+		// Set<String> month = load.openConfigSurfaceForms("MONTH".toString());
+		// Set<String> day = load.openConfigSurfaceForms("DAY".toString());
+		//
+		// ArrayList<String> monthList = new ArrayList<String>(month);
+		// ArrayList<String> dayList = new ArrayList<String>(day);
+		
+		// TODO remove string arrays if loading surface forms from file is
+		// possible
+		String[] month = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
 		
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.getTokens().size(); i++)
@@ -91,8 +119,74 @@ public class ConverterDateAlgo
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
+		ConverterDate conDATE = new ConverterDate();
 		
+		// result of conversions
+		ArrayList<String> result = new ArrayList<String>();
+		
+		SentenceLoader sentence = null;
+		
+		// initializes output file
+		try
+		{
+			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		// load annotations
+		try
+		{
+			sentence = new SentenceLoader(new File("goldstandard.xml"));
+		} catch (ValidityException e)
+		{
+			e.printStackTrace();
+		} catch (ParsingException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if (sentence == null)
+			return;
+		
+		int count = 0;
+		
+		// get all sentences
+		for (int i = 0; i < sentence.getSentenceCount(); i++)
+		{
+			
+			// get all annotations
+			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
+			{
+				result.add("sentence:" + i + "  anno:" + k);
+				result.add("________________________");
+				
+				// conversion DATE
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
+				{
+					// TODO test method here
+					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					count++;
+				}
+				
+				result.add("________________________");
+			}
+		}
+		
+		// Printout to file 'testConverter.txt'
+		Iterator<String> it = result.iterator();
+		
+		while (it.hasNext())
+		{
+			System.out.println(it.next());
+		}
+		
+		System.out.println(count + " annotations of 981 in total could be processed");
+		System.out.println(result.size() + " surface forms could be loaded");
 	}
 	
 }
