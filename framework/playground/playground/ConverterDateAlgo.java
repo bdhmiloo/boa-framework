@@ -25,10 +25,18 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 /**
  * 
  * @author Duc Huy Bui
- *
+ * 
  */
 public class ConverterDateAlgo
 {
+	/**
+	 * 
+	 */
+	public ConverterDateAlgo()
+	{
+		
+	}
+	
 	/**
 	 * Derived method of superclass Converter for unit type DATE.
 	 * 
@@ -77,6 +85,7 @@ public class ConverterDateAlgo
 		
 		return simpleDateFormat.format(date1);
 	}
+	
 	/**
 	 * @param args
 	 */
