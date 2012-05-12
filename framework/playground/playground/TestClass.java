@@ -56,35 +56,10 @@ public class TestClass
 		}
 		sentences = sentenceLoader.getSentences();
 		
-		/*SearchThread thread1, thread2, thread3;
-		
-		try
-		{
-			//create Searchers
-			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, "LINEAR_MEASURE_N", new NaiveAlgorithm());
-			thread1 = new SearchThread(lsLinMeasure, sentences);
-			thread1.start();
-			
-			
-			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT,"WEIGHT_N", new NaiveAlgorithm());
-			thread2 = new SearchThread(lsWeight, sentences);
-			thread2.start();
-			
-			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, "TEMPERATURE_N", new NaiveAlgorithm());
-			thread3 = new SearchThread(lsTemp, sentences);
-			thread3.start();
-			
-			while(thread1.isAlive()&&thread2.isAlive()&&thread3.isAlive())
-			{
-				//wait
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}*/
-		
 		Iterator<BoaSentence> it = sentences.iterator();
+		LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, new NaiveAlgorithm());
+		LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT, new NaiveAlgorithm());
+		LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, new NaiveAlgorithm());
 		
 		while(it.hasNext())
 		{
@@ -92,10 +67,6 @@ public class TestClass
 			nextSentence = it.next();
 			annoCount-= nextSentence.getAnnotations().size();
 			hilfsCount+= nextSentence.getAnnotations().size();
-			
-			LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, new NaiveAlgorithm());
-			LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT, new NaiveAlgorithm());
-			LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, new NaiveAlgorithm());
 			
 			lsLinMeasure.searchUnit(nextSentence);
 			lmCount+= nextSentence.getAnnotations().size();
