@@ -89,14 +89,13 @@ public class ConverterDateAlgo
 	 *         corresponding conversions
 	 * @throws ParseException
 	 */
-	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException, NullPointerException
+	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		
 		ConfigLoader load = new ConfigLoader();
 		
 		// TODO load all surfaceforms
-		
 		// TODO remove string arrays if loading surface forms from file is
 		// possible
 		String[] monthList = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
@@ -111,10 +110,10 @@ public class ConverterDateAlgo
 			String currentToken = annotation.getTokens().get(i);
 			String copyOfToken = currentToken.replaceAll("/|-|'|~|\\.", "");
 			
-			// date pattern
 			String pattern = null;
-			
 			String day, month, year;
+			
+			Boolean beginConversion = false;
 			
 			// TODO
 			System.out.println("TEST - currentToken: " + currentToken);
@@ -138,6 +137,8 @@ public class ConverterDateAlgo
 					String temp = day;
 					day = month;
 					month = temp;
+					
+					beginConversion = true;
 				} else if (31 < Integer.valueOf(day) && 1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12
 						&& 1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
 				{
@@ -146,9 +147,12 @@ public class ConverterDateAlgo
 					day = year;
 					year = temp2;
 					
+					beginConversion = true;
 				} else
 				{
 					pattern = "dd.MM.yyyy";
+					
+					beginConversion = true;
 				}
 				
 				// TODO
@@ -162,64 +166,84 @@ public class ConverterDateAlgo
 				
 			}
 			
-			String d = getDateString(currentToken, pattern, "d");
-			String dd = null;
-			String M = getDateString(currentToken, pattern, "M");
-			String MM = null;
-			String MMM = getDateString(currentToken, pattern, "MMM");
-			String MMMM = getDateString(currentToken, pattern, "MMMM");
-			String yy = getDateString(currentToken, pattern, "yy");
-			String yyyy = getDateString(currentToken, pattern, "yyyy");
-			
-			// add to day or month "0" for single numbers
-			Boolean enableDD = false, enableMM = false;
-			
-			if (1 <= Integer.valueOf(d) && Integer.valueOf(d) <= 9)
+			// conversion
+			if (beginConversion)
 			{
-				dd = "0" + d;
-				enableDD = true;
+				conversionOfDate(list, currentToken, pattern, dateSeparater);
 			}
-			if (1 <= Integer.valueOf(M) && Integer.valueOf(M) <= 9)
-			{
-				MM = "0" + M;
-				enableMM = true;
-			}
-			
-			// convert to other surface forms (numbers)
-			for (int p = 0; p < dateSeparater.length; p++)
-			{
-				list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
-				list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
-				
-				if (enableDD)
-				{
-					list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yy);
-					list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yyyy);
-				}
-				if (enableMM)
-				{
-					list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yy);
-					list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
-				}
-				if (enableDD && enableMM)
-				{
-					list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yy);
-					list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
-				}
-				
-			}
-			
-			// TODO convert to other surface forms (strings)
-			
-			// TODO delete duplicate currentToken surface from
-			
 		}
 		
 		return list;
 	}
 	
 	/**
+	 * TODO comment
 	 * 
+	 * @param list
+	 * @param currentToken
+	 * @param pattern
+	 * @param dateSeparater
+	 * @throws ParseException
+	 */
+	private void conversionOfDate(ArrayList<String> list, String currentToken, String pattern, String[] dateSeparater)
+			throws ParseException
+	{
+		String d = getDateString(currentToken, pattern, "d");
+		String dd = null;
+		String M = getDateString(currentToken, pattern, "M");
+		String MM = null;
+		String MMM = getDateString(currentToken, pattern, "MMM");
+		String MMMM = getDateString(currentToken, pattern, "MMMM");
+		String yy = getDateString(currentToken, pattern, "yy");
+		String yyyy = getDateString(currentToken, pattern, "yyyy");
+		
+		// add to day or month "0" for single numbers
+		Boolean enableDD = false, enableMM = false;
+		
+		if (1 <= Integer.valueOf(d) && Integer.valueOf(d) <= 9)
+		{
+			dd = "0" + d;
+			enableDD = true;
+		}
+		if (1 <= Integer.valueOf(M) && Integer.valueOf(M) <= 9)
+		{
+			MM = "0" + M;
+			enableMM = true;
+		}
+		
+		// convert to other surface forms (numbers)
+		for (int p = 0; p < dateSeparater.length; p++)
+		{
+			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
+			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+			
+			if (enableDD)
+			{
+				list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yy);
+				list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+			}
+			if (enableMM)
+			{
+				list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yy);
+				list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
+			}
+			if (enableDD && enableMM)
+			{
+				list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yy);
+				list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
+			}
+			
+			// TODO add some further surface forms
+			
+		}
+		
+		// TODO convert to other surface forms (strings)
+		
+		// TODO delete duplicate currentToken surface from
+	}
+	
+	/**
+	 * TODO comment
 	 * 
 	 * @author Daniel Gerber
 	 * @see
@@ -239,7 +263,7 @@ public class ConverterDateAlgo
 	}
 	
 	/**
-	 * 
+	 * TODO comment
 	 * 
 	 * @author Daniel Gerber
 	 * @see
@@ -271,6 +295,8 @@ public class ConverterDateAlgo
 	// ============================================================================================================
 	
 	/**
+	 * Just testing ConverterDateAlgo.
+	 * 
 	 * @param args
 	 * @throws ParseException
 	 */
