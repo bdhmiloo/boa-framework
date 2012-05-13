@@ -23,9 +23,27 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
+/**
+ * Searches BoaSentence with a given SearchAlgorithm and a given 
+ * Set of certain patterns.
+ * @author Jakob M.
+ *
+ */
+
 public class LabelSearcher
 {
+	/**
+	 * The Algorithm used by the searchUnit function.
+	 */
+	
 	private SearchAlgorithm algo;
+	
+	/**
+	 * Constructor. Creates a new SearchAlgorithm of the given type 
+	 * and provides it with patterns from an external file.
+	 * @param annoType type of the created annotations
+	 * @param algorithm the algorithm used to search for the patterns
+	 */
 	
 	public LabelSearcher(Type annoType, SearchAlgorithm algorithm)
 	{
@@ -51,6 +69,11 @@ public class LabelSearcher
 		}
 	}
 
+	/**
+	 * Appends the search method of it's SearchAlgorithm on a given BoaSentence
+	 * @param sentence the sentence to be searched in
+	 */
+	
 	public void searchUnit(BoaSentence sentence)
 	{
 		try
