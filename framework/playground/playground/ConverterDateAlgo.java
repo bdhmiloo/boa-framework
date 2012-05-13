@@ -91,89 +91,129 @@ public class ConverterDateAlgo
 	 */
 	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException
 	{
-		ArrayList<String> list = new ArrayList<String>();
-		
-		ConfigLoader load = new ConfigLoader();
-		
-		// TODO load all surfaceforms
-		// TODO remove string arrays if loading surface forms from file is
-		// possible
-		String[] monthList = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
-				"October", "November", "December" };
+		// TODO load all surface forms from file and remove
 		String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
 				"Dec" };
 		String[] dateSeparater = { "/", "-", "'", "~", "." };
 		
-		// get all tokens of annotation
-		for (int i = 0; i < annotation.getTokens().size(); i++)
+		ArrayList<String> list = new ArrayList<String>();
+		ConfigLoader load = new ConfigLoader();
+		Boolean beginConversion = false;
+		String pattern = null;
+		
+		// get complete annotation
+		String stringBufferAnno = "";
+		
+		for (int j = 0; j < annotation.getTokens().size(); j++)
 		{
-			String currentToken = annotation.getTokens().get(i);
-			String copyOfToken = currentToken.replaceAll("/|-|'|~|\\.", "");
-			
-			String pattern = null;
-			String day, month, year;
-			
-			Boolean beginConversion = false;
-			
-			// TODO
-			System.out.println("TEST - currentToken: " + currentToken);
-			
-			// token consists just of numbers
-			if (checkIfNumber(copyOfToken) && currentToken.length() >= 6)
+			if (j == annotation.getTokens().size() - 1)
 			{
-				currentToken = currentToken.replaceAll("/|-|'|~", ".");
-				
-				String[] datePos = currentToken.split("\\.");
-				
-				day = datePos[0];
-				month = datePos[1];
-				year = datePos[2];
-				
-				// define date pattern
-				if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 12 < Integer.valueOf(month)
-						&& Integer.valueOf(month) <= 31)
-				{
-					pattern = "MM.dd.yyyy";
-					String temp = day;
-					day = month;
-					month = temp;
-					
-					beginConversion = true;
-				} else if (31 < Integer.valueOf(day) && 1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12
-						&& 1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
-				{
-					pattern = "yyyy.MM.dd";
-					String temp2 = day;
-					day = year;
-					year = temp2;
-					
-					beginConversion = true;
-				} else
-				{
-					pattern = "dd.MM.yyyy";
-					
-					beginConversion = true;
-				}
-				
-				// TODO
-				System.out.println("TEST - pattern: " + pattern);
-				
-			}
-			// token consists of some strings
-			else
+				stringBufferAnno += annotation.getTokens().get(j);
+			} else
 			{
-				// TODO add algo here
-				
-			}
-			
-			// conversion
-			if (beginConversion)
-			{
-				conversionOfDate(list, currentToken, pattern, dateSeparater);
+				stringBufferAnno += annotation.getTokens().get(j) + ".";
 			}
 		}
 		
+		// TODO
+//		System.out.println("TEST - stringBufferAnno: " + stringBufferAnno);
+		
+		// token consists just of numbers (date separater symbols does not count)
+		if (checkIfNumber(stringBufferAnno.replaceAll("/|-|'|~|\\.", "")) && stringBufferAnno.length() >= 6)
+		{
+			stringBufferAnno = stringBufferAnno.replaceAll("/|-|'|~", ".");
+			
+			String[] datePos = stringBufferAnno.split("\\.");
+			
+			String day = datePos[0];
+			String month = datePos[1];
+			String year = datePos[2];
+			
+			// define date pattern
+			if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 12 < Integer.valueOf(month)
+					&& Integer.valueOf(month) <= 31)
+			{
+				pattern = "MM.dd.yyyy";
+				String temp = day;
+				day = month;
+				month = temp;
+				
+				beginConversion = true;
+			} else if (31 < Integer.valueOf(day) && 1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12
+					&& 1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
+			{
+				pattern = "yyyy.MM.dd";
+				String temp2 = day;
+				day = year;
+				year = temp2;
+				
+				beginConversion = true;
+			} else
+			{
+				pattern = "dd.MM.yyyy";
+				
+				beginConversion = true;
+			}
+			
+			// TODO
+			System.out.println("TEST - pattern: " + pattern);
+			
+		}
+		
+		// token consists of some strings and numbers
+		else
+		{
+			stringBufferAnno = stringBufferAnno.replaceAll(",\\.| |on.|the.|of.", "");
+			
+			// TODO
+			System.out.println("Test - stringBufferAnno: " + stringBufferAnno);
+			
+			String[] datePos = stringBufferAnno.split("\\.");
+			
+			String day, month, year;
+			
+			for (int j = 0; j < datePos.length; j++)
+			{
+				if (checkIfNumber(datePos[j]) == false)
+				{
+					if (convertMonthToNumber(datePos[j], monthAbbreviation) != 0)
+					{
+						datePos[j] = Integer.toString(convertMonthToNumber(datePos[j], monthAbbreviation));
+						
+						// TODO
+						System.out.println("Test - datePos[" + j + "]: " + datePos[j]);
+					}
+				}
+			}
+			
+		}
+		
+		// conversion
+		if (beginConversion)
+		{
+			conversionOfDate(list, stringBufferAnno, pattern, dateSeparater);
+		}
+		
 		return list;
+	}
+	
+	/**
+	 * 
+	 * @param month
+	 * @param sForms
+	 * @return
+	 */
+	private int convertMonthToNumber(String month, String[] sForms)
+	{
+		for (int j = 0; j < sForms.length; j++)
+		{
+			if (month.startsWith(sForms[j]))
+			{
+				return j + 1;
+			}
+		}
+		
+		return 0;
 	}
 	
 	/**
@@ -197,7 +237,7 @@ public class ConverterDateAlgo
 		String yy = getDateString(currentToken, pattern, "yy");
 		String yyyy = getDateString(currentToken, pattern, "yyyy");
 		
-		// add to day or month "0" for single numbers
+		// add to day and month "0" for one-digit numbers
 		Boolean enableDD = false, enableMM = false;
 		
 		if (1 <= Integer.valueOf(d) && Integer.valueOf(d) <= 9)
@@ -214,6 +254,8 @@ public class ConverterDateAlgo
 		// convert to other surface forms (numbers)
 		for (int p = 0; p < dateSeparater.length; p++)
 		{
+			// pattern DAY.MONTH.YEAR
+			
 			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
 			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
 			
@@ -233,8 +275,47 @@ public class ConverterDateAlgo
 				list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
 			}
 			
-			// TODO add some further surface forms
+			// pattern MONTH.DAY.YEAR
 			
+			list.add(M + dateSeparater[p] + d + dateSeparater[p] + yy);
+			list.add(M + dateSeparater[p] + d + dateSeparater[p] + yyyy);
+			
+			if (enableDD)
+			{
+				list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yy);
+				list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yyyy);
+			}
+			if (enableMM)
+			{
+				list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yy);
+				list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yyyy);
+			}
+			if (enableDD && enableMM)
+			{
+				list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yy);
+				list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yyyy);
+			}
+			
+			// pattern YEAR.MONTH.DAY
+			
+			list.add(yy + dateSeparater[p] + M + dateSeparater[p] + d);
+			list.add(yyyy + dateSeparater[p] + M + dateSeparater[p] + d);
+			
+			if (enableDD)
+			{
+				list.add(yy + dateSeparater[p] + M + dateSeparater[p] + dd);
+				list.add(yyyy + dateSeparater[p] + M + dateSeparater[p] + dd);
+			}
+			if (enableMM)
+			{
+				list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + d);
+				list.add(yyyy + dateSeparater[p] + MM + dateSeparater[p] + d);
+			}
+			if (enableDD && enableMM)
+			{
+				list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + dd);
+				list.add(yyyy + dateSeparater[p] + MM + dateSeparater[p] + dd);
+			}
 		}
 		
 		// TODO convert to other surface forms (strings)
@@ -352,7 +433,6 @@ public class ConverterDateAlgo
 				// conversion DATE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
-					// TODO test method here
 					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					// count++;
 				}
@@ -369,8 +449,9 @@ public class ConverterDateAlgo
 			System.out.println(it.next());
 		}
 		
-		System.out.println(count + " annotations of 981 in total could be processed");
-		System.out.println(result.size() + " surface forms could be loaded");
+		// System.out.println(count +
+		// " annotations of 981 in total could be processed");
+		// System.out.println(result.size() + " surface forms could be loaded");
 	}
 	
 }
