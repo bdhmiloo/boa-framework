@@ -27,7 +27,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 /**
  * Algorithm that searches for patterns of the form "number ... unit" where
  * number is an integer or double value and unit is a token from the input
- * Set<String> surForms.
+ * Set<String> surForms. (More details in description of search method)
  * 
  * @author Jakob M.
  */
@@ -80,6 +80,9 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	 * 
 	 * Patterns that consist of 2 sub patterns (like 15 feet 6 inch) have to be stored in surForms as one 
 	 * element separated by "&&" (e.g. feet&&inch).
+	 * 
+	 * It is important to use a different instance of NaiveAlgorithm for each annotation type! as it will use the same
+	 * label for any BoaAnnotation created.
 	 */
 	
 	public void search(BoaSentence sentence)
