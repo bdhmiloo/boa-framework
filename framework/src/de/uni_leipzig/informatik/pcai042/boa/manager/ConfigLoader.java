@@ -120,7 +120,7 @@ public class ConfigLoader
 	}
 	
 	/**
-	 * 
+	 * Returns the String representation of a value from a labeled property.
 	 * @param label
 	 * @return value of the labeled property
 	 */
