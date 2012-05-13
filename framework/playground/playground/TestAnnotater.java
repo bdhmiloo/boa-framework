@@ -54,6 +54,10 @@ public class TestAnnotater
 		Annotater testAnnotater = new Annotater();
 		testAnnotater.annotate(sentences);
 		
+		/*ArrayList<BoaSentence> test = new ArrayList<BoaSentence>();
+		test.add(new BoaSentence("This is a test made on 5th of October or perhaps it was the 2nd May."));
+		testAnnotater.annotate(test);*/
+		
 		Iterator<BoaSentence> it = sentences.iterator();
 		while(it.hasNext())
 		{

@@ -39,10 +39,15 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
  *
  */
 
-public abstract class DateAlgorithm extends SearchAlgorithm
+public class DateAlgorithm extends SearchAlgorithm
 {
 	private Set<String> monthSet;
 	private Set<String> daySet;
+	
+	public DateAlgorithm()
+	{
+
+	}
 	
 	public DateAlgorithm(Set<String> surfaceForms, Type annoType)
 	{
@@ -53,7 +58,7 @@ public abstract class DateAlgorithm extends SearchAlgorithm
 		daySet=new HashSet<String>(Arrays.asList(dateIT.next().split("&&")));
 	}
 	
-	public void searchViaMonth(BoaSentence sentence)
+	public void search(BoaSentence sentence)
 	{
 		String currentToken = "", dayToken = "", metaToken = "";
 		int positionDay, positionMeta, positionMonth=-1;				
@@ -64,8 +69,10 @@ public abstract class DateAlgorithm extends SearchAlgorithm
 			currentToken=tokensIT.next();
 			positionMonth++;
 			
-			if(monthSet.contains(currentToken))
+			if(monthSet.contains(currentToken.toLowerCase()))
 			{
+				//System.out.println(currentToken);
+				
 				if(positionMonth==0)
 				{
 					ArrayList<String> annoTokens = new ArrayList<String>();
@@ -93,7 +100,7 @@ public abstract class DateAlgorithm extends SearchAlgorithm
 							metaToken=findDayMeta.next();
 							positionMeta++;
 						}
-						if(daySet.contains(metaToken))
+						if(daySet.contains(metaToken.toLowerCase()))
 						{
 							ArrayList<String> annoTokens = new ArrayList<String>();
 							annoTokens.add(metaToken);
@@ -101,18 +108,27 @@ public abstract class DateAlgorithm extends SearchAlgorithm
 							annoTokens.add(currentToken);
 							
 							sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+							//System.out.println("Annotating " + metaToken + " " + dayToken +  " " + currentToken);
 						}
 					}
-					else if(daySet.contains(dayToken))
+					else if(daySet.contains(dayToken.toLowerCase()))
 					{
 						ArrayList<String> annoTokens = new ArrayList<String>();
 						annoTokens.add(dayToken);
 						annoTokens.add(currentToken);
 						
 						sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+						//System.out.println("Annotating " + " " + dayToken + " " + currentToken);
 					}
 				}
 			}
 		}
+	}
+	
+	public void setSurForms(Set<String> surfaceForms)
+	{
+		Iterator<String> dateIT= surfaceForms.iterator();
+		monthSet=new HashSet<String>(Arrays.asList(dateIT.next().split("&&")));
+		daySet=new HashSet<String>(Arrays.asList(dateIT.next().split("&&")));
 	}
 }

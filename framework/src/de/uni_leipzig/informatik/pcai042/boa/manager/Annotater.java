@@ -34,7 +34,7 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
 public class Annotater
 {
 	/**
-	 *	Tells whether the Annotator was already successfully initialized. 
+	 *	Tells whether the Annotator has already been successfully initialized. 
 	 */
 	
 	private boolean isInitialized = false;
@@ -79,7 +79,7 @@ public class Annotater
 		}
 		catch(ClassNotFoundException e)
 		{
-			//create logger message
+			e.printStackTrace();
 		}
 		catch(Exception e)
 		{
