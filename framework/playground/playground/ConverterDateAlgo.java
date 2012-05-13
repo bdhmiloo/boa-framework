@@ -116,13 +116,13 @@ public class ConverterDateAlgo
 			
 			String day, month, year;
 			
-			if (checkIfNumber(copyOfToken))
+			// TODO
+			System.out.println("TEST - currentToken: " + currentToken);
+			
+			// token consists just of numbers
+			if (checkIfNumber(copyOfToken) && currentToken.length() >= 6)
 			{
-				// token consists just of numbers
 				currentToken = currentToken.replaceAll("/|-|'|~", ".");
-				
-				// TODO
-				System.out.println(currentToken);
 				
 				String[] datePos = currentToken.split("\\.");
 				
@@ -152,31 +152,60 @@ public class ConverterDateAlgo
 				}
 				
 				// TODO
-				System.out.println(pattern);
+				System.out.println("TEST - pattern: " + pattern);
 				
-				String d = getDateString(currentToken, pattern, "d");
-				// String dd = getDateString(currentToken, pattern, "dd");
-				String M = getDateString(currentToken, pattern, "M");
-				// String MM = getDateString(currentToken, pattern, "MM");
-				String MMM = getDateString(currentToken, pattern, "MMM");
-				String MMMM = getDateString(currentToken, pattern, "MMMM");
-				String yy = getDateString(currentToken, pattern, "yy");
-				String yyyy = getDateString(currentToken, pattern, "yyyy");
-				
-				// TODO convert to other surface forms (numbers)
-				for (int p = 0; p < dateSeparater.length; p++)
-				{
-					list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
-					// list.add(d + dateSeparater[p] + MM + dateSeparater[p]
-					// + yy);
-					list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
-					// list.add(d + dateSeparater[p] + MM + dateSeparater[p]
-					// + yyyy);
-				}
-				
-			} else
+			}
+			// token consists of some strings
+			else
 			{
-				// token consists of some strings
+				// TODO add algo here
+				
+			}
+			
+			String d = getDateString(currentToken, pattern, "d");
+			String dd = null;
+			String M = getDateString(currentToken, pattern, "M");
+			String MM = null;
+			String MMM = getDateString(currentToken, pattern, "MMM");
+			String MMMM = getDateString(currentToken, pattern, "MMMM");
+			String yy = getDateString(currentToken, pattern, "yy");
+			String yyyy = getDateString(currentToken, pattern, "yyyy");
+			
+			// add to day or month "0" for single numbers
+			Boolean enableDD = false, enableMM = false;
+			
+			if (1 <= Integer.valueOf(d) && Integer.valueOf(d) <= 9)
+			{
+				dd = "0" + d;
+				enableDD = true;
+			}
+			if (1 <= Integer.valueOf(M) && Integer.valueOf(M) <= 9)
+			{
+				MM = "0" + M;
+				enableMM = true;
+			}
+			
+			// convert to other surface forms (numbers)
+			for (int p = 0; p < dateSeparater.length; p++)
+			{
+				list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
+				list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+				
+				if (enableDD)
+				{
+					list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yy);
+					list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+				}
+				if (enableMM)
+				{
+					list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yy);
+					list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
+				}
+				if (enableDD && enableMM)
+				{
+					list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yy);
+					list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
+				}
 				
 			}
 			
@@ -238,6 +267,8 @@ public class ConverterDateAlgo
 				return "th";
 		}
 	}
+	
+	// ============================================================================================================
 	
 	/**
 	 * @param args
