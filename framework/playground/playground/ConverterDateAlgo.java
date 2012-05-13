@@ -30,7 +30,6 @@ import java.util.Iterator;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
-import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterDate;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
@@ -90,7 +89,7 @@ public class ConverterDateAlgo
 	 *         corresponding conversions
 	 * @throws ParseException
 	 */
-	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException
+	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException, NullPointerException
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		
@@ -104,68 +103,86 @@ public class ConverterDateAlgo
 				"October", "November", "December" };
 		String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
 				"Dec" };
-		String[] dateSeparater = { "/" , "|" , "-" , "'" , "~" , "."};
+		String[] dateSeparater = { "/", "-", "'", "~", "." };
 		
-		// get all tokens of annotation and choose unit
+		// get all tokens of annotation
 		for (int i = 0; i < annotation.getTokens().size(); i++)
 		{
 			String currentToken = annotation.getTokens().get(i);
-			String copyOfToken = currentToken.replaceAll("\\W", "");
-			// replaceAll("'|\"|,|-|\|.|/|~", "");
+			String copyOfToken = currentToken.replaceAll("/|-|'|~|\\.", "");
 			
 			// date pattern
 			String pattern = null;
 			
-			// position of d(ay), M(onth) or y(ear) in date pattern
-			String day = null, month = null, year = null;
+			String day, month, year;
 			
 			if (checkIfNumber(copyOfToken))
 			{
 				// token consists just of numbers
-				currentToken.replaceAll("\\W", ".");
+				currentToken = currentToken.replaceAll("/|-|'|~", ".");
 				
-				String[] datePos = currentToken.split(".");
+				// TODO
+				System.out.println(currentToken);
 				
-				day = datePos[1];
-				month = datePos[2];
-				year = datePos[3];
+				String[] datePos = currentToken.split("\\.");
+				
+				day = datePos[0];
+				month = datePos[1];
+				year = datePos[2];
 				
 				// define date pattern
-				if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 
-					12 < Integer.valueOf(month) && Integer.valueOf(month) <= 31)
+				if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 12 < Integer.valueOf(month)
+						&& Integer.valueOf(month) <= 31)
 				{
 					pattern = "MM.dd.yyyy";
 					String temp = day;
 					day = month;
 					month = temp;
-				} 
-				else if (31 < Integer.valueOf(day) && 
-						1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12 && 
-						1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
+				} else if (31 < Integer.valueOf(day) && 1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12
+						&& 1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
 				{
 					pattern = "yyyy.MM.dd";
 					String temp2 = day;
 					day = year;
 					year = temp2;
 					
-				} 
-				else
+				} else
 				{
 					pattern = "dd.MM.yyyy";
 				}
 				
+				// TODO
+				System.out.println(pattern);
+				
+				String d = getDateString(currentToken, pattern, "d");
+				// String dd = getDateString(currentToken, pattern, "dd");
+				String M = getDateString(currentToken, pattern, "M");
+				// String MM = getDateString(currentToken, pattern, "MM");
+				String MMM = getDateString(currentToken, pattern, "MMM");
+				String MMMM = getDateString(currentToken, pattern, "MMMM");
+				String yy = getDateString(currentToken, pattern, "yy");
+				String yyyy = getDateString(currentToken, pattern, "yyyy");
+				
+				// TODO convert to other surface forms (numbers)
+				for (int p = 0; p < dateSeparater.length; p++)
+				{
+					list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
+					// list.add(d + dateSeparater[p] + MM + dateSeparater[p]
+					// + yy);
+					list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+					// list.add(d + dateSeparater[p] + MM + dateSeparater[p]
+					// + yyyy);
+				}
+				
 			} else
 			{
-				// token consists of several strings
+				// token consists of some strings
 				
 			}
 			
-			Format formatter;
+			// TODO convert to other surface forms (strings)
 			
-			// TODO convert to other surfaceforms (numbers)
-			
-			
-			// TODO convert to other surfacforms (strings)
+			// TODO delete duplicate currentToken surface from
 			
 		}
 		
@@ -224,10 +241,11 @@ public class ConverterDateAlgo
 	
 	/**
 	 * @param args
+	 * @throws ParseException
 	 */
-	public static void main(String[] args)
+	public static void main(String[] args) throws ParseException
 	{
-		ConverterDate conDATE = new ConverterDate();
+		ConverterDateAlgo conDATE = new ConverterDateAlgo();
 		
 		// result of conversions
 		ArrayList<String> result = new ArrayList<String>();
@@ -235,13 +253,14 @@ public class ConverterDateAlgo
 		SentenceLoader sentence = null;
 		
 		// initializes output file
-		try
-		{
-			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		// try
+		// {
+		// System.setOut(new PrintStream(new FileOutputStream(new
+		// File("testConverterDateAlgo.txt"), true)));
+		// } catch (FileNotFoundException e)
+		// {
+		// e.printStackTrace();
+		// }
 		
 		// load annotations
 		try
@@ -270,18 +289,18 @@ public class ConverterDateAlgo
 			// get all annotations
 			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
-				result.add("sentence:" + i + "  anno:" + k);
-				result.add("________________________");
+				// result.add("sentence:" + i + "  anno:" + k);
+				// result.add("________________________");
 				
 				// conversion DATE
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
 					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
-					count++;
+					// count++;
 				}
 				
-				result.add("________________________");
+				// result.add("________________________");
 			}
 		}
 		
