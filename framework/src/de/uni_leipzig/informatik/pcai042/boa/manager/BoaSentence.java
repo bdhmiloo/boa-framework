@@ -279,4 +279,14 @@ public class BoaSentence
 		bs.annotations = new ArrayList<BoaAnnotation>();
 		return bs;
 	}
+	
+	/**
+	 * Delete Annotations 
+	 * @return a BoaSentence without Annotations
+	 */
+	public BoaSentence deleteSentence(BoaSentence withAnno)
+	{
+		withAnno.annotations.clear();
+		return withAnno; 
+	}
 }
