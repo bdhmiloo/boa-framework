@@ -22,7 +22,10 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import org.junit.*;
 
 
@@ -34,9 +37,13 @@ import org.junit.*;
 public class TestingSearchAlgorithm extends TestCase
 {
    private SearchAlgorithm searching;
+   SearchAlgorithm searching2;
+   private Set<String> surfaceForms;
+   private Type annoType;
    private  Set<String> words = new HashSet<String>();
   
    
+  
    
    @Before
    public void setUp()
@@ -46,14 +53,25 @@ public class TestingSearchAlgorithm extends TestCase
     	   public void search(BoaSentence sentence){}
        };
        
+     
+       
        words.add("3");
-	   words.add("kg");
+	   words.add("kgme");
 	   words.add("kilogramm");
 	   words.add("In");
     } 
    /**
     *Checks if Token is a number. This method works properly, if the return Value is true.
     **/
+   
+  /* @Test 
+   public void testConstructor()
+   {
+	   assertEquals()
+	   searching2 = new SearchAlgorithm();
+   }*/
+    
+   
    @Test
    public void testIfNumber() 
    {
@@ -149,4 +167,17 @@ public class TestingSearchAlgorithm extends TestCase
 	  }  
 	  return true;  
 	}
+   
+   
+   /**
+    * Test if the Constructors work via testing the get Methods
+    */
+ 
+   @Test
+	public void testConstructor() 
+	 {
+	   assertEquals(annoType, searching.getAnnoType());
+	 }
+   
+   
 }

@@ -175,4 +175,9 @@ public abstract class SearchAlgorithm
 	{
 		annoType = annoType2;
 	}
+	
+	public Type getAnnoType()
+	{
+		return annoType;
+	}
 }
