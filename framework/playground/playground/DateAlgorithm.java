@@ -14,10 +14,6 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * This is a Testclass for LabelSearcherDate. When its finished, it will be merged
- * with LabelSearcherDate.
- */
 package playground;
 
 import java.util.ArrayList;
@@ -34,6 +30,7 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
 /**
  * Frist Try of DateAlgorithm. 
  * It has been not tested yet. It still need some Improvements.
+ * Important: This Algorithm currently search for month-day structures without year.
  * 
  * @author Benedict Preﬂler
  *
@@ -61,7 +58,7 @@ public class DateAlgorithm extends SearchAlgorithm
 	public void search(BoaSentence sentence)
 	{
 		String currentToken = "", dayToken = "", metaToken = "";
-		int positionDay, positionMeta, positionMonth=-1;				
+		int positionDay, positionMeta, positionMonth=-1;	//-1 means initial position			
 		
 		Iterator<String> tokensIT=sentence.getTokens().iterator();
 		while(tokensIT.hasNext())
@@ -69,19 +66,43 @@ public class DateAlgorithm extends SearchAlgorithm
 			currentToken=tokensIT.next();
 			positionMonth++;
 			
+			//Step 1: Check, if Token contains a month-surface form.
 			if(monthSet.contains(currentToken.toLowerCase()))
 			{
 				//System.out.println(currentToken);
-				
-				if(positionMonth==0)
+				//Step 2: Check, if next Token is day
+				if(tokensIT.hasNext())
+				{
+					positionDay=-1;
+					Iterator<String> findDay=sentence.getTokens().iterator();
+					
+					while(positionDay!=positionMonth+1)
+					{
+						dayToken=findDay.next();
+						positionDay++;
+					}
+					if(daySet.contains(dayToken.toLowerCase()))
+					{
+						ArrayList<String> annoTokens = new ArrayList<String>();
+						annoTokens.add(dayToken);
+						annoTokens.add(currentToken);
+						
+						sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+						//System.out.println("Annotating " + " " + dayToken + " " + currentToken);
+					}
+				}
+				//Step 3: Check, if found month is the first Token in List
+				else if(positionMonth==0)
 				{
 					ArrayList<String> annoTokens = new ArrayList<String>();
 					annoTokens.add(currentToken);
 					
 					sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 				}
+				//Step 4: Check previous Token
 				else
 				{
+					
 					positionDay=-1;
 					Iterator<String> findDay=sentence.getTokens().iterator();
 					
@@ -90,6 +111,8 @@ public class DateAlgorithm extends SearchAlgorithm
 						dayToken=findDay.next();
 						positionDay++;
 					}
+					
+					//Step 3: Check, if Token before found month is a day or the word "of"
 					if(dayToken.equals("of"))
 					{
 						positionMeta=-1;
@@ -100,6 +123,8 @@ public class DateAlgorithm extends SearchAlgorithm
 							metaToken=findDayMeta.next();
 							positionMeta++;
 						}
+						
+						//Step 4: Check, if Token before found "of" contains day
 						if(daySet.contains(metaToken.toLowerCase()))
 						{
 							ArrayList<String> annoTokens = new ArrayList<String>();
