@@ -91,9 +91,14 @@ public class ConverterDateAlgo
 	 */
 	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException
 	{
-		// TODO load all surface forms from file and remove
+		// TODO load all surface forms from file and remove string arrays later
 		String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
 				"Dec" };
+		String[] ordinalNumbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth",
+				"ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth",
+				"seventeenth", "eighteenth", "nineteenth", "twentieth", "twenty-first", "twenty-second",
+				"twenty-third", "twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth",
+				"twenty-ninth", "thirtieth", "thirty-first" };
 		String[] dateSeparater = { "/", "-", "'", "~", "." };
 		
 		ArrayList<String> list = new ArrayList<String>();
@@ -181,10 +186,11 @@ public class ConverterDateAlgo
 				
 				// absolute cleaning
 				stringBufferAnno = stringBufferAnno.replaceAll(j + "th", Integer.toString(j));
+				stringBufferAnno = stringBufferAnno.replaceAll(ordinalNumbers[j - 1], Integer.toString(j));
 			}
 			
 			// TODO
-			System.out.println("Test - stringBufferAnno: " + stringBufferAnno);
+//			System.out.println("Test - stringBufferAnno: " + stringBufferAnno);
 			
 			String[] datePos = stringBufferAnno.split("\\.");
 			
@@ -206,20 +212,16 @@ public class ConverterDateAlgo
 				}
 			}
 			
-			// TODO make stringBufferAnno consisting just of numbers
-			
-			
-			// TODO uncomment if probs appear
 			String day, month, year;
 			
 			if (datePos.length == 3)
 			{
 				day = datePos[(markMonth + 1) % 3]; // y or d
-				System.out.println(day);
+				// System.out.println(day);
 				month = datePos[markMonth];
-				System.out.println(month);
+				// System.out.println(month);
 				year = datePos[(markMonth + 2) % 3]; // y or d
-				System.out.println(year);
+				// System.out.println(year);
 				
 				// define date pattern
 				if (31 < Integer.valueOf(day) && 1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12
@@ -230,16 +232,18 @@ public class ConverterDateAlgo
 					day = year;
 					year = temp2;
 					
+					stringBufferAnno = year + "." + month + "." + day;
 					beginConversion = true;
 				} else
 				{
 					pattern = "dd.MM.yyyy";
 					
+					stringBufferAnno = day + "." + month + "." + year;
 					beginConversion = true;
 				}
 				
 				// TODO
-				System.out.println("TEST - pattern: " + pattern);
+				// System.out.println("TEST - pattern: " + pattern);
 				
 			}
 		}
@@ -446,14 +450,13 @@ public class ConverterDateAlgo
 		SentenceLoader sentence = null;
 		
 		// initializes output file
-		// try
-		// {
-		// System.setOut(new PrintStream(new FileOutputStream(new
-		// File("testConverterDateAlgo.txt"), true)));
-		// } catch (FileNotFoundException e)
-		// {
-		// e.printStackTrace();
-		// }
+		try
+		{
+			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 		
 		// load annotations
 		try
