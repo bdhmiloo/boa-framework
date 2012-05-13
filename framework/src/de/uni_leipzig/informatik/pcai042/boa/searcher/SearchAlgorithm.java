@@ -23,16 +23,50 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
 
+/**
+ * Abstract. Searches BoaSentence for patterns related to the elements
+ * of the Set<String> surForms. Also provides it subclasses with auxiliary
+ * functions to detect String representations of numbers.
+ * @author Jakob M.
+ *
+ */
+
 public abstract class SearchAlgorithm
 {
+	/**
+	 * String patterns that are searched for.
+	 */
+	
 	protected Set<String> surForms;
+	
+	/**
+	 * The label found patterns get when annotated. 
+	 */
+	
 	protected Type annoType;
+	
+	/**
+	 * A Set of Strings that can be associated to a number.
+	 */
+	
 	private Set<String> numbers;
+	
+	/**
+	 * Constructor. Does NOT initialize all attributes necessary to 
+	 * successfully use the class! (annoType and surForms still need to be set
+	 * after this)
+	 */
 	
 	public SearchAlgorithm()
 	{
 		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 	}
+	
+	/**
+	 * Constructor. Initializes all attributes.
+	 * @param surfaceForms Set of String patterns to search for 
+	 * @param annoType type of the BoaAnnotations that are added
+	 */
 	
 	public SearchAlgorithm(Set<String> surfaceForms, Type annoType)
 	{

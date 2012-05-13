@@ -27,14 +27,29 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
  * Creates LabelSearchers for each Unit we want to find and makes the process
  * on a given ArrayList of BoaSentence. Both the name of the units and the algorithm
  * used to search for it are stored in the sForms.properties file.
- * @author Jakob
+ * @author Jakob M.
  *
  */
 
 public class Annotater
 {
+	/**
+	 *	Tells whether the Annotator was already successfully initialized. 
+	 */
+	
 	private boolean isInitialized = false;
+	
+	/**
+	 * List of the LabelSearchers used in the annotate method.
+	 */
+	
 	private ArrayList<LabelSearcher> searchers;
+	
+	/**
+	 * Constructor. Reads the unit types and used algorithms from the
+	 * sForms.properties file and tries to initialize a LabelSearcher for
+	 * each of them.
+	 */
 	
 	public Annotater()
 	{
@@ -71,6 +86,12 @@ public class Annotater
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Uses LabelSearchers to look for certain patterns in the given sentences 
+	 * and adds a BoaAnnotation for each match.
+	 * @param sentences the sentences that are searched
+	 */
 	
 	public void annotate(ArrayList<BoaSentence> sentences)
 	{
