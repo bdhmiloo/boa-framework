@@ -79,7 +79,7 @@ public class Annotater
 		}
 		catch(ClassNotFoundException e)
 		{
-			//create logger message
+			e.printStackTrace();
 		}
 		catch(Exception e)
 		{
