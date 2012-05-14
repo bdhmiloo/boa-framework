@@ -633,13 +633,13 @@ public class ConverterDateAlgo
 		SentenceLoader sentence = null;
 		
 		// initializes output file
-		try
-		{
-			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
+//		} catch (FileNotFoundException e)
+//		{
+//			e.printStackTrace();
+//		}
 		
 		// load annotations
 		try
