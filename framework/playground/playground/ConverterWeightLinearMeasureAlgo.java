@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Set;
 
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -46,36 +47,33 @@ public class ConverterWeightLinearMeasureAlgo
 	 * @param token
 	 * @return true - if token is a number, false - if token is not a number
 	 */
-	protected static boolean checkIfNumber(String token)
+	public static boolean checkIfNumber(String token)
 	{
-		int help = 0;
+		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 		
-		// testing integer
 		try
 		{
 			Integer.parseInt(token);
-			help++;
+			return true;
 		} catch (NumberFormatException e)
 		{
-			e.printStackTrace();
+			// TODO catch exception or log
 		}
-		
-		// testing double
 		try
 		{
+			// if(token.endsWith("f")) return numbers.contains(token); //else f
+			// at end of String is interpreted as "float", similar i as
+			// imaginary
 			if (token.contains(","))
 				token = token.replace(",", ".");
 			Double.parseDouble(token);
-			help++;
+			return true;
 		} catch (NumberFormatException e)
 		{
-			e.printStackTrace();
+			// TODO catch exception or log
 		}
-		
-		if (help == 0)
-			return false;
-		else
-			return true;
+		return false;
+		// return numbers.contains(token.toLowerCase());
 	}
 	
 	/**
