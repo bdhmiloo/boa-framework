@@ -93,6 +93,6 @@ public class TestClass
 		dtCount = annoCount - lmCount - wCount -tCount;
 		
 		System.out.println("\nHinzugefügte Annotationen (Gesamt): " + annoCount);
-		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight \n" + tCount + " Temperature \n" + dtCount + " Date");
+		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight\n" + tCount + " Temperature\n" + dtCount + " Date");
 	}
 }

@@ -206,6 +206,12 @@ public class NaiveAlgorithm extends SearchAlgorithm
 								annoTokens.add(dsfUnit);
 								
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+								
+								currentToken = tokenIt.next();
+								currentToken = tokenIt.next();
+								count+=2;
+								
+								break;
 							}
 						}
 					}	
