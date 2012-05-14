@@ -90,7 +90,7 @@ public class DateAlgorithm extends SearchAlgorithm
 			currentToken=tokensIT.next();
 			positionMonth++;
 			annotated=false;
-			if(checkIfMonth(currentToken.toLowerCase()))												//if month=true, 
+			if(monthSet.contains(currentToken.toLowerCase()))												//if month=true, 
 			{
 				if(tokensIT.hasNext())																		//if month=true next=true
 				{
@@ -107,11 +107,12 @@ public class DateAlgorithm extends SearchAlgorithm
 						{
 							positionYear=-1;
 							Iterator<String> findYear=sentence.getTokens().iterator();							
-							while(positionYear!=positionDay+1);												//until year=day+1
+							while(positionYear != positionDay+1)											//until year=day+1
 							{
 								yearToken=findYear.next();
 								positionYear++;
-							}							
+							}	
+							
 							if(checkIfYear(yearToken))														//if month=true day=true year=true
 							{
 								ArrayList<String> annoTokens = new ArrayList<String>();								
@@ -121,7 +122,35 @@ public class DateAlgorithm extends SearchAlgorithm
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 								annotated=true;
 							}
-							else																			//if month=true day=true year=false
+							else if(yearToken.equals(",")&&findYear.hasNext())								//if month=true day=true ','=true next=true
+							{
+								positionMeta=-1;
+								Iterator<String> findYearMeta=sentence.getTokens().iterator();						
+								while(positionMeta!=positionDay-1&&findYearMeta.hasNext())					//until meta=day-1
+								{
+									metaToken=findYearMeta.next();
+									positionMeta++;
+								}
+								if(checkIfYear(metaToken))													//if month=true day=true ','=true year=true
+								{
+									ArrayList<String> annoTokens = new ArrayList<String>();								
+									annoTokens.add(currentToken);
+									annoTokens.add(dayToken);
+									annoTokens.add(yearToken);
+									annoTokens.add(metaToken);
+									sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+									annotated=true;
+								}
+								else																		//if month=true day=true ','=true year=false
+								{
+									ArrayList<String> annoTokens = new ArrayList<String>();								
+									annoTokens.add(currentToken);
+									annoTokens.add(dayToken);								
+									sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
+									annotated=true;
+								}								
+							}
+							else																			//if month=true day=true ','=false year=false
 							{
 								ArrayList<String> annoTokens = new ArrayList<String>();								
 								annoTokens.add(currentToken);
@@ -151,7 +180,7 @@ public class DateAlgorithm extends SearchAlgorithm
 						}
 					}
 				}																							//end month=true next=true
-				
+	
 				if(!annotated)																				//if not annotated
 				{
 					if(positionMonth==0)																	//if month=true month:isFirstToken=true
@@ -185,10 +214,11 @@ public class DateAlgorithm extends SearchAlgorithm
 								{
 									positionYear=-1;
 									Iterator<String> findYear=sentence.getTokens().iterator();								
-									while(positionYear!=positionMonth+1);									//until year=month+1
+									while(positionYear!=positionMonth+1)									//until year=month+1
 									{
 										yearToken=findYear.next();
 										positionYear++;
+										//System.out.println(positionYear+" year");
 									}								
 									if(checkIfYear(yearToken))												//if day=true of=true month=true year=true
 									{
@@ -234,12 +264,12 @@ public class DateAlgorithm extends SearchAlgorithm
 							{
 								positionYear=-1;
 								Iterator<String> findYear=sentence.getTokens().iterator();								
-								while(positionYear!=positionMonth+1);											//until year=month+1
+								while(positionYear!=positionMonth+1)										//until year=month+1
 								{
 									yearToken=findYear.next();
 									positionYear++;
 								}								
-								if(checkIfYear(yearToken))														//if day=true month=true year=true
+								if(checkIfYear(yearToken))													//if day=true month=true year=true
 								{
 									ArrayList<String> annoTokens = new ArrayList<String>();								
 									annoTokens.add(dayToken);
@@ -248,7 +278,7 @@ public class DateAlgorithm extends SearchAlgorithm
 									sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 									annotated=true;
 								}
-								else																			//if day=true month=true year=false
+								else																		//if day=true month=true year=false
 								{
 									ArrayList<String> annoTokens = new ArrayList<String>();									
 									annoTokens.add(dayToken);
@@ -257,7 +287,7 @@ public class DateAlgorithm extends SearchAlgorithm
 									annotated=true;								
 								}
 							}
-							else																				//if day=true month=true next=false
+							else																			//if day=true month=true next=false
 							{
 								ArrayList<String> annoTokens = new ArrayList<String>();									
 								annoTokens.add(dayToken);
@@ -266,7 +296,7 @@ public class DateAlgorithm extends SearchAlgorithm
 								annotated=true;	
 							}
 						}
-						else																					//if day=false month=true
+						else																				//if day=false month=true
 						{
 							ArrayList<String> annoTokens = new ArrayList<String>();									
 							annoTokens.add(currentToken);									
@@ -326,7 +356,7 @@ public class DateAlgorithm extends SearchAlgorithm
 				
 		return false;
 	}
-	
+/*	
 	public boolean checkIfMonth(String token)
 	{
 		String[] firstString;
@@ -354,5 +384,5 @@ public class DateAlgorithm extends SearchAlgorithm
 			}
 		}
 	}
-
+*/
 }
