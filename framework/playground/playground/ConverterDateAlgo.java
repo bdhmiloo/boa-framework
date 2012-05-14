@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -126,7 +125,11 @@ public class ConverterDateAlgo
 			}
 		}
 		
-		String copyOfStringBuf = stringBufferAnno.replaceAll("/|-|'|~|\\.", "");
+		// some tests
+		String numberCheck = stringBufferAnno.replaceAll("/|-|'|~|\\.", "");
+		String splitCheck = stringBufferAnno.replaceAll("/|-|'|~|\\.", ".");
+		
+		String[] splitTest = splitCheck.split("\\.");
 		
 		// TODO
 		// System.out.println("TEST - original stringBufferAnno: " +
@@ -134,7 +137,8 @@ public class ConverterDateAlgo
 		logger.info("original uncleaned stringBufferAnno = <" + stringBufferAnno + "> loaded");
 		
 		// annotation consists just of numbers (date separaters do not count)
-		if (checkIfNumber(copyOfStringBuf) && stringBufferAnno.length() >= 6)
+		if (checkIfNumber(numberCheck) && 6 <= stringBufferAnno.length() && stringBufferAnno.length() <= 10
+				&& splitTest.length == 3)
 		{
 			logger.info("option 1 selected");
 			
@@ -182,7 +186,7 @@ public class ConverterDateAlgo
 		}
 		
 		// annotation is a number (in this case: a year)
-		else if (checkIfNumber(copyOfStringBuf) && 1 <= stringBufferAnno.length() && stringBufferAnno.length() <= 4)
+		else if (checkIfNumber(numberCheck) && 1 <= stringBufferAnno.length() && stringBufferAnno.length() <= 4)
 		{
 			logger.info("option 2 selected");
 			
@@ -270,15 +274,15 @@ public class ConverterDateAlgo
 		}
 		
 		// conversion of date formats
-		if(beginSpecialConversion)
+		if (beginSpecialConversion)
 		{
+			logger.info("special conversion was enabled");
 			
-		}
-		else if (beginStandardConversion)
+		} else if (beginStandardConversion)
 		{
-			conversionOfDate(list, stringBufferAnno, pattern, dateSeparater, ordinalNumbers);
-			
 			logger.info("standard conversion was enabled");
+			
+			conversionOfDate(list, stringBufferAnno, pattern, dateSeparater, ordinalNumbers);
 		}
 		
 		return list;
@@ -302,20 +306,6 @@ public class ConverterDateAlgo
 		}
 		
 		return 0;
-	}
-	
-	/**
-	 * 
-	 * @param value
-	 * @return
-	 */
-	private String convertArabicNumberToNumeral(int value)
-	{
-		String stringNumber = null;
-		
-		
-		
-		return stringNumber;
 	}
 	
 	/**
