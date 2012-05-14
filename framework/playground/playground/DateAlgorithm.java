@@ -352,33 +352,5 @@ public class DateAlgorithm extends SearchAlgorithm
 				
 		return false;
 	}
-/*	
-	public boolean checkIfMonth(String token)
-	{
-		String[] firstString;
-		if(monthSet.contains(token.toLowerCase()))
-		{
-			return true;
-		}
-		else
-		{
-			if(token.endsWith(","))
-			{
-				firstString=token.split(",");
-				if(monthSet.contains(firstString[0].toLowerCase()))
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
-*/
+
 }
