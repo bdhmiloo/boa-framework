@@ -35,7 +35,6 @@ public class ConverterDate extends Converter
 	 */
 	public ConverterDate()
 	{
-		// TODO add code here
 		super();
 	}
 
@@ -52,41 +51,10 @@ public class ConverterDate extends Converter
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		
-		// get all tokens of annotation and choose unit
-		for (int i = 0; i < annotation.getTokens().size(); i++)
-		{
-			
-			// annotation.getTokens().get(i).replaceAll("'|\"|,|-|\\.|/|~", "");
-			
-			// TODO test if token is a number
-			
-			// TODO token is not a number --> must be some kind of string
-			
-			// TODO convert to other surfaceforms (numbers)
-			
-			// TODO convert to other surfacforms (strings)
-			
-		}
+
 		
 		return list;
 	}
-	
-	/**
-	 * 
-	 * 
-	 * @param dateString
-	 * @param fromPattern
-	 * @param toPattern
-	 * @return
-	 * @throws ParseException
-	 */
-	private String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException
-	{
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromPattern);
-		Date date1 = simpleDateFormat.parse(dateString);
-		simpleDateFormat.applyPattern(toPattern);
-		
-		return simpleDateFormat.format(date1);
-	}
+
 	
 }
