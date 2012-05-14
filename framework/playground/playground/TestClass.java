@@ -60,7 +60,7 @@ public class TestClass
 		LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, new NaiveAlgorithm());
 		LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT, new NaiveAlgorithm());
 		LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, new NaiveAlgorithm());
-		LabelSearcher lsDate = new LabelSearcher(Type.DATE, new DateAlgorithm());
+		LabelSearcher lsDate = new LabelSearcher(Type.DATE, new de.uni_leipzig.informatik.pcai042.boa.searcher.DateAlgorithm());
 		
 		while(it.hasNext())
 		{
@@ -92,7 +92,7 @@ public class TestClass
 		tCount = -hilfsCount - lmCount - wCount + tCount;
 		dtCount = annoCount - lmCount - wCount -tCount;
 		
-		System.out.println("\nHinzugefügte Annotationen (Gesamt): " + annoCount);
+		System.out.println("\nHinzugefï¿½gte Annotationen (Gesamt): " + annoCount);
 		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight\n" + tCount + " Temperature\n" + dtCount + " Date");
 	}
 }
