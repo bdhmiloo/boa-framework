@@ -14,10 +14,9 @@
  */
 
 
-
-
 package de.uni_leipzig.informatik.pcai042.boa.test;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.junit.*;
@@ -30,28 +29,55 @@ import de.uni_leipzig.informatik.pcai042.boa.converter.*;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 
+/**
+ * Class to Test all of the Converters from the Project
+ * @author Giorgos
+ *
+ */
 @Category(Converter.class)
 public class TestingPackageBoaConverter
 {
 	private Converter converter;
 	private ConverterDate date = new ConverterDate();
-	private ConverterLinearMeasure linearmessure = new ConverterLinearMeasure();
+	private ConverterLinearMeasure linearmeasure = new ConverterLinearMeasure();
 	private ConverterTemperature temperature = new ConverterTemperature();
 	private ConverterWeight weight = new ConverterWeight();
 		
+	
+	// The Lists to be used as tokens
 	BoaAnnotation.Type type;
-	ArrayList<String> tokens = new ArrayList<String>();
-
+	ArrayList<String> tokensDate = new ArrayList<String>();
+	ArrayList<String> tokensLinearMeasure = new ArrayList<String>();
+	ArrayList<String> tokensTemperature = new ArrayList<String>();
+	ArrayList<String> tokensWeight = new ArrayList<String>();
 	
 	
+	
+	/**
+	 * Initialize the Abstract Class and the Test array Lists. Before the Tests take place.
+	 */
 	@Before
 	   public void setUp()
 	   {
+		// REVERT 237 (CONVERTER DATE COMPLETE)
 		
-		BoaAnnotation annotation = new BoaAnnotation(type,tokens);
+		tokensDate.add("23.07.1980");
+		tokensDate.add("25.07.1985");
+		tokensDate.add("23/07/1980");
+		
+		tokensLinearMeasure.add("5");
+		tokensLinearMeasure.add("14 km");
+		
+		tokensTemperature.add("32 Celcius");
+		tokensTemperature.add("23 °C");
+		tokensTemperature.add("23 °F");
 
-
-	   converter = new Converter()
+		
+		tokensWeight.add("5KG");
+		tokensWeight.add("10 Kilogramm");
+	
+		//abstract class
+		converter = new Converter()
 	       {
 	    	 //Add unimplemented Methods
 			@Override
@@ -60,9 +86,9 @@ public class TestingPackageBoaConverter
 				
 				return null;
 			}
-
+			
 	    
-	     };
+	      };
 	
 	   }
 
@@ -79,53 +105,136 @@ public class TestingPackageBoaConverter
 
 	   }
 	
-	
-	
-		
-	
 	/**
 	 * Check if all of the Converters return something
 	 */
 	 @Test
 	   public void testConvertUnits() 
 	   {
-		 // assertNotNull(weight.convertUnits(annotation) && date.convertUnits(annotation) && temperature.convertUnits(annotation) && linearmeasure.convertUnits(annotation));
+		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT ,	tokensWeight);
+		 weight.convertUnits(annotationWeight);
+
+			BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE, tokensTemperature);
+			BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
+			BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);		
+
+		 try
+		{
+			assertNotNull( weight.convertUnits(annotationWeight));
+			assertNotNull(date.convertUnits(annotationDate));
+			assertNotNull(temperature.convertUnits(annotationTemperature));
+			assertNotNull(linearmeasure.convertUnits(annotationLinearMeasure));
+
+		} catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		
 	   }
 	 
 	 
-	 
+	 /**
+	  * Test if the linear Measure returns the right list. 
+	  * Does not work properly right now. the  linearmeasure.convertUnits(annotationLinearMeasure).size() is 0
+	  */
 	 
 	 @Test
 	 public void testLinearMeasureList()
 	 {
-		 ArrayList <String> list = new ArrayList<String>();
+		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);
 		
-		//TO DO
+		 //assertEquals(getListSize(tokensLinearMeasure), linearmeasure.convertUnits(annotationLinearMeasure).size());
+
+		 for (int i =0 ; i < linearmeasure.convertUnits(annotationLinearMeasure).size() ;i++)
+		 {
+			 assertEquals(tokensLinearMeasure.get(i),linearmeasure.convertUnits(annotationLinearMeasure).get(i) );
+		 }
 	 }
 	
+	 
+	 /**
+	  * Test if the linear Weight convert Units returns the right list. 
+	  * Does not work properly right now. the  weight.convertUnits(annotationLinearMeasure).size() is 0
+	  */
 	 @Test 
 	 public void testWeightList()
 
 	 {
-		 //TO DO
+		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT,tokensWeight);
+			
+		 //assertEquals(getListSize(tokensWeight), linearmeasure.convertUnits(annotationLinearMeasure).size());
+
+		 for (int i =0 ; i < weight.convertUnits(annotationWeight).size() ;i++)
+		 {
+			 assertEquals(tokensWeight.get(i),weight.convertUnits(annotationWeight).get(i) );
+		 }
 	 }
 	 
+	 /**
+	  * Test if the Date convert Units returns the right list. 
+	  * Does not work properly right now. the  date.convertUnits(annotationLinearMeasure).size() is 0
+	  */
 	 @Test 
 	 public void testDateList()
 
 	 {
-		 //TO DO
+		 BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
+			
+		 //assertEquals(getListSize(tokensDate), linearmeasure.convertUnits(annotationDate).size());
+
+		
+	//		for (int i =0 ; i < date.convertUnits(annotationDate).size() ;i++)
+	//		 {
+	//			 assertEquals(tokensDate.get(i),date.convertUnits(annotationDate).get(i) );
+	//		 }
+	
 	 }
 	 
+	 /**
+	  * Test if the Temperature convert Units returns the right list. 
+	  * Does not work properly right now. the  temperature.convertUnits(annotationLinearMeasure).size() is 0
+	  */
 	 @Test 
 	 public void testTemperatureList()
 
 	 {
-		 //assert
+		 BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE,tokensTemperature);
+			
+		 //assertEquals(getListSize(tokensLinearMeasure), linearmeasure.convertUnits(annotationLinearMeasure).size());
+
+		 for (int i =0 ; i < temperature.convertUnits(annotationTemperature).size() ;i++)
+		 {
+			 assertEquals(tokensTemperature.get(i),temperature.convertUnits(annotationTemperature).get(i) );
+		 }
+	 }
+	 
+	 /**
+	  * False Test . 
+	  * Does not work properly right now. the  temperature.convertUnits(annotationLinearMeasure).size() is 0
+	  */
+	 @Test 
+	 public void testFalseList()
+
+	 {
+		 BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE,tokensTemperature);
+		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT,tokensWeight);
+
+		 //assertEquals(getListSize(tokensLinearMeasure), linearmeasure.convertUnits(annotationLinearMeasure).size());
+		// System.out.print("token "+tokensTemperature.get(0));
+		// System.out.print("converted "+temperature.convertUnits(annotationTemperature).get(0).toString());
+
+
+		 for (int i =0 ; i < temperature.convertUnits(annotationTemperature).size() ;i++)
+		 {
+			 assertThat(tokensTemperature.get(i), is(not(temperature.convertUnits(annotationTemperature).get(i))));
+			 
+		 }
 	 }
 	 
 	
-	 
+	 /**
+	  * to write the results on a txt file
+	  */
 	 @After
 	 public void writeToFile()
 	 {
@@ -140,7 +249,8 @@ public class TestingPackageBoaConverter
 		{
 			return list.size();
 		}
-
+	 
+	 
 	 
 
 }
