@@ -16,6 +16,7 @@
 package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -67,7 +68,7 @@ public abstract class Converter
 	 *            one token
 	 * @return true - if token is a number, false - if token is not a number
 	 */
-	public boolean checkIfNumber(String token)
+	protected boolean checkIfNumber(String token)
 	{
 		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 		
@@ -103,6 +104,7 @@ public abstract class Converter
 	 *            one annotation
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
+	 * @throws ParseException 
 	 */
-	public abstract ArrayList<String> convertUnits(BoaAnnotation annotation);
+	public abstract ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException;
 }

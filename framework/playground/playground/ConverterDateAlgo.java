@@ -42,13 +42,13 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 public class ConverterDateAlgo
 {
 	// TODO load all surface forms from file and remove string arrays later
-	String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-	String[] ordinalNumbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth",
+	private String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+	private String[] ordinalNumbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth",
 			"tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth",
 			"eighteenth", "nineteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third", "twenty-fourth",
 			"twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth", "thirtieth",
 			"thirty-first" };
-	String[] dateSeparater = { "/", "-", "'", "~", "." };
+	private String[] dateSeparater = { "/", "-", "'", "~", "." };
 	
 	/**
 	 * Constructor
@@ -251,8 +251,7 @@ public class ConverterDateAlgo
 	}
 	
 	/**
-	 * Convert a month string to the particular number {1;...;12} which a month
-	 * represents.
+	 * Convert a month string to the particular month number {1;...;12}.
 	 * 
 	 * @param month
 	 * @param sForms
@@ -410,15 +409,15 @@ public class ConverterDateAlgo
 			list.add(dd + " " + MMM + ", " + yyyy);
 			list.add(dd + " " + MMMM + ", " + yyyy);
 			
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMM + " '" + yy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMMM + " '" + yy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMM + " " + yyyy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMMM + " " + yyyy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " '" + yy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " '" + yy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " " + yyyy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " " + yyyy);
 			
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMM + ", '" + yy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMMM + ", '" + yy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMM + ", " + yyyy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(dd)) + " " + MMMM + ", " + yyyy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", '" + yy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", '" + yy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", " + yyyy);
+			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", " + yyyy);
 		}
 		
 		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + " '" + yy);
@@ -507,6 +506,59 @@ public class ConverterDateAlgo
 		
 		// pattern YEAR.MONTH.DAY
 		
+		list.add("'" + yy + " " + MMM + " " + d);
+		list.add("'" + yy + " " + MMMM + " " + d);
+		list.add("" + yyyy + " " + MMM + " " + d);
+		list.add("" + yyyy + " " + MMMM + " " + d);
+
+		list.add("'" + yy + ", " + MMM + " " + d);
+		list.add("'" + yy + ", " + MMMM + " " + d);
+		list.add("" + yyyy + ", " + MMM + " " + d);
+		list.add("" + yyyy + ", " + MMMM + " " + d);
+		
+		list.add("'" + yy + " " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		list.add("'" + yy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		list.add("" + yyyy + " " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		list.add("" + yyyy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+
+		list.add("'" + yy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		list.add("'" + yy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		list.add("" + yyyy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		list.add("" + yyyy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+		
+		if(enableDD)
+		{
+			list.add("'" + yy + " " + MMM + " " + dd);
+			list.add("'" + yy + " " + MMMM + " " + dd);
+			list.add("" + yyyy + " " + MMM + " " + dd);
+			list.add("" + yyyy + " " + MMMM + " " + dd);
+
+			list.add("'" + yy + ", " + MMM + " " + dd);
+			list.add("'" + yy + ", " + MMMM + " " + dd);
+			list.add("" + yyyy + ", " + MMM + " " + dd);
+			list.add("" + yyyy + ", " + MMMM + " " + dd);
+			
+			list.add("'" + yy + " " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			list.add("'" + yy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			list.add("" + yyyy + " " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			list.add("" + yyyy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+
+			list.add("'" + yy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			list.add("'" + yy + ", " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			list.add("" + yyyy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			list.add("" + yyyy + ", " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+		}
+		
+		list.add("'" + yy + " " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("'" + yy + " " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("" + yyyy + " " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("" + yyyy + " " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		
+		list.add("'" + yy + ", " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("'" + yy + ", " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("" + yyyy + ", " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("" + yyyy + ", " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		
 		// TODO add more surface forms here if necessary
 		
 		// TODO remove eventually duplicate date surface forms
@@ -581,14 +633,13 @@ public class ConverterDateAlgo
 		SentenceLoader sentence = null;
 		
 		// initializes output file
-		// try
-		// {
-		// System.setOut(new PrintStream(new FileOutputStream(new
-		// File("testConverterDateAlgo.txt"), true)));
-		// } catch (FileNotFoundException e)
-		// {
-		// e.printStackTrace();
-		// }
+		try
+		{
+			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 		
 		// load annotations
 		try
