@@ -68,7 +68,7 @@ public abstract class Converter
 	 *            one token
 	 * @return true - if token is a number, false - if token is not a number
 	 */
-	protected boolean checkIfNumber(String token)
+	public boolean checkIfNumber(String token)
 	{
 		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
 		
