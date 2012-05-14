@@ -1,5 +1,3 @@
-package playground;
-
 /*
  * ConverterDateAlgo.java
  * 
@@ -15,7 +13,7 @@ package playground;
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
+package playground;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +28,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
@@ -43,13 +44,16 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
  */
 public class ConverterDateAlgo
 {
+	private static final Logger logger = LoggerFactory.getLogger(ConverterDateAlgo.class);
+	
 	// TODO load all surface forms from file and remove string arrays later
-	private String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-	private String[] ordinalNumbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth",
-			"tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth",
-			"eighteenth", "nineteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third", "twenty-fourth",
-			"twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth", "thirtieth",
-			"thirty-first" };
+	private String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+			"Dec" };
+	private String[] ordinalNumbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth",
+			"ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth",
+			"seventeenth", "eighteenth", "nineteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third",
+			"twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth",
+			"thirtieth", "thirty-first" };
 	private String[] dateSeparater = { "/", "-", "'", "~", "." };
 	
 	/**
@@ -105,7 +109,8 @@ public class ConverterDateAlgo
 		ArrayList<String> list = new ArrayList<String>();
 		
 		String pattern = null;
-		Boolean beginConversion = false;
+		Boolean beginStandardConversion = false;
+		Boolean beginSpecialConversion = false;
 		
 		// get complete annotation
 		String stringBufferAnno = "";
@@ -124,11 +129,15 @@ public class ConverterDateAlgo
 		String copyOfStringBuf = stringBufferAnno.replaceAll("/|-|'|~|\\.", "");
 		
 		// TODO
-		// System.out.println("TEST - stringBufferAnno: " + stringBufferAnno);
+		// System.out.println("TEST - original stringBufferAnno: " +
+		// stringBufferAnno);
+		logger.info("original uncleaned stringBufferAnno = <" + stringBufferAnno + "> loaded");
 		
 		// annotation consists just of numbers (date separaters do not count)
 		if (checkIfNumber(copyOfStringBuf) && stringBufferAnno.length() >= 6)
 		{
+			logger.info("option 1 selected");
+			
 			stringBufferAnno = stringBufferAnno.replaceAll("/|-|'|~", ".");
 			
 			String[] datePos = stringBufferAnno.split("\\.");
@@ -136,6 +145,8 @@ public class ConverterDateAlgo
 			String day = datePos[0];
 			String month = datePos[1];
 			String year = datePos[2];
+			
+			logger.info("stringBufferAnno splittet in <" + day + "> <" + month + "> <" + year + ">");
 			
 			// define date pattern
 			if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 12 < Integer.valueOf(month)
@@ -146,7 +157,7 @@ public class ConverterDateAlgo
 				day = month;
 				month = temp;
 				
-				beginConversion = true;
+				beginStandardConversion = true;
 			} else if (31 < Integer.valueOf(day) && 1 <= Integer.valueOf(month) && Integer.valueOf(month) <= 12
 					&& 1 <= Integer.valueOf(year) && Integer.valueOf(year) <= 31)
 			{
@@ -155,23 +166,28 @@ public class ConverterDateAlgo
 				day = year;
 				year = temp2;
 				
-				beginConversion = true;
+				beginStandardConversion = true;
 			} else
 			{
 				pattern = "dd.MM.yyyy";
 				
-				beginConversion = true;
+				beginStandardConversion = true;
 			}
 			
 			// TODO
-			// System.out.println("TEST - pattern: " + pattern);
+			// System.out.println("TEST - op1 pattern: " + pattern);
+			
+			logger.info("pattern created: " + pattern);
 			
 		}
 		
-		// annotation is a number (year)
+		// annotation is a number (in this case: a year)
 		else if (checkIfNumber(copyOfStringBuf) && 1 <= stringBufferAnno.length() && stringBufferAnno.length() <= 4)
 		{
-			beginConversion = false;
+			logger.info("option 2 selected");
+			
+			beginStandardConversion = false;
+			beginSpecialConversion = true;
 			
 			// TODO future: expand algorithm if necessary
 		}
@@ -179,6 +195,8 @@ public class ConverterDateAlgo
 		// annotation consists of some strings and numbers
 		else
 		{
+			logger.info("option 3 selected");
+			
 			stringBufferAnno = stringBufferAnno.replaceAll(",\\.| |on\\.|the\\.|of\\.", "");
 			
 			// replacing some parts of ordinal numbers
@@ -192,8 +210,10 @@ public class ConverterDateAlgo
 			}
 			
 			// TODO
-			// System.out.println("Test - stringBufferAnno: " +
+			// System.out.println("Test - op3 stringBufferAnno: " +
 			// stringBufferAnno);
+			
+			logger.info("cleaned stringBufferAnno = <" + stringBufferAnno + ">");
 			
 			String[] datePos = stringBufferAnno.split("\\.");
 			
@@ -215,6 +235,8 @@ public class ConverterDateAlgo
 			
 			if (datePos.length == 3)
 			{
+				logger.info("option 3.1 selected");
+				
 				day = datePos[(markMonth + 1) % 3]; // y or d
 				month = datePos[markMonth];
 				year = datePos[(markMonth + 2) % 3]; // y or d
@@ -229,24 +251,34 @@ public class ConverterDateAlgo
 					year = temp2;
 					
 					stringBufferAnno = year + "." + month + "." + day;
-					beginConversion = true;
+					beginStandardConversion = true;
 				} else
 				{
 					pattern = "dd.MM.yyyy";
 					
 					stringBufferAnno = day + "." + month + "." + year;
-					beginConversion = true;
+					beginStandardConversion = true;
 				}
 				
 				// TODO
-				// System.out.println("TEST - pattern: " + pattern);
+				// System.out.println("TEST - op2 pattern: " + pattern);
+				logger.info("pattern created: " + pattern);
 				
 			}
+			
+			// TODO improvements
 		}
 		
-		if (beginConversion)
+		// conversion of date formats
+		if(beginSpecialConversion)
+		{
+			
+		}
+		else if (beginStandardConversion)
 		{
 			conversionOfDate(list, stringBufferAnno, pattern, dateSeparater, ordinalNumbers);
+			
+			logger.info("standard conversion was enabled");
 		}
 		
 		return list;
@@ -270,6 +302,20 @@ public class ConverterDateAlgo
 		}
 		
 		return 0;
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private String convertArabicNumberToNumeral(int value)
+	{
+		String stringNumber = null;
+		
+		
+		
+		return stringNumber;
 	}
 	
 	/**
@@ -512,7 +558,7 @@ public class ConverterDateAlgo
 		list.add("'" + yy + " " + MMMM + " " + d);
 		list.add("" + yyyy + " " + MMM + " " + d);
 		list.add("" + yyyy + " " + MMMM + " " + d);
-
+		
 		list.add("'" + yy + ", " + MMM + " " + d);
 		list.add("'" + yy + ", " + MMMM + " " + d);
 		list.add("" + yyyy + ", " + MMM + " " + d);
@@ -522,19 +568,19 @@ public class ConverterDateAlgo
 		list.add("'" + yy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + " " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
-
+		
 		list.add("'" + yy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("'" + yy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		
-		if(enableDD)
+		if (enableDD)
 		{
 			list.add("'" + yy + " " + MMM + " " + dd);
 			list.add("'" + yy + " " + MMMM + " " + dd);
 			list.add("" + yyyy + " " + MMM + " " + dd);
 			list.add("" + yyyy + " " + MMMM + " " + dd);
-
+			
 			list.add("'" + yy + ", " + MMM + " " + dd);
 			list.add("'" + yy + ", " + MMMM + " " + dd);
 			list.add("" + yyyy + ", " + MMM + " " + dd);
@@ -544,7 +590,7 @@ public class ConverterDateAlgo
 			list.add("'" + yy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + " " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
-
+			
 			list.add("'" + yy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("'" + yy + ", " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
@@ -635,13 +681,13 @@ public class ConverterDateAlgo
 		SentenceLoader sentence = null;
 		
 		// initializes output file
-//		try
-//		{
-//			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
-//		} catch (FileNotFoundException e)
-//		{
-//			e.printStackTrace();
-//		}
+		try
+		{
+			System.setOut(new PrintStream(new FileOutputStream(new File("testConverterDateAlgo.txt"), true)));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 		
 		// load annotations
 		try
