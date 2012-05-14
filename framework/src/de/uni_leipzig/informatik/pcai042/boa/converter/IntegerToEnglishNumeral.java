@@ -13,7 +13,7 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package playground;
+package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 /**
  * 
@@ -24,7 +24,7 @@ public class IntegerToEnglishNumeral
 	private String[] lessThan20 = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
 			"eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
 	private String[] tens = { "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
-	private String[] denom = { "", "thousand" };
+	private String[] denom = { "", "thousand", "million" };
 	
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class IntegerToEnglishNumeral
 	 * @param value
 	 * @return
 	 */
-	private String convertXX(int value) throws Exception
+	private String convertXX(int value)
 	{
 		if (value < 20)
 		{
@@ -74,9 +74,9 @@ public class IntegerToEnglishNumeral
 	 * @return
 	 * @throws Exception
 	 */
-	private String convertXXX(int value) throws Exception
+	private String convertXXX(int value)
 	{
-		String word = null;
+		String word = "";
 		
 		int rem = value / 100;
 		int mod = value % 100;
@@ -105,7 +105,7 @@ public class IntegerToEnglishNumeral
 	 * @return
 	 * @throws Exception
 	 */
-	public String makeEnglishNumeral(int value) throws Exception
+	public String makeEnglishNumeral(int value)
 	{
 		if (value < 100)
 		{
@@ -149,7 +149,7 @@ public class IntegerToEnglishNumeral
 	 */
 	public static void main(String[] argv) throws Exception
 	{
-		int test = 1234;
+		int test = 1968;
 		
 		IntegerToEnglishNumeral a = new IntegerToEnglishNumeral();
 		

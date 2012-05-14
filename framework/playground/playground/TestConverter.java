@@ -44,9 +44,9 @@ public class TestConverter
 	
 	/**
 	 * @param args
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	public static void main(String[] args) throws ParseException 
+	public static void main(String[] args) throws ParseException
 	{
 		ConverterWeight conWEIGHT = new ConverterWeight();
 		ConverterLinearMeasure conLINEAR_MEASURE = new ConverterLinearMeasure();
@@ -59,13 +59,13 @@ public class TestConverter
 		SentenceLoader sentence = null;
 		
 		// initializes output file
-//		try
-//		{
-//			System.setOut(new PrintStream(new FileOutputStream(new File("testConverter.txt"), true)));
-//		} catch (FileNotFoundException e)
-//		{
-//			e.printStackTrace();
-//		}
+		try
+		{
+			System.setOut(new PrintStream(new FileOutputStream(new File("testConverter.txt"), true)));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 		
 		// load annotations
 		try
@@ -101,7 +101,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					// TODO test method here
-				result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				
@@ -125,8 +125,8 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
-					// result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
-					 count++;
+					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					count++;
 				}
 				result.add("________________________");
 			}
