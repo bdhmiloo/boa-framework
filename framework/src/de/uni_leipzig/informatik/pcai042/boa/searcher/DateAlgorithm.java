@@ -17,18 +17,14 @@
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
-import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
 
 /**
  * This Algorithm search for date structures in sentences and annotate them. It
@@ -40,7 +36,7 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
 
 public class DateAlgorithm extends SearchAlgorithm
 {
-	private static String yearPattern = "\\d";
+	private static Pattern yearPattern = Pattern.compile("([1-9]\\d\\d\\d)");
 	private static String monthPattern = "(0[1-9]|1[012])";
 	private static String monthPatternShort = "(0?[1-9]|1[012])";
 	private static String dayPattern = "(0[1-9]|[12][0-9]|3[01])";
@@ -48,6 +44,7 @@ public class DateAlgorithm extends SearchAlgorithm
 	
 	private Set<String> patternSet;
 	private ArrayList<Pattern> patterns;
+	private Set<String> prepoSet;
 	
 	private Set<String> monthSet;
 	private Set<String> daySet;
@@ -66,6 +63,28 @@ public class DateAlgorithm extends SearchAlgorithm
 	{
 		searchByNames(sentence);
 		searchByRegex(sentence);
+		searchByYears(sentence);
+	}
+	
+	private void searchByYears(BoaSentence sentence)
+	{
+		for (int i = 0; i < sentence.getTokens().size() - 1; i++)
+		{
+			for (String prepo : prepoSet)
+			{
+				if (prepo.equals(sentence.getTokens().get(i)))
+				{
+					Matcher m = yearPattern.matcher(sentence.getTokens().get(i+1));
+					if (m.matches())
+					{
+						ArrayList<String> tokens = new ArrayList<String>();
+						tokens.add(sentence.getTokens().get(i+1));
+						sentence.getAnnotations().add(new BoaAnnotation(BoaAnnotation.Type.DATE, tokens));
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 	private void searchByRegex(BoaSentence sentence)
@@ -411,6 +430,8 @@ public class DateAlgorithm extends SearchAlgorithm
 		daySet = cl.openConfigSurfaceForms("DAY");
 		monthSet = cl.openConfigSurfaceForms("MONTH");
 		patternSet = cl.openConfigSurfaceForms("PATTERNS");
+		prepoSet = cl.openConfigSurfaceForms("PREPOSITIONS");
+		
 		
 		patterns = new ArrayList<Pattern>();
 		for (String s : patternSet)
@@ -432,7 +453,7 @@ public class DateAlgorithm extends SearchAlgorithm
 								state = s.charAt(i);
 								break;
 							default:
-								sb.append(s.charAt(i));
+								sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
 						}
 						break;
 					case 'd':
@@ -443,7 +464,7 @@ public class DateAlgorithm extends SearchAlgorithm
 						} else
 						{
 							sb.append(dayPatternShort);
-							sb.append(s.charAt(i));
+							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
 							state = 'n';
 						}
 						break;
@@ -455,7 +476,7 @@ public class DateAlgorithm extends SearchAlgorithm
 						} else
 						{
 							sb.append(monthPatternShort);
-							sb.append(s.charAt(i));
+							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
 							state = 'n';
 						}
 						break;
@@ -465,21 +486,21 @@ public class DateAlgorithm extends SearchAlgorithm
 							yearPlaces++;
 						} else if (s.charAt(i) == '+')
 						{
-							sb.append(yearPattern);
+							sb.append("\\d");
 							sb.append('+');
 							state = 'l';
 						} else
 						{
 							for (; yearPlaces > 0; yearPlaces--)
 							{
-								sb.append(yearPattern);
+								sb.append("\\d");
 							}
-							sb.append(s.charAt(i));
+							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
 							state = 'n';
 						}
 						break;
 					case 'l':
-						sb.append(s.charAt(i));
+						sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
 						state = 'n';
 						break;
 				}
@@ -495,7 +516,7 @@ public class DateAlgorithm extends SearchAlgorithm
 				case 'y':
 					for (; yearPlaces > 0; yearPlaces--)
 					{
-						sb.append(yearPattern);
+						sb.append("\\d");
 					}
 					break;
 			}
