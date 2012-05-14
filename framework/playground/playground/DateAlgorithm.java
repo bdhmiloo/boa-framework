@@ -112,7 +112,6 @@ public class DateAlgorithm extends SearchAlgorithm
 								yearToken=findYear.next();
 								positionYear++;
 							}	
-							
 							if(checkIfYear(yearToken))														//if month=true day=true year=true
 							{
 								ArrayList<String> annoTokens = new ArrayList<String>();								
@@ -126,7 +125,7 @@ public class DateAlgorithm extends SearchAlgorithm
 							{
 								positionMeta=-1;
 								Iterator<String> findYearMeta=sentence.getTokens().iterator();						
-								while(positionMeta!=positionDay-1&&findYearMeta.hasNext())					//until meta=day-1
+								while(positionMeta!=positionYear+1)											//until meta=day-1
 								{
 									metaToken=findYearMeta.next();
 									positionMeta++;
@@ -218,7 +217,6 @@ public class DateAlgorithm extends SearchAlgorithm
 									{
 										yearToken=findYear.next();
 										positionYear++;
-										//System.out.println(positionYear+" year");
 									}								
 									if(checkIfYear(yearToken))												//if day=true of=true month=true year=true
 									{
@@ -312,13 +310,11 @@ public class DateAlgorithm extends SearchAlgorithm
 	public void setSurForms(Set<String> surfaceForms)
 	{
 		Iterator<String> dateIT= surfaceForms.iterator();
-		String nextSet="", subSet="";
-		
+		String nextSet="", subSet="";		
 		
 		daySet=new HashSet<String>(Arrays.asList(dateIT.next().split("&&")));
 		monthSet=new HashSet<String>(Arrays.asList(dateIT.next().split("&&")));
-		
-		/*
+		/*		
 		while(dateIT.hasNext())
 		{
 			nextSet=dateIT.next();
@@ -356,33 +352,5 @@ public class DateAlgorithm extends SearchAlgorithm
 				
 		return false;
 	}
-/*	
-	public boolean checkIfMonth(String token)
-	{
-		String[] firstString;
-		if(monthSet.contains(token.toLowerCase()))
-		{
-			return true;
-		}
-		else
-		{
-			if(token.endsWith(","))
-			{
-				firstString=token.split(",");
-				if(monthSet.contains(firstString[0].toLowerCase()))
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
-*/
+
 }
