@@ -33,7 +33,7 @@ public class TestClass
 {	
 	public static void main(String[] args)
 	{		
-		int count = 0, annoCount = 0, lmCount = 0, wCount = 0, tCount = 0, hilfsCount = 0;
+		int count = 0, annoCount = 0, lmCount = 0, wCount = 0, tCount = 0, dtCount = 0, hilfsCount = 0;
 		ArrayList<BoaSentence> sentences = new ArrayList<BoaSentence>();
 		SentenceLoader sentenceLoader = null;
 		BoaSentence nextSentence;
@@ -60,6 +60,7 @@ public class TestClass
 		LabelSearcher lsLinMeasure = new LabelSearcher(Type.LINEAR_MEASURE, new NaiveAlgorithm());
 		LabelSearcher lsWeight = new LabelSearcher(Type.WEIGHT, new NaiveAlgorithm());
 		LabelSearcher lsTemp = new LabelSearcher(Type.TEMPERATURE, new NaiveAlgorithm());
+		LabelSearcher lsDate = new LabelSearcher(Type.DATE, new DateAlgorithm());
 		
 		while(it.hasNext())
 		{
@@ -75,6 +76,9 @@ public class TestClass
 			wCount+= nextSentence.getAnnotations().size();
 			
 			lsTemp.searchUnit(nextSentence);
+			tCount+= nextSentence.getAnnotations().size();
+			
+			lsDate.searchUnit(nextSentence);
 			
 			annoCount+= nextSentence.getAnnotations().size();
 			
@@ -85,12 +89,10 @@ public class TestClass
 		
 		lmCount = -hilfsCount + lmCount;
 		wCount = -hilfsCount - lmCount + wCount;
-		tCount = annoCount - lmCount - wCount;
+		tCount = -hilfsCount - lmCount - wCount + tCount;
+		dtCount = annoCount - lmCount - wCount -tCount;
 		
 		System.out.println("\nHinzugefügte Annotationen (Gesamt): " + annoCount);
-		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight \n" + tCount + " Temperature");
-		
-		//check numbertest
-		//System.out.println(new NaiveAlgorithm().checkIfStartsWithNumber("fourteenhundred"));
+		System.out.println("Davon:\n" + lmCount + " Linear Measure\n" + wCount + " Weight \n" + tCount + " Temperature \n" + dtCount + " Date");
 	}
 }
