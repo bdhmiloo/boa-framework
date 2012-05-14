@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -43,8 +44,9 @@ public class TestConverter
 	
 	/**
 	 * @param args
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args)
+	public static void main(String[] args) throws ParseException 
 	{
 		ConverterWeight conWEIGHT = new ConverterWeight();
 		ConverterLinearMeasure conLINEAR_MEASURE = new ConverterLinearMeasure();
@@ -123,7 +125,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
 				{
 					// TODO test method here
-					 result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+//					 result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					 count++;
 				}
 				result.add("________________________");
