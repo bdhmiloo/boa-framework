@@ -203,56 +203,56 @@ public class ConverterWeight extends Converter
 			{
 				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfWeight[d]));
 				
-				if (allUnitsOfWeight[d].equals("kg"))
+				if (allUnitsOfWeight[d].equals("kilogram"))
 				{
 					for (int l = 0; l < kg.length; l++)
 					{
 						list.add(newNumber + " " + kg[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("microg"))
+				if (allUnitsOfWeight[d].equals("microgram"))
 				{
 					for (int l = 0; l < microg.length; l++)
 					{
 						list.add(newNumber + " " + microg[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("g"))
+				if (allUnitsOfWeight[d].equals("gram"))
 				{
 					for (int l = 0; l < g.length; l++)
 					{
 						list.add(newNumber + " " + g[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("t"))
+				if (allUnitsOfWeight[d].equals("ton"))
 				{
 					for (int l = 0; l < t.length; l++)
 					{
 						list.add(newNumber + " " + t[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("Kt"))
+				if (allUnitsOfWeight[d].equals("karat"))
 				{
 					for (int l = 0; l < Kt.length; l++)
 					{
 						list.add(newNumber + " " + Kt[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("oz"))
+				if (allUnitsOfWeight[d].equals("ounze"))
 				{
 					for (int l = 0; l < oz.length; l++)
 					{
 						list.add(newNumber + " " + oz[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("lbs"))
+				if (allUnitsOfWeight[d].equals("pound"))
 				{
 					for (int l = 0; l < lbs.length; l++)
 					{
 						list.add(newNumber + " " + lbs[l]);
 					}
 				}
-				if (allUnitsOfWeight[d].equals("mg"))
+				if (allUnitsOfWeight[d].equals("milligram"))
 				{
 					for (int l = 0; l < mg.length; l++)
 					{
