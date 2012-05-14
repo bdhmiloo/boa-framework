@@ -1,3 +1,5 @@
+package playground;
+
 /*
  * ConverterDateAlgo.java
  * 
@@ -13,7 +15,7 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package playground;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;

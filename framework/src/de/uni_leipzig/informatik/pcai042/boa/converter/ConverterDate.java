@@ -42,6 +42,7 @@ public class ConverterDate extends Converter
 	
 	/**
 	 * Constructor.
+	 * 
 	 */
 	public ConverterDate()
 	{
