@@ -61,20 +61,20 @@ public class TestingPackageBoaConverter
 	   {
 		// REVERT 237 (CONVERTER DATE COMPLETE)
 		
-		tokensDate.add("23.07.1980");
-		tokensDate.add("25.07.1985");
-		tokensDate.add("23/07/1980");
+		tokensDate.add("23");
+		tokensDate.add("07");
+		tokensDate.add("1980");
 		
-		tokensLinearMeasure.add("5");
-		tokensLinearMeasure.add("14 km");
+		tokensLinearMeasure.add("1");
+		tokensLinearMeasure.add("km");
 		
-		tokensTemperature.add("32 Celcius");
-		tokensTemperature.add("23 °C");
+		tokensTemperature.add("32");
+		tokensTemperature.add("°C");
 		tokensTemperature.add("23 °F");
 
 		
-		tokensWeight.add("5KG");
-		tokensWeight.add("10 Kilogramm");
+		tokensWeight.add("5");
+		tokensWeight.add("kg");
 	
 		//abstract class
 		converter = new Converter()
@@ -134,60 +134,74 @@ public class TestingPackageBoaConverter
 	 
 	 
 	 /**
-	  * Test if the linear Measure returns the right list. 
-	  * Does not work properly right now. the  linearmeasure.convertUnits(annotationLinearMeasure).size() is 0
+	  * Test if the linear Measure stores the right values  for the conversion of 1 KM
+	  * And if the list contains all of the 12 different ways of describing the linear measures
 	  */
 	 
 	 @Test
 	 public void testLinearMeasureList()
 	 {
 		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);
-		
-		 //assertEquals(getListSize(tokensLinearMeasure), linearmeasure.convertUnits(annotationLinearMeasure).size());
+		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("1093.6133000 yard"));
+		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("39370.00 inch"));
+		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("0.621371192000 miles"));
+		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("0.5399000 seamiles"));
 
-		 for (int i =0 ; i < linearmeasure.convertUnits(annotationLinearMeasure).size() ;i++)
-		 {
-			 assertEquals(tokensLinearMeasure.get(i),linearmeasure.convertUnits(annotationLinearMeasure).get(i) );
+			 assertEquals(12,linearmeasure.convertUnits(annotationLinearMeasure).size() );
 		 }
-	 }
+
 	
 	 
 	 /**
-	  * Test if the linear Weight convert Units returns the right list. 
-	  * Does not work properly right now. the  weight.convertUnits(annotationLinearMeasure).size() is 0
+	  * Test if the linear Weight convert Units returns all the right values of the conversion of 5 KG
+	  * And if the list contains all of the 31 different ways of describing the linear measures
 	  */
 	 @Test 
 	 public void testWeightList()
 
 	 {
 		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT,tokensWeight);
-			
-		 //assertEquals(getListSize(tokensWeight), linearmeasure.convertUnits(annotationLinearMeasure).size());
+		
+		 assertTrue(weight.convertUnits(annotationWeight).contains("176.3698095 oz"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("11.02311310 pound"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("0.005 tonnes"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("25000 kt"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000 mg"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("5000 g"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("11.02311310 lbs"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000000 µg"));
+			 
+			 assertEquals(31,weight.convertUnits(annotationWeight).size() );
 
-		 for (int i =0 ; i < weight.convertUnits(annotationWeight).size() ;i++)
-		 {
-			 assertEquals(tokensWeight.get(i),weight.convertUnits(annotationWeight).get(i) );
-		 }
 	 }
+
+	 
+
 	 
 	 /**
-	  * Test if the Date convert Units returns the right list. 
-	  * Does not work properly right now. the  date.convertUnits(annotationLinearMeasure).size() is 0
+	  * Test if the Date convert Units returns all of the different ways to write a Date.
+	  * the test-Dates ware choosed randomly.
+	  * @throws ParseException 
 	  */
 	 @Test 
-	 public void testDateList()
+	 public void testDateList() throws ParseException
 
 	 {
 		 BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
 			
-		 //assertEquals(getListSize(tokensDate), linearmeasure.convertUnits(annotationDate).size());
+			 assertTrue(date.convertUnits(annotationDate).contains("July the twenty-third, 1980"));
+			 assertTrue(date.convertUnits(annotationDate).contains("1980, July twenty-third"));
+			 assertTrue(date.convertUnits(annotationDate).contains("'80 July 23rd"));
+			 assertTrue(date.convertUnits(annotationDate).contains("1980, Jul twenty-third"));
+			 assertTrue(date.convertUnits(annotationDate).contains("23rd Jul, '80"));
+			 assertTrue(date.convertUnits(annotationDate).contains("1980, July 23rd"));
+			 assertTrue(date.convertUnits(annotationDate).contains("23rd July, 1980"));
+			 assertTrue(date.convertUnits(annotationDate).contains("July 23rd, 1980"));
+			 assertTrue(date.convertUnits(annotationDate).contains("July twenty-third, 1980"));
 
-		
-	//		for (int i =0 ; i < date.convertUnits(annotationDate).size() ;i++)
-	//		 {
-	//			 assertEquals(tokensDate.get(i),date.convertUnits(annotationDate).get(i) );
-	//		 }
-	
+			// assertEquals(148,date.convertUnits(annotationDate).size() );
+
+				 
 	 }
 	 
 	 /**
@@ -199,58 +213,48 @@ public class TestingPackageBoaConverter
 
 	 {
 		 BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE,tokensTemperature);
-			
-		 //assertEquals(getListSize(tokensLinearMeasure), linearmeasure.convertUnits(annotationLinearMeasure).size());
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 °c"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 degreecelsius"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("305.15 kelvin"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("305.15 degreeskelvin"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 f"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 °f"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 degreefahrenheit"));
 
-		 for (int i =0 ; i < temperature.convertUnits(annotationTemperature).size() ;i++)
-		 {
-			 assertEquals(tokensTemperature.get(i),temperature.convertUnits(annotationTemperature).get(i) );
-		 }
+		assertEquals(18, temperature.convertUnits(annotationTemperature).size());
 	 }
 	 
 	 /**
-	  * False Test . 
-	  * Does not work properly right now. the  temperature.convertUnits(annotationLinearMeasure).size() is 0
+	  * False Test .check the conversion Lists with false Values
+	 * @throws ParseException 
 	  */
 	 @Test 
-	 public void testFalseList()
+	 public void testFalseList() throws ParseException
 
 	 {
 		 BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE,tokensTemperature);
 		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT,tokensWeight);
+		 BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
+		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);
 
-		 //assertEquals(getListSize(tokensLinearMeasure), linearmeasure.convertUnits(annotationLinearMeasure).size());
-		// System.out.print("token "+tokensTemperature.get(0));
-		// System.out.print("converted "+temperature.convertUnits(annotationTemperature).get(0).toString());
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.00 °h"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.01 °c"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("45 °f"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("degreecelcius"));
+		
+		 assertFalse(date.convertUnits(annotationDate).contains("Jyly the twenty-third, 1980"));
+		 assertFalse(date.convertUnits(annotationDate).contains("July the twenty third, 1980"));
+		 assertFalse(date.convertUnits(annotationDate).contains("23rd July, 198"));
+		 assertFalse(date.convertUnits(annotationDate).contains("23..7.1980"));
 
+		 assertFalse(weight.convertUnits(annotationWeight).contains("5 Kilogramm"));
+		 assertFalse(weight.convertUnits(annotationWeight).contains("5 milligram"));
+		 assertFalse(weight.convertUnits(annotationWeight).contains("176.3699095 oz"));
+		 assertFalse(weight.convertUnits(annotationWeight).contains("5009 gran"));
 
-		 for (int i =0 ; i < temperature.convertUnits(annotationTemperature).size() ;i++)
-		 {
-			 assertThat(tokensTemperature.get(i), is(not(temperature.convertUnits(annotationTemperature).get(i))));
-			 
-		 }
+		 assertFalse(linearmeasure.convertUnits(annotationLinearMeasure).contains("1093.6133000 Yard"));
+		 assertFalse(linearmeasure.convertUnits(annotationLinearMeasure).contains("1093.6233000 yard"));
+		 assertFalse(linearmeasure.convertUnits(annotationLinearMeasure).contains("0.5399000 Seamile"));
+		 assertFalse(linearmeasure.convertUnits(annotationLinearMeasure).contains("0.5399000 miles"));
 	 }
-	 
-	
-	 /**
-	  * to write the results on a txt file
-	  */
-	 @After
-	 public void writeToFile()
-	 {
-		 
-		 //TO DO
-	 }
-	
-	 /*
-	  * To check the Sizes of the List if they are the same in every category
-	  */
-	 public int getListSize( ArrayList<String> list)
-		{
-			return list.size();
-		}
-	 
-	 
-	 
-
 }
