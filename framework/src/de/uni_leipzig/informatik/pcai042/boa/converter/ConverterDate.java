@@ -153,6 +153,8 @@ public class ConverterDate extends Converter
 		{
 			logger.info("Date option #2 selected");
 			
+			pattern = "yyyy";
+			
 			beginSpecialConversion = true;
 		}
 		
@@ -177,6 +179,7 @@ public class ConverterDate extends Converter
 			
 			String[] datePos = stringBufferAnno.split("\\.");
 			int markMonth = 0;
+			Boolean monthExists = false;
 			
 			for (int j = 0; j < datePos.length; j++)
 			{
@@ -186,13 +189,14 @@ public class ConverterDate extends Converter
 					{
 						datePos[j] = Integer.toString(convertMonthToNumber(datePos[j], monthAbbreviation));
 						markMonth = j;
+						monthExists = true;
 					}
 				}
 			}
 			
 			String day, month, year;
 			
-			if (datePos.length == 3)
+			if (datePos.length == 3 && monthExists)
 			{
 				logger.info("Date option #3.1 selected.");
 				
@@ -221,7 +225,7 @@ public class ConverterDate extends Converter
 				
 				logger.info("Date pattern <" + pattern + "> was created.");
 				
-			} else if (datePos.length == 2)
+			} else if (datePos.length == 2 && monthExists)
 			{
 				// TODO special conversion
 				logger.info("Date option #3.2 selected.");
@@ -298,7 +302,7 @@ public class ConverterDate extends Converter
 		String yy = getDateString(stringBufferAnno, "yyyy", "yy");
 		String yyyy = getDateString(stringBufferAnno, "yyyy", "yyyy");
 		
-		if (Integer.valueOf(yyyy) < centuryBegin || Integer.valueOf(yyyy) > centuryEnd)
+		if (Integer.valueOf(yyyy) >= centuryBegin && Integer.valueOf(yyyy) <= centuryEnd)
 		{
 			list.add(yy);
 		}
@@ -336,7 +340,7 @@ public class ConverterDate extends Converter
 		list.add(MMM + "-" + yyyy);
 		list.add(MMMM + "-" + yyyy);
 		
-		if (Integer.valueOf(yyyy) < centuryBegin || Integer.valueOf(yyyy) > centuryEnd)
+		if (Integer.valueOf(yyyy) >= centuryBegin && Integer.valueOf(yyyy) <= centuryEnd)
 		{
 			list.add(MM + "." + yy);
 			list.add(MMM + "." + yy);
@@ -386,7 +390,7 @@ public class ConverterDate extends Converter
 			MM = "0" + M;
 			enableMM = true;
 		}
-		if (Integer.valueOf(yyyy) < centuryBegin || Integer.valueOf(yyyy) > centuryEnd)
+		if (Integer.valueOf(yyyy) >= centuryBegin && Integer.valueOf(yyyy) <= centuryEnd)
 		{
 			enableYY = true;
 		}
