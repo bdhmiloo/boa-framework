@@ -34,12 +34,6 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
 public class Annotater
 {
 	/**
-	 *	Tells whether the Annotator has already been successfully initialized. 
-	 */
-	
-	private boolean isInitialized = false;
-	
-	/**
 	 * List of the LabelSearchers used in the annotate method.
 	 */
 	
@@ -74,8 +68,6 @@ public class Annotater
 				//if(Type.valueOf(currentUnit.toUpperCase())==null) eTest.add
 				searchers.add(new LabelSearcher(Type.valueOf(currentUnit.toUpperCase()), sAlgo));
 			}
-			
-			isInitialized = true;
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -95,7 +87,7 @@ public class Annotater
 	
 	public void annotate(ArrayList<BoaSentence> sentences)
 	{
-		if(!isInitialized) return;
+		if(searchers == null) return;
 		
 		BoaSentence currentSentence;
 		
