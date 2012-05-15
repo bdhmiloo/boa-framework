@@ -94,14 +94,14 @@ public class TestConverter
 			// get all annotations
 			for (int k = 0; k < sentence.getSentence(i).getAnnotations().size(); k++)
 			{
-				result.add("sentence:" + i + "  anno:" + k);
-				result.add("________________________");
+//				result.add("sentence:" + i + "  anno:" + k);
+//				result.add("________________________");
 				
 				// conversion WEIGHT
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
 				{
 					// TODO test method here
-					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+//					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				
@@ -109,7 +109,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
 				{
 					// TODO test method here
-					result.addAll(conLINEAR_MEASURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+//					result.addAll(conLINEAR_MEASURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				
@@ -117,7 +117,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
 				{
 					// TODO test method here
-					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+//					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				
@@ -128,7 +128,7 @@ public class TestConverter
 					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
-				result.add("________________________");
+//				result.add("________________________");
 			}
 		}
 		

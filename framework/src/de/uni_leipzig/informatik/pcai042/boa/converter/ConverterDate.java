@@ -35,9 +35,8 @@ public class ConverterDate extends Converter
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConverterDate.class);
 	
-	// TODO load all surface forms from file and remove string arrays later
-	private String[] monthAbbreviation = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-			"Dec" };
+	private String[] monthAbbreviation = { "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov",
+			"dec" };
 	private String[] ordinalNumbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth",
 			"ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth",
 			"seventeenth", "eighteenth", "nineteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third",
@@ -46,8 +45,17 @@ public class ConverterDate extends Converter
 	private String[] dateSeparater = { "/", "-", "'", "~", "." };
 	
 	/**
+	 * The beginning of the current century.
+	 */
+	private int centuryBegin;
+	
+	/**
+	 * The ending of the current century.
+	 */
+	private int centuryEnd;
+	
+	/**
 	 * Constructor.
-	 * 
 	 */
 	public ConverterDate()
 	{
@@ -66,6 +74,9 @@ public class ConverterDate extends Converter
 	public ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException
 	{
 		ArrayList<String> list = new ArrayList<String>();
+		
+		// set the century we are currently living in; need to be UPDATED
+		setCentury(21);
 		
 		String pattern = null;
 		Boolean beginStandardConversion = false;
@@ -87,18 +98,13 @@ public class ConverterDate extends Converter
 		
 		// some tests
 		String numberCheck = stringBufferAnno.replaceAll("/|-|'|~|\\.", "");
-		String splitCheck = stringBufferAnno.replaceAll("/|-|'|~|\\.", ".");
+		String[] splitCheck = stringBufferAnno.replaceAll("/|-|'|~|\\.", ".").split("\\.");
 		
-		String[] splitTest = splitCheck.split("\\.");
-		
-		// TODO
-		// System.out.println("TEST - original stringBufferAnno: " +
-		// stringBufferAnno);
 		logger.info("Original uncleaned stringBufferAnno = <" + stringBufferAnno + "> loaded.");
 		
 		// annotation consists just of numbers (date separaters do not count)
 		if (checkIfNumber(numberCheck) && 6 <= stringBufferAnno.length() && stringBufferAnno.length() <= 10
-				&& splitTest.length == 3)
+				&& splitCheck.length == 3)
 		{
 			logger.info("Date option #1 selected.");
 			
@@ -138,9 +144,6 @@ public class ConverterDate extends Converter
 				beginStandardConversion = true;
 			}
 			
-			// TODO
-			// System.out.println("TEST - op1 pattern: " + pattern);
-			
 			logger.info("Date pattern <" + pattern + "> was created.");
 			
 		}
@@ -150,10 +153,7 @@ public class ConverterDate extends Converter
 		{
 			logger.info("Date option #2 selected");
 			
-			beginStandardConversion = false;
 			beginSpecialConversion = true;
-			
-			// TODO future: expand algorithm if necessary
 		}
 		
 		// annotation consists of some strings and numbers
@@ -161,7 +161,7 @@ public class ConverterDate extends Converter
 		{
 			logger.info("Date option #3 selected");
 			
-			stringBufferAnno = stringBufferAnno.replaceAll(",\\.| |on\\.|the\\.|of\\.", "");
+			stringBufferAnno = stringBufferAnno.replaceAll(",\\.| |on\\.|the\\.|of\\.", "").toLowerCase();
 			
 			// replacing some parts of ordinal numbers
 			for (int j = 1; j <= 31; j++)
@@ -173,14 +173,9 @@ public class ConverterDate extends Converter
 				stringBufferAnno = stringBufferAnno.replaceAll(ordinalNumbers[j - 1], Integer.toString(j));
 			}
 			
-			// TODO
-			// System.out.println("Test - op3 stringBufferAnno: " +
-			// stringBufferAnno);
-			
 			logger.info("Cleaned stringBufferAnno - <" + stringBufferAnno + ">.");
 			
 			String[] datePos = stringBufferAnno.split("\\.");
-			
 			int markMonth = 0;
 			
 			for (int j = 0; j < datePos.length; j++)
@@ -224,16 +219,26 @@ public class ConverterDate extends Converter
 					beginStandardConversion = true;
 				}
 				
-				// TODO
-				// System.out.println("TEST - op2 pattern: " + pattern);
 				logger.info("Date pattern <" + pattern + "> was created.");
 				
+			} else if (datePos.length == 2)
+			{
+				// TODO special conversion
+				logger.info("Date option #3.2 selected.");
+				
+				month = datePos[markMonth];
+				year = datePos[(markMonth + 1) % 2];
+				
+				pattern = "MM.yyyy";
+				
+				stringBufferAnno = month + "." + year;
+				beginSpecialConversion = true;
+				
+				logger.info("Date pattern <" + pattern + "> was created.");
 			} else
 			{
-				logger.error("<" + stringBufferAnno + "> was not convertable.");
+				logger.error("<" + stringBufferAnno + "> could not be converted.");
 			}
-			
-			// TODO improvements
 		}
 		
 		// conversion of date formats
@@ -241,11 +246,19 @@ public class ConverterDate extends Converter
 		{
 			logger.info("Special conversion was enabled.");
 			
+			if (pattern.equals("yyyy"))
+			{
+				specialConversionOfDate(list, stringBufferAnno);
+			} else if (pattern.equals("MM.yyyy") || pattern.equals("yyyy.MM"))
+			{
+				specialConversionOfDate(list, stringBufferAnno, pattern);
+			}
+			
 		} else if (beginStandardConversion)
 		{
 			logger.info("Standard conversion was enabled.");
 			
-			conversionOfDate(list, stringBufferAnno, pattern, dateSeparater, ordinalNumbers);
+			standardConversionOfDate(list, stringBufferAnno, pattern);
 		}
 		
 		return list;
@@ -272,15 +285,84 @@ public class ConverterDate extends Converter
 	}
 	
 	/**
-	 * Convert dates to other dates with different surface forms.
+	 * Special Converter, converts dates (year) to other dates with different
+	 * surface forms.
 	 * 
 	 * @param list
 	 * @param stringBufferAnno
 	 * @param pattern
 	 * @throws ParseException
 	 */
-	private void conversionOfDate(ArrayList<String> list, String stringBufferAnno, String pattern,
-			String[] dateSeparater, String[] ordinalNumbers) throws ParseException
+	private void specialConversionOfDate(ArrayList<String> list, String stringBufferAnno) throws ParseException
+	{
+		String yy = getDateString(stringBufferAnno, "yyyy", "yy");
+		String yyyy = getDateString(stringBufferAnno, "yyyy", "yyyy");
+		
+		if (Integer.valueOf(yyyy) < centuryBegin || Integer.valueOf(yyyy) > centuryEnd)
+		{
+			list.add(yy);
+		}
+		
+		logger.info("Special conversion successful.");
+	}
+	
+	/**
+	 * Special Converter, converts dates (month, year) to other dates with
+	 * different surface forms.
+	 * 
+	 * @param list
+	 * @param stringBufferAnno
+	 * @param pattern
+	 * @param dateSeparater
+	 * @param ordinalNumbers
+	 * @throws ParseException
+	 */
+	private void specialConversionOfDate(ArrayList<String> list, String stringBufferAnno, String pattern)
+			throws ParseException
+	{
+		String MM = getDateString(stringBufferAnno, pattern, "MM");
+		String MMM = getDateString(stringBufferAnno, pattern, "MMM");
+		String MMMM = getDateString(stringBufferAnno, pattern, "MMMM");
+		String yy = getDateString(stringBufferAnno, pattern, "yy");
+		String yyyy = getDateString(stringBufferAnno, pattern, "yyyy");
+		
+		list.add(MM + "." + yyyy);
+		list.add(MMM + "." + yyyy);
+		list.add(MMMM + "." + yyyy);
+		list.add(MM + "/" + yyyy);
+		list.add(MMM + "/" + yyyy);
+		list.add(MMMM + "/" + yyyy);
+		list.add(MM + "-" + yyyy);
+		list.add(MMM + "-" + yyyy);
+		list.add(MMMM + "-" + yyyy);
+		
+		if (Integer.valueOf(yyyy) < centuryBegin || Integer.valueOf(yyyy) > centuryEnd)
+		{
+			list.add(MM + "." + yy);
+			list.add(MMM + "." + yy);
+			list.add(MMMM + "." + yy);
+			list.add(MM + "/" + yy);
+			list.add(MMM + "/" + yy);
+			list.add(MMMM + "/" + yy);
+			list.add(MM + "-" + yy);
+			list.add(MMM + "-" + yy);
+			list.add(MMMM + "-" + yy);
+		}
+		
+		logger.info("Special conversion successful.");
+	}
+	
+	/**
+	 * Standard Converter, converts dates (day, month, year) to other dates with
+	 * different surface forms.
+	 * 
+	 * @param list
+	 * @param stringBufferAnno
+	 * @param pattern
+	 * @throws ParseException
+	 */
+	private void standardConversionOfDate(ArrayList<String> list, String stringBufferAnno, String pattern)
+			throws ParseException
 	{
 		String d = getDateString(stringBufferAnno, pattern, "d");
 		String dd = null;
@@ -292,7 +374,7 @@ public class ConverterDate extends Converter
 		String yyyy = getDateString(stringBufferAnno, pattern, "yyyy");
 		
 		// add "0" to day or to month in case of one-digit numbers
-		Boolean enableDD = false, enableMM = false;
+		Boolean enableDD = false, enableMM = false, enableYY = false;
 		
 		if (1 <= Integer.valueOf(d) && Integer.valueOf(d) <= 9)
 		{
@@ -304,265 +386,330 @@ public class ConverterDate extends Converter
 			MM = "0" + M;
 			enableMM = true;
 		}
+		if (Integer.valueOf(yyyy) < centuryBegin || Integer.valueOf(yyyy) > centuryEnd)
+		{
+			enableYY = true;
+		}
 		
 		// convert to other surface forms (just numbers)
 		for (int p = 0; p < dateSeparater.length; p++)
 		{
 			// pattern DAY.MONTH.YEAR
 			
-			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
+			if (enableYY)
+				list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
 			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
 			
-			if (enableDD)
+			if (enableDD && Integer.valueOf(M) >= 10)
 			{
-				list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yy);
+				if (enableYY)
+					list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yy);
 				list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yyyy);
 			}
-			if (enableMM)
+			if (enableMM && Integer.valueOf(d) >= 10)
 			{
-				list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yy);
+				if (enableYY)
+					list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yy);
 				list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
 			}
 			if (enableDD && enableMM)
 			{
-				list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yy);
+				if (enableYY)
+					list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yy);
 				list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
 			}
 			
 			// pattern MONTH.DAY.YEAR
 			
-			list.add(M + dateSeparater[p] + d + dateSeparater[p] + yy);
+			if (enableYY)
+				list.add(M + dateSeparater[p] + d + dateSeparater[p] + yy);
 			list.add(M + dateSeparater[p] + d + dateSeparater[p] + yyyy);
 			
-			if (enableDD)
+			if (enableDD && Integer.valueOf(M) >= 10)
 			{
-				list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yy);
+				if (enableYY)
+					list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yy);
 				list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yyyy);
 			}
-			if (enableMM)
+			if (enableMM && Integer.valueOf(d) >= 10)
 			{
-				list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yy);
+				if (enableYY)
+					list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yy);
 				list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yyyy);
 			}
 			if (enableDD && enableMM)
 			{
-				list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yy);
+				if (enableYY)
+					list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yy);
 				list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yyyy);
 			}
 			
 			// pattern YEAR.MONTH.DAY
 			
-			list.add(yy + dateSeparater[p] + M + dateSeparater[p] + d);
+			if (enableYY)
+				list.add(yy + dateSeparater[p] + M + dateSeparater[p] + d);
 			list.add(yyyy + dateSeparater[p] + M + dateSeparater[p] + d);
 			
-			if (enableDD)
+			if (enableDD && Integer.valueOf(M) >= 10)
 			{
-				list.add(yy + dateSeparater[p] + M + dateSeparater[p] + dd);
+				if (enableYY)
+					list.add(yy + dateSeparater[p] + M + dateSeparater[p] + dd);
 				list.add(yyyy + dateSeparater[p] + M + dateSeparater[p] + dd);
 			}
-			if (enableMM)
+			if (enableMM && Integer.valueOf(d) >= 10)
 			{
-				list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + d);
+				if (enableYY)
+					list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + d);
 				list.add(yyyy + dateSeparater[p] + MM + dateSeparater[p] + d);
 			}
 			if (enableDD && enableMM)
 			{
-				list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + dd);
+				if (enableYY)
+					list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + dd);
 				list.add(yyyy + dateSeparater[p] + MM + dateSeparater[p] + dd);
 			}
 		}
-		
-		// TODO add more surface forms here if necessary
 		
 		// convert to other surface forms (strings and numbers)
 		
 		// pattern DAY.MONTH.YEAR
 		
-		list.add(d + " " + MMM + " '" + yy);
-		list.add(d + " " + MMMM + " '" + yy);
+		if (enableYY)
+		{
+			list.add(d + " " + MMM + " '" + yy);
+			list.add(d + " " + MMMM + " '" + yy);
+			
+			list.add(d + " " + MMM + ", '" + yy);
+			list.add(d + " " + MMMM + ", '" + yy);
+			
+			list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " '" + yy);
+			list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " '" + yy);
+			
+			list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", '" + yy);
+			list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", '" + yy);
+			
+			list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + " '" + yy);
+			list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + " '" + yy);
+			
+			list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + ", '" + yy);
+			list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + ", '" + yy);
+			
+			list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMM + " '" + yy);
+			list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMMM + " '" + yy);
+		}
+		
 		list.add(d + " " + MMM + " " + yyyy);
 		list.add(d + " " + MMMM + " " + yyyy);
 		
-		list.add(d + " " + MMM + ", '" + yy);
-		list.add(d + " " + MMMM + ", '" + yy);
 		list.add(d + " " + MMM + ", " + yyyy);
 		list.add(d + " " + MMMM + ", " + yyyy);
 		
-		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " '" + yy);
-		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " '" + yy);
 		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " " + yyyy);
 		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " " + yyyy);
 		
-		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", '" + yy);
-		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", '" + yy);
 		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", " + yyyy);
 		list.add(d + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", " + yyyy);
 		
+		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + " " + yyyy);
+		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + " " + yyyy);
+		
+		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + ", " + yyyy);
+		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + ", " + yyyy);
+		
+		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMM + " " + yyyy);
+		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMMM + " " + yyyy);
+		
 		if (enableDD)
 		{
-			list.add(dd + " " + MMM + " '" + yy);
-			list.add(dd + " " + MMMM + " '" + yy);
+			if (enableYY)
+			{
+				list.add(dd + " " + MMM + " '" + yy);
+				list.add(dd + " " + MMMM + " '" + yy);
+				
+				list.add(dd + " " + MMM + ", '" + yy);
+				list.add(dd + " " + MMMM + ", '" + yy);
+				
+				list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " '" + yy);
+				list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " '" + yy);
+				
+				list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", '" + yy);
+				list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", '" + yy);
+			}
+			
 			list.add(dd + " " + MMM + " " + yyyy);
 			list.add(dd + " " + MMMM + " " + yyyy);
 			
-			list.add(dd + " " + MMM + ", '" + yy);
-			list.add(dd + " " + MMMM + ", '" + yy);
 			list.add(dd + " " + MMM + ", " + yyyy);
 			list.add(dd + " " + MMMM + ", " + yyyy);
 			
-			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " '" + yy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " '" + yy);
 			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + " " + yyyy);
 			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + " " + yyyy);
 			
-			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", '" + yy);
-			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", '" + yy);
 			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMM + ", " + yyyy);
 			list.add(dd + getOrdinalFor(Integer.valueOf(d)) + " " + MMMM + ", " + yyyy);
 		}
 		
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + " '" + yy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + " '" + yy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + " " + yyyy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + " " + yyyy);
-		
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + ", '" + yy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + ", '" + yy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMM + ", " + yyyy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " " + MMMM + ", " + yyyy);
-		
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMM + " '" + yy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMMM + " '" + yy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMM + " " + yyyy);
-		list.add(ordinalNumbers[Integer.valueOf(d) - 1] + " of " + MMMM + " " + yyyy);
-		
 		// pattern MONTH.DAY.YEAR
-		list.add(MMM + " " + d + " '" + yy);
-		list.add(MMMM + " " + d + " '" + yy);
+		
+		if (enableYY)
+		{
+			list.add(MMM + " " + d + " '" + yy);
+			list.add(MMMM + " " + d + " '" + yy);
+			
+			list.add(MMM + " " + d + ", '" + yy);
+			list.add(MMMM + " " + d + ", '" + yy);
+			
+			list.add(MMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
+			list.add(MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
+			
+			list.add(MMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
+			list.add(MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
+			
+			list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
+			list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
+			
+			list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
+			list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
+			
+			list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
+			list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
+			
+			list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
+			list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
+			
+			list.add(MMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
+			list.add(MMMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
+		}
+		
 		list.add(MMM + " " + d + " " + yyyy);
 		list.add(MMMM + " " + d + " " + yyyy);
 		
-		list.add(MMM + " " + d + ", '" + yy);
-		list.add(MMMM + " " + d + ", '" + yy);
 		list.add(MMM + " " + d + ", " + yyyy);
 		list.add(MMMM + " " + d + ", " + yyyy);
 		
-		list.add(MMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
-		list.add(MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
 		list.add(MMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + " " + yyyy);
 		list.add(MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + " " + yyyy);
 		
-		list.add(MMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
-		list.add(MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
 		list.add(MMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + ", " + yyyy);
 		list.add(MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)) + ", " + yyyy);
 		
+		list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
+		list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
+		
+		list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
+		list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
+		
+		list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
+		list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
+		
+		list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
+		list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
+		
+		list.add(MMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
+		list.add(MMMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
+		
 		if (enableDD)
 		{
-			list.add(MMM + " " + dd + " '" + yy);
-			list.add(MMMM + " " + dd + " '" + yy);
+			if (enableYY)
+			{
+				list.add(MMM + " " + dd + " '" + yy);
+				list.add(MMMM + " " + dd + " '" + yy);
+				
+				list.add(MMM + " " + dd + ", '" + yy);
+				list.add(MMMM + " " + dd + ", '" + yy);
+				
+				list.add(MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
+				list.add(MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
+				
+				list.add(MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
+				list.add(MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
+			}
+			
 			list.add(MMM + " " + dd + " " + yyyy);
 			list.add(MMMM + " " + dd + " " + yyyy);
 			
-			list.add(MMM + " " + dd + ", '" + yy);
-			list.add(MMMM + " " + dd + ", '" + yy);
 			list.add(MMM + " " + dd + ", " + yyyy);
 			list.add(MMMM + " " + dd + ", " + yyyy);
 			
-			list.add(MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
-			list.add(MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + " '" + yy);
 			list.add(MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + " " + yyyy);
 			list.add(MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + " " + yyyy);
 			
-			list.add(MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
-			list.add(MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + ", '" + yy);
 			list.add(MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + ", " + yyyy);
 			list.add(MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)) + ", " + yyyy);
 		}
 		
-		list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
-		list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
-		list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
-		list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
-		
-		list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
-		list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
-		list.add(MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
-		list.add(MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
-		
-		list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
-		list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " '" + yy);
-		list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
-		list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + " " + yyyy);
-		
-		list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
-		list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
-		list.add(MMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
-		list.add(MMMM + " the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
-		
-		list.add(MMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
-		list.add(MMMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", '" + yy);
-		list.add(MMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
-		list.add(MMMM + ", the " + ordinalNumbers[Integer.valueOf(d) - 1] + ", " + yyyy);
-		
 		// pattern YEAR.MONTH.DAY
 		
-		list.add("'" + yy + " " + MMM + " " + d);
-		list.add("'" + yy + " " + MMMM + " " + d);
+		if (enableYY)
+		{
+			list.add("'" + yy + " " + MMM + " " + d);
+			list.add("'" + yy + " " + MMMM + " " + d);
+			
+			list.add("'" + yy + ", " + MMM + " " + d);
+			list.add("'" + yy + ", " + MMMM + " " + d);
+			
+			list.add("'" + yy + " " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+			list.add("'" + yy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+			
+			list.add("'" + yy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+			list.add("'" + yy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
+			
+			list.add("'" + yy + " " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+			list.add("'" + yy + " " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+			
+			list.add("'" + yy + ", " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+			list.add("'" + yy + ", " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		}
+		
 		list.add("" + yyyy + " " + MMM + " " + d);
 		list.add("" + yyyy + " " + MMMM + " " + d);
 		
-		list.add("'" + yy + ", " + MMM + " " + d);
-		list.add("'" + yy + ", " + MMMM + " " + d);
 		list.add("" + yyyy + ", " + MMM + " " + d);
 		list.add("" + yyyy + ", " + MMMM + " " + d);
 		
-		list.add("'" + yy + " " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
-		list.add("'" + yy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + " " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + " " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		
-		list.add("'" + yy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
-		list.add("'" + yy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + ", " + MMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		list.add("" + yyyy + ", " + MMMM + " " + d + getOrdinalFor(Integer.valueOf(d)));
 		
+		list.add("" + yyyy + " " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("" + yyyy + " " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		
+		list.add("" + yyyy + ", " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		list.add("" + yyyy + ", " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
+		
 		if (enableDD)
 		{
-			list.add("'" + yy + " " + MMM + " " + dd);
-			list.add("'" + yy + " " + MMMM + " " + dd);
+			if (enableYY)
+			{
+				list.add("'" + yy + " " + MMM + " " + dd);
+				list.add("'" + yy + " " + MMMM + " " + dd);
+				
+				list.add("'" + yy + ", " + MMM + " " + dd);
+				list.add("'" + yy + ", " + MMMM + " " + dd);
+				
+				list.add("'" + yy + " " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+				list.add("'" + yy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+				
+				list.add("'" + yy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+				list.add("'" + yy + ", " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
+			}
+			
 			list.add("" + yyyy + " " + MMM + " " + dd);
 			list.add("" + yyyy + " " + MMMM + " " + dd);
 			
-			list.add("'" + yy + ", " + MMM + " " + dd);
-			list.add("'" + yy + ", " + MMMM + " " + dd);
 			list.add("" + yyyy + ", " + MMM + " " + dd);
 			list.add("" + yyyy + ", " + MMMM + " " + dd);
 			
-			list.add("'" + yy + " " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
-			list.add("'" + yy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + " " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + " " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			
-			list.add("'" + yy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
-			list.add("'" + yy + ", " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + ", " + MMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 			list.add("" + yyyy + ", " + MMMM + " " + dd + getOrdinalFor(Integer.valueOf(d)));
 		}
 		
-		list.add("'" + yy + " " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		list.add("'" + yy + " " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		list.add("" + yyyy + " " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		list.add("" + yyyy + " " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		
-		list.add("'" + yy + ", " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		list.add("'" + yy + ", " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		list.add("" + yyyy + ", " + MMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		list.add("" + yyyy + ", " + MMMM + " " + ordinalNumbers[Integer.valueOf(d) - 1]);
-		
-		// TODO add more surface forms here if necessary
-		
-		// TODO remove eventually duplicate date surface forms
+		logger.info("Standard conversion successful.");
 	}
 	
 	/**
@@ -614,6 +761,38 @@ public class ConverterDate extends Converter
 			default:
 				return "th";
 		}
+	}
+	
+	/**
+	 * Gets the beginning of the current century.
+	 * 
+	 * @return the beginning of the current century
+	 */
+	public int getCenturyBegin()
+	{
+		return centuryBegin;
+	}
+	
+	/**
+	 * Gets the ending of the current century.
+	 * 
+	 * @return the beginning of the current century
+	 */
+	public int getCenturyEnd()
+	{
+		return centuryEnd;
+	}
+	
+	/**
+	 * Sets the current century interval.
+	 * 
+	 * @param century
+	 *            the current century
+	 */
+	public void setCentury(int century)
+	{
+		centuryBegin = (century - 1) * 100;
+		centuryEnd = centuryBegin + 99;
 	}
 	
 }
