@@ -94,13 +94,13 @@ public class ConverterDate extends Converter
 		// TODO
 		// System.out.println("TEST - original stringBufferAnno: " +
 		// stringBufferAnno);
-		logger.info("original uncleaned stringBufferAnno = <" + stringBufferAnno + "> loaded");
+		logger.info("Original uncleaned stringBufferAnno = <" + stringBufferAnno + "> loaded.");
 		
 		// annotation consists just of numbers (date separaters do not count)
 		if (checkIfNumber(numberCheck) && 6 <= stringBufferAnno.length() && stringBufferAnno.length() <= 10
 				&& splitTest.length == 3)
 		{
-			logger.info("option 1 selected");
+			logger.info("Date option #1 selected.");
 			
 			stringBufferAnno = stringBufferAnno.replaceAll("/|-|'|~", ".");
 			
@@ -110,7 +110,7 @@ public class ConverterDate extends Converter
 			String month = datePos[1];
 			String year = datePos[2];
 			
-			logger.info("stringBufferAnno splittet in <" + day + "> <" + month + "> <" + year + ">");
+			logger.info("Parameter stringBufferAnno splittet in <" + day + ">, <" + month + ">, <" + year + ">.");
 			
 			// define date pattern
 			if (1 <= Integer.valueOf(day) && Integer.valueOf(day) <= 12 && 12 < Integer.valueOf(month)
@@ -141,14 +141,14 @@ public class ConverterDate extends Converter
 			// TODO
 			// System.out.println("TEST - op1 pattern: " + pattern);
 			
-			logger.info("pattern created: " + pattern);
+			logger.info("Date pattern <" + pattern + "> was created.");
 			
 		}
 		
 		// annotation is a number (in this case: a year)
 		else if (checkIfNumber(numberCheck) && 1 <= stringBufferAnno.length() && stringBufferAnno.length() <= 4)
 		{
-			logger.info("option 2 selected");
+			logger.info("Date option #2 selected");
 			
 			beginStandardConversion = false;
 			beginSpecialConversion = true;
@@ -159,7 +159,7 @@ public class ConverterDate extends Converter
 		// annotation consists of some strings and numbers
 		else
 		{
-			logger.info("option 3 selected");
+			logger.info("Date option #3 selected");
 			
 			stringBufferAnno = stringBufferAnno.replaceAll(",\\.| |on\\.|the\\.|of\\.", "");
 			
@@ -177,7 +177,7 @@ public class ConverterDate extends Converter
 			// System.out.println("Test - op3 stringBufferAnno: " +
 			// stringBufferAnno);
 			
-			logger.info("cleaned stringBufferAnno = <" + stringBufferAnno + ">");
+			logger.info("Cleaned stringBufferAnno - <" + stringBufferAnno + ">.");
 			
 			String[] datePos = stringBufferAnno.split("\\.");
 			
@@ -199,7 +199,7 @@ public class ConverterDate extends Converter
 			
 			if (datePos.length == 3)
 			{
-				logger.info("option 3.1 selected");
+				logger.info("Date option #3.1 selected.");
 				
 				day = datePos[(markMonth + 1) % 3]; // y or d
 				month = datePos[markMonth];
@@ -226,8 +226,11 @@ public class ConverterDate extends Converter
 				
 				// TODO
 				// System.out.println("TEST - op2 pattern: " + pattern);
-				logger.info("pattern created: " + pattern);
+				logger.info("Date pattern <" + pattern + "> was created.");
 				
+			} else
+			{
+				logger.error("<" + stringBufferAnno + "> was not convertable.");
 			}
 			
 			// TODO improvements
@@ -236,11 +239,11 @@ public class ConverterDate extends Converter
 		// conversion of date formats
 		if (beginSpecialConversion)
 		{
-			logger.info("special conversion was enabled");
+			logger.info("Special conversion was enabled.");
 			
 		} else if (beginStandardConversion)
 		{
-			logger.info("standard conversion was enabled");
+			logger.info("Standard conversion was enabled.");
 			
 			conversionOfDate(list, stringBufferAnno, pattern, dateSeparater, ordinalNumbers);
 		}
