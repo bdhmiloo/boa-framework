@@ -26,8 +26,8 @@ public static void main(String[] args)
 	Scoring s1=new Scoring();
 	for(int j=0;j<s1.score().size();j++)
 	{
-		double[] jau=s1.score().get(0);
-	
+		double[] jau=s1.score().get(j);
+	System.out.print("satz:"+j+"   ");
 	for(int i=0;i<jau.length;i++)
 		System.out.print(jau[i]+"  ");
 		System.out.println("");

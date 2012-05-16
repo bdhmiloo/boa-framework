@@ -91,7 +91,7 @@ public class Scoring
 					{
 						if (workSentences.get(i).getAnnotations().get(j).getTokens().get(e) == workSentences.get(i)
 								.getTokens().get(d))
-						{ // System.out.println("i:"+i+"j:"+j+"e:"+e+"d:"+d);
+						{ //System.out.println("i:"+i+"j:"+j+"e:"+e+"d:"+d);
 							for (int w = 0; w < s1.getSentence(i).getAnnotations().size(); w++)
 							{
 								for (int z = 0; z < s1.getSentence(i).getAnnotations().get(w).getTokens().size(); z++)
@@ -137,10 +137,12 @@ public class Scoring
 				}
 				
 			}
+		
 			countGoldAnno += s1.getSentence(i).getAnnotations().size();
 			precision= kp / (kp + fp);
 			recall=	(kp) / (countGoldAnno);
 			fscore=(2 * precision * recall) / (recall + precision);
+			
 			double[] help={precision,recall,fscore};
 			result.add(help);
 			

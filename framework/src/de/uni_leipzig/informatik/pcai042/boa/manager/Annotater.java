@@ -63,7 +63,7 @@ public class Annotater
 				Class algo = Class.forName(algoName);
 				
 				SearchAlgorithm sAlgo = (SearchAlgorithm) algo.newInstance();
-				System.out.println(sAlgo);
+				//System.out.println(sAlgo);
 				
 				//if(Type.valueOf(currentUnit.toUpperCase())==null) eTest.add
 				searchers.add(new LabelSearcher(Type.valueOf(currentUnit.toUpperCase()), sAlgo));
