@@ -72,7 +72,7 @@ public class Scoring
 		}
 		a1.annotate(workSentences);
 		
-		for (int i = 0; i < s1.getSentenceCount(); i++)
+		for (int i = 0; i < 20; i++)
 		{
 			
 			for (int j = 0; j < workSentences.get(i).getAnnotations().size(); j++)
@@ -145,7 +145,8 @@ public class Scoring
 			
 			double[] help={precision,recall,fscore};
 			result.add(help);
-			
+			System.out.println("satz:"+i+"  "+kp+"  "+fp+"  "+countGoldAnno);
+			System.out.println(workSentences.get(10).getAnnotations());
 		}
 		
 		return result;
