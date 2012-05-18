@@ -24,21 +24,16 @@ import java.util.ArrayList;
  */
 public class BoaAnnotation
 {
-	private Type type;
+	private String type;
 	private ArrayList<String> tokens;
 	
-	public static enum Type
-	{
-		DATE, LINEAR_MEASURE, TEMPERATURE, WEIGHT;
-	}
-	
-	public BoaAnnotation(Type type, ArrayList<String> tokens)
+	public BoaAnnotation(String type, ArrayList<String> tokens)
 	{
 		this.type = type;
 		this.tokens = tokens;
 	}
 	
-	public Type getType()
+	public String getType()
 	{
 		return type;
 	}

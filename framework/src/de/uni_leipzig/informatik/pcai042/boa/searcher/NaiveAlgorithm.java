@@ -42,7 +42,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	 */
 	private final Set<String> surForms;
 	
-	public NaiveAlgorithm(HashMap<String, Set<String>> config, BoaAnnotation.Type annoType)
+	public NaiveAlgorithm(HashMap<String, Set<String>> config, String annoType)
 	{
 		super(config, annoType);
 		

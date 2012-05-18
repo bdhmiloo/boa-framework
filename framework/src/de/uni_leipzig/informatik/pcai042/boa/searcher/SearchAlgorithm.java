@@ -18,14 +18,13 @@ package de.uni_leipzig.informatik.pcai042.boa.searcher;
 import java.util.HashMap;
 import java.util.Set;
 
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 
 public abstract class SearchAlgorithm
 {
-	protected BoaAnnotation.Type annoType;
+	protected String annoType;
 	
-	public SearchAlgorithm(HashMap<String, Set<String>> config, BoaAnnotation.Type annoType)
+	public SearchAlgorithm(HashMap<String, Set<String>> config, String annoType)
 	{
 		this.annoType = annoType;
 	}
@@ -38,7 +37,7 @@ public abstract class SearchAlgorithm
 	 */
 	public abstract void search(BoaSentence sentence);
 	
-	public BoaAnnotation.Type getAnnoType()
+	public String getAnnoType()
 	{
 		return annoType;
 	}

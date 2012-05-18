@@ -98,7 +98,7 @@ public class TestConverter
 				result.add("________________________");
 				
 				// conversion WEIGHT
-				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "WEIGHT")
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals("WEIGHT"))
 				{
 					// TODO test method here
 					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
@@ -106,7 +106,7 @@ public class TestConverter
 				}
 				
 				// conversion LINEAR MEASURE
-				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "LINEAR_MEASURE")
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals("LINEAR_MEASURE"))
 				{
 					// TODO test method here
 					result.addAll(conLINEAR_MEASURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
@@ -114,7 +114,7 @@ public class TestConverter
 				}
 				
 				// conversion TEMPERATURE
-				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "TEMPERATURE")
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals("TEMPERATURE"))
 				{
 					// TODO test method here
 					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
@@ -122,7 +122,7 @@ public class TestConverter
 				}
 				
 				// conversion DATE
-				if (sentence.getSentence(i).getAnnotations().get(k).getType().toString() == "DATE")
+				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals( "DATE"))
 				{
 					// TODO test method here
 					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
