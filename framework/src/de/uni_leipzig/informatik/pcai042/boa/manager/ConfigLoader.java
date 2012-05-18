@@ -25,77 +25,98 @@ import java.util.Set;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 public class ConfigLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 	
-	private static final File sForms = new File("sForms.properties");
+	private final File root;
+	private static Properties configForms;
+	private static HashMap<String, HashMap<String, BigDecimal>> conversions;
+	
+	public ConfigLoader()
+	{
+		this(new File("."));
+	}
+	
+	public ConfigLoader(File file)
+	{
+		root = file;
+		configForms = new Properties();
+		conversions = new HashMap<String, HashMap<String, BigDecimal>>();
+		try
+		{
+			configForms.load(new InputStreamReader(new FileInputStream(new File(root, "sForms.properties"))));
+		} catch (FileNotFoundException e)
+		{
+			// TODO logger
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO logger
+			e.printStackTrace();
+		}
+	}
 	
 	/**
-	 * 
-	 * @param label name of the line that the surface forms are listed (in the .properties file)
+	 * @param label
+	 *            name of the line that the surface forms are listed (in the
+	 *            .properties file)
 	 * @return Set of Strings
 	 */
-	
 	public Set<String> openConfigSurfaceForms(String label)
 	{
-		HashSet<String> unity= new HashSet<String>();	
-		Properties configForms = new Properties();
-		String[]  unityTemp;
+		HashSet<String> unity = new HashSet<String>();
+		String[] unityTemp;
 		
-		try 
+		String property = configForms.getProperty(label);
+		if (property != null)
 		{
-			configForms.load(new InputStreamReader(new FileInputStream(sForms), "UTF-8"));
-		} 
-		catch (FileNotFoundException e)
-		{	
-			e.printStackTrace();
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-	
-		// S_FORMS and F_S_FORMS are termorary because they cannot be tested for now .
-		unityTemp = configForms.getProperty(label).split(";");
+			unityTemp = property.split(";");
 		
-		for(int i=0; i<unityTemp.length;i++) 
-		{
-			unityTemp[i] = unityTemp[i].trim().toLowerCase();
-			if(unityTemp[i].contains(" ")) unityTemp[i] = unityTemp[i].replace(" ", "");
-			unity.add(unityTemp[i]);
+			for (int i = 0; i < unityTemp.length; i++)
+			{
+				unityTemp[i] = unityTemp[i].trim();
+				if (!unityTemp[i].isEmpty()) unity.add(unityTemp[i]);
+			}
 		}
 		return unity;
 	}
 	
 	/**
-	 * Function to return a list of pairs of the unit's name and conversion factor into (direction = true) 
-	 * or from (direction = false) the basic unit of the corresponding unit type extracted from 
-	 * a text file at the given path.
+	 * Function to return a list of pairs of the unit's name and conversion
+	 * factor into (direction = true) or from (direction = false) the basic unit
+	 * of the corresponding unit type extracted from a text file at the given
+	 * path.
 	 * 
-	 * @param specific Standard/Unit, first letter must be written large
-	 * @param unitName Name of Unit (Weight, Temperature, ...), first letter must be written large
+	 * @param specific
+	 *            Standard/Unit, first letter must be written large
+	 * @param unitName
+	 *            Name of Unit (Weight, Temperature, ...), first letter must be
+	 *            written large
 	 */
-	
 	public HashMap<String, BigDecimal> openConfigConversion(String specific, String unitName)
 	{
-		Properties properties = new Properties();
 		HashMap<String, BigDecimal> conversionMap;
 		
-		//Try to create the full file name with merging. Only for default path (file in project directory)
-		String fileName="conversion"+specific+unitName+".properties";
+		// Try to create the full file name with merging. Only for default path
+		// (file in project directory)
+		String fileName = "conversion" + specific + unitName + ".properties";
 		
+		conversionMap = conversions.get(fileName);
+		
+		if (conversionMap != null)
+		{
+			return conversionMap;
+		}
 		try
 		{
-			BufferedInputStream stream = new BufferedInputStream(new FileInputStream(fileName));
+			Properties properties = new Properties();
+			BufferedInputStream stream = new BufferedInputStream(new FileInputStream(new File(root, fileName)));
 			properties.load(stream);
 			stream.close();
 			
@@ -106,12 +127,10 @@ public class ConfigLoader
 			}
 			
 			return conversionMap;
-		}
-		catch(NumberFormatException e)
+		} catch (NumberFormatException e)
 		{
-			logger.error("NumberFormatException when creating BigDecimal from "+fileName);
-		}
-		catch(Exception e)
+			logger.error("NumberFormatException when creating BigDecimal from " + fileName);
+		} catch (IOException e)
 		{
 			logger.error(e.getMessage());
 		}
@@ -121,27 +140,12 @@ public class ConfigLoader
 	
 	/**
 	 * Returns the String representation of a value from a labeled property.
+	 * 
 	 * @param label
 	 * @return value of the labeled property
 	 */
-	
 	public String returnValue(String label)
 	{
-		Properties configForms = new Properties();
-		
-		try 
-		{
-			configForms.load(new InputStreamReader(new FileInputStream(sForms), "UTF-8"));
-		} 
-		catch (FileNotFoundException e)
-		{	
-			e.printStackTrace();
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		
 		return configForms.getProperty(label);
 	}
 }
