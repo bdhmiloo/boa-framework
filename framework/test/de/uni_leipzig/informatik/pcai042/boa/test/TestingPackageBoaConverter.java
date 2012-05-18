@@ -191,15 +191,12 @@ public class TestingPackageBoaConverter
 			
 			 assertTrue(date.convertUnits(annotationDate).contains("July the twenty-third, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, July twenty-third"));
-			 assertTrue(date.convertUnits(annotationDate).contains("'80 July 23rd"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, Jul twenty-third"));
-			 assertTrue(date.convertUnits(annotationDate).contains("23rd Jul, '80"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, July 23rd"));
 			 assertTrue(date.convertUnits(annotationDate).contains("23rd July, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("July 23rd, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("July twenty-third, 1980"));
 
-			// assertEquals(148,date.convertUnits(annotationDate).size() );
 
 				 
 	 }
