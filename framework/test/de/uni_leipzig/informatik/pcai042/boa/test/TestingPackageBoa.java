@@ -42,7 +42,7 @@ public class TestingPackageBoa
 	@Before
 	public void SetUp() throws ValidityException, ParsingException, IOException
 	{
-		scoring= new Scoring(FileString);
+		//scoring= new Scoring(FileString);
 		
 		s1 = new SentenceLoader(new File("goldstandard.xml"));
 		s2 = new SentenceLoader(new File(FileString));

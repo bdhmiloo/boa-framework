@@ -45,7 +45,7 @@ public class TestingPackageBoaConverter
 		
 	
 	// The Lists to be used as tokens
-	BoaAnnotation.Type type;
+	String type;
 	ArrayList<String> tokensDate = new ArrayList<String>();
 	ArrayList<String> tokensLinearMeasure = new ArrayList<String>();
 	ArrayList<String> tokensTemperature = new ArrayList<String>();
@@ -69,8 +69,8 @@ public class TestingPackageBoaConverter
 		tokensLinearMeasure.add("km");
 		
 		tokensTemperature.add("32");
-		tokensTemperature.add("°C");
-		tokensTemperature.add("23 °F");
+		tokensTemperature.add("ï¿½C");
+		tokensTemperature.add("23 ï¿½F");
 
 		
 		tokensWeight.add("5");
@@ -111,12 +111,12 @@ public class TestingPackageBoaConverter
 	 @Test
 	   public void testConvertUnits() 
 	   {
-		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT ,	tokensWeight);
+		 BoaAnnotation annotationWeight = new BoaAnnotation("WEIGHT" ,	tokensWeight);
 		 weight.convertUnits(annotationWeight);
 
-			BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE, tokensTemperature);
-			BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
-			BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);		
+			BoaAnnotation annotationTemperature = new BoaAnnotation("TEMPERATURE", tokensTemperature);
+			BoaAnnotation annotationDate = new BoaAnnotation("DATE",tokensDate);
+			BoaAnnotation annotationLinearMeasure = new BoaAnnotation("LINEAR_MEASURE",tokensLinearMeasure);		
 
 		 try
 		{
@@ -141,7 +141,7 @@ public class TestingPackageBoaConverter
 	 @Test
 	 public void testLinearMeasureList()
 	 {
-		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);
+		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation("LINEAR_MEASURE",tokensLinearMeasure);
 		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("1093.6133000 yard"));
 		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("39370.00 inch"));
 		 assertTrue(linearmeasure.convertUnits(annotationLinearMeasure).contains("0.621371192000 miles"));
@@ -160,7 +160,7 @@ public class TestingPackageBoaConverter
 	 public void testWeightList()
 
 	 {
-		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT,tokensWeight);
+		 BoaAnnotation annotationWeight = new BoaAnnotation("WEIGHT",tokensWeight);
 		
 		 assertTrue(weight.convertUnits(annotationWeight).contains("176.3698095 oz"));
 		 assertTrue(weight.convertUnits(annotationWeight).contains("11.02311310 pound"));
@@ -169,7 +169,7 @@ public class TestingPackageBoaConverter
 		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000 mg"));
 		 assertTrue(weight.convertUnits(annotationWeight).contains("5000 g"));
 		 assertTrue(weight.convertUnits(annotationWeight).contains("11.02311310 lbs"));
-		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000000 µg"));
+		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000000 ï¿½g"));
 			 
 			 assertEquals(31,weight.convertUnits(annotationWeight).size() );
 
@@ -187,7 +187,7 @@ public class TestingPackageBoaConverter
 	 public void testDateList() throws ParseException
 
 	 {
-		 BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
+		 BoaAnnotation annotationDate = new BoaAnnotation("DATE",tokensDate);
 			
 			 assertTrue(date.convertUnits(annotationDate).contains("July the twenty-third, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, July twenty-third"));
@@ -212,13 +212,13 @@ public class TestingPackageBoaConverter
 	 public void testTemperatureList()
 
 	 {
-		 BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE,tokensTemperature);
-		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 °c"));
+		 BoaAnnotation annotationTemperature = new BoaAnnotation("TEMPERATURE",tokensTemperature);
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 ï¿½c"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 degreecelsius"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("305.15 kelvin"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("305.15 degreeskelvin"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 f"));
-		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 °f"));
+		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 ï¿½f"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("89.600 degreefahrenheit"));
 
 		assertEquals(18, temperature.convertUnits(annotationTemperature).size());
@@ -232,14 +232,14 @@ public class TestingPackageBoaConverter
 	 public void testFalseList() throws ParseException
 
 	 {
-		 BoaAnnotation annotationTemperature = new BoaAnnotation(BoaAnnotation.Type.TEMPERATURE,tokensTemperature);
-		 BoaAnnotation annotationWeight = new BoaAnnotation(BoaAnnotation.Type.WEIGHT,tokensWeight);
-		 BoaAnnotation annotationDate = new BoaAnnotation(BoaAnnotation.Type.DATE,tokensDate);
-		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation(BoaAnnotation.Type.LINEAR_MEASURE,tokensLinearMeasure);
+		 BoaAnnotation annotationTemperature = new BoaAnnotation("TEMPERATURE",tokensTemperature);
+		 BoaAnnotation annotationWeight = new BoaAnnotation("WEIGHT",tokensWeight);
+		 BoaAnnotation annotationDate = new BoaAnnotation("DATE",tokensDate);
+		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation("LINEAR_MEASURE",tokensLinearMeasure);
 
-		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.00 °h"));
-		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.01 °c"));
-		 assertFalse(temperature.convertUnits(annotationTemperature).contains("45 °f"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.00 ï¿½h"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.01 ï¿½c"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("45 ï¿½f"));
 		 assertFalse(temperature.convertUnits(annotationTemperature).contains("degreecelcius"));
 		
 		 assertFalse(date.convertUnits(annotationDate).contains("Jyly the twenty-third, 1980"));
