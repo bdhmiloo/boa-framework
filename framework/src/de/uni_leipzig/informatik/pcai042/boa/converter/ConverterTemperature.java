@@ -61,7 +61,13 @@ public class ConverterTemperature extends Converter
 		Set<String> Kelvin = load.openConfigSurfaceForms("KELVIN".toString());
 		
 		List<String> list1 = new ArrayList<String>(unitNames);
-		Object[] allUnitsofTemperature = list1.toArray();
+		list1.remove("MATH");
+		list1.remove("NUMBERS");
+		Object[] allUnitsofTemperature = new Object[list1.size()];
+		for (int i = 0; i < allUnitsofTemperature.length; i++)
+		{
+			allUnitsofTemperature[i] = list1.get(i).toLowerCase();
+		}
 		
 		List<String> list2 = new ArrayList<String>(Celsius);
 		Object[] C = list2.toArray();
