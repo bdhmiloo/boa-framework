@@ -94,14 +94,14 @@ public class ConverterDate extends Converter
 		// get complete annotation
 		String stringBufferAnno = "";
 		
-		for (int j = 0; j < annotation.getTokens().size(); j++)
+		for (int j = 0; j < annotation.size(); j++)
 		{
-			if (j == annotation.getTokens().size() - 1)
+			if (j == annotation.size() - 1)
 			{
-				stringBufferAnno += annotation.getTokens().get(j);
+				stringBufferAnno += annotation.getToken(j);
 			} else
 			{
-				stringBufferAnno += annotation.getTokens().get(j) + ".";
+				stringBufferAnno += annotation.getToken(j) + ".";
 			}
 		}
 		

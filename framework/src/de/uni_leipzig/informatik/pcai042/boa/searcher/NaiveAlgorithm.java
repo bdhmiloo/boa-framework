@@ -93,7 +93,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 									// replacement isn't actually needed but
 									// makes algorithm faster
 		
-		Iterator<String> tokenIt = sentence.getTokens().iterator();
+		Iterator<String> tokenIt = sentence.iterator();
 		
 		while (tokenIt.hasNext())
 		{
@@ -113,7 +113,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 				// that (if it exists) it will be
 				// located in the part of the sentence right from the numerical
 				// value.
-				Iterator<String> findMatch = sentence.getTokens().iterator();
+				Iterator<String> findMatch = sentence.iterator();
 				
 				// go to first token after currentToken
 				for (int i = 0; i < count; i++)
@@ -178,7 +178,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					// for same label, 1 for uncombined and 1 for combined
 					if (this.isPrefix(match + "&&", surForms))
 					{
-						Iterator<String> dsfFinder = sentence.getTokens().iterator();
+						Iterator<String> dsfFinder = sentence.iterator();
 						
 						for (int j = 0; j < count + 2; j++)
 						{
@@ -299,7 +299,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					// checking if combined surface form
 					if (this.isPrefix(suffix + "&&", surForms))
 					{
-						Iterator<String> dsfFinder = sentence.getTokens().iterator();
+						Iterator<String> dsfFinder = sentence.iterator();
 						
 						for (int j = 0; j < count + 1; j++)
 						{

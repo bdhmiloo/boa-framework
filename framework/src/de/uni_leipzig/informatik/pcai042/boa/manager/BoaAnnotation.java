@@ -16,13 +16,14 @@
 package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * An immutable annotation containing its label as list of tokens and its type.
  * 
  * @author Simon Suiter
  */
-public class BoaAnnotation
+public class BoaAnnotation implements Iterable<String>
 {
 	private String type;
 	private ArrayList<String> tokens;
@@ -38,9 +39,20 @@ public class BoaAnnotation
 		return type;
 	}
 	
-	public ArrayList<String> getTokens()
+	public String getToken(int index)
 	{
-		return tokens;
+		return tokens.get(index);
+	}
+	
+	public int size()
+	{
+		return tokens.size();
+	}
+	
+	@Override
+	public Iterator<String> iterator()
+	{
+		return tokens.iterator();
 	}
 	
 	/**
