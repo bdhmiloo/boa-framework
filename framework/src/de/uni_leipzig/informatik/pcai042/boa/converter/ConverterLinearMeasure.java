@@ -69,7 +69,13 @@ public class ConverterLinearMeasure extends Converter
 		Set<String> Feet = load.openConfigSurfaceForms("FEET".toString());
 		
 		List<String> list1 = new ArrayList<String>(unitNames);
-		Object[] allUnitsOfLinearMeasure = list1.toArray();
+		list1.remove("MATH");
+		list1.remove("NUMBERS");
+		Object[] allUnitsOfLinearMeasure = new Object[list1.size()];
+		for (int i = 0; i < allUnitsOfLinearMeasure.length; i++)
+		{
+			allUnitsOfLinearMeasure[i] = list1.get(i).toLowerCase();
+		}
 		
 		List<String> list2 = new ArrayList<String>(Micrometer);
 		Object[] microm = list2.toArray();

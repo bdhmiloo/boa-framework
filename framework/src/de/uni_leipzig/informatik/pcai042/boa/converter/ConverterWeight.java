@@ -65,7 +65,13 @@ public class ConverterWeight extends Converter
 		Set<String> Ounze = load.openConfigSurfaceForms("OUNZE".toString());
 		
 		List<String> list1 = new ArrayList<String>(unitNames);
-		Object[] allUnitsOfWeight = list1.toArray();
+		list1.remove("MATH");
+		list1.remove("NUMBERS");
+		Object[] allUnitsOfWeight = new Object[list1.size()];
+		for (int i = 0; i < allUnitsOfWeight.length; i++)
+		{
+			allUnitsOfWeight[i] = list1.get(i).toLowerCase();
+		}
 		
 		List<String> list2 = new ArrayList<String>(Microgram);
 		Object[] microg = list2.toArray();
