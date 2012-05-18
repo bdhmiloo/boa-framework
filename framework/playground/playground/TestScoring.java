@@ -15,7 +15,7 @@
 
 package playground;
 
-import de.uni_leipzig.informatik.pcai042.boa.Scoring;
+import de.uni_leipzig.informatik.pcai042.boa.manager.Scoring;
 
 public class TestScoring
 {
