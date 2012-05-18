@@ -15,7 +15,7 @@
 
 
 
-package de.uni_leipzig.informatik.pcai042.boa;
+package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.io.File;
 import java.io.IOException;
