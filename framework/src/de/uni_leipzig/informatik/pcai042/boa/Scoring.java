@@ -25,11 +25,11 @@ import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.Annotater;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
 
 public class Scoring
 {
-	Annotater a1;
+	Annotator a1;
 	SentenceLoader s1;
 	double kp, fp, countGoldAnno;
 	int help, help2, t1, t2;
@@ -43,7 +43,7 @@ public class Scoring
 		ArrayList<BoaSentence> workSentences = new ArrayList<BoaSentence>();
 		
 		ArrayList<double[]> result = new ArrayList<double[]>();
-		a1 = new Annotater();
+		a1 = new Annotator();
 		t1 = 0;
 		t2 = 0;
 		kp = 0;

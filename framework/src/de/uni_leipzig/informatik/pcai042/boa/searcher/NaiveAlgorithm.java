@@ -16,52 +16,49 @@
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
-import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
-
-/**
- * Algorithm that searches for patterns of the form "number ... unit" where
- * number is an integer or double value and unit is a token from the input
- * Set<String> surForms. (More details in description of search method)
- * 
- * @author Jakob M.
- */
 
 public class NaiveAlgorithm extends SearchAlgorithm
 {
 	/**
-	 * A set of certain symbols or words that can belong to a number.
-	 * (such as "^" in 10^3)
+	 * A set of certain symbols or words that can belong to a number. (such as
+	 * "^" in 10^3)
 	 */
-	
-	private Set<String> mathSymbols;
+	private final Set<String> mathSymbols;
 	
 	/**
-	 * Constructor. Does only initialize the attributes not initialized by the super-class! 
+	 * A Set of Strings that can be associated to a number.
 	 */
-	
-	public NaiveAlgorithm()
-	{
-		mathSymbols = new ConfigLoader().openConfigSurfaceForms("MATH");
-	}
+	private final Set<String> numbers;
 	
 	/**
-	 * Constructor. Calls on the constructor of the super-class.
-	 * @param surfaceForms Set of String Patterns that are searched for
-	 * @param annoType type of the BoaAnnotations that are added
+	 * String patterns that are searched for.
 	 */
+	private final Set<String> surForms;
 	
-	public NaiveAlgorithm(Set<String> surfaceForms, Type annoType)
+	public NaiveAlgorithm(HashMap<String, Set<String>> config, BoaAnnotation.Type annoType)
 	{
-		super(surfaceForms, annoType);
-		mathSymbols = new ConfigLoader().openConfigSurfaceForms("MATH");
+		super(config, annoType);
+		
+		mathSymbols = config.get("MATH");
+		numbers = config.get("NUMBERS");
+		surForms = new HashSet<String>();
+		Iterator<String> it = config.keySet().iterator();
+		while (it.hasNext())
+		{
+			String key = it.next();
+			if (!key.equals("MATH") && !key.equals("NUMBERS"))
+				surForms.addAll(config.get(key));
+		}
 	}
 	
+	@Override
 	/**
 	 * Searches a given BoaSentence for a given Set of String Patterns combined with a number.
 	 * The Algorithm can find patterns like
@@ -71,10 +68,10 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	 *		15lbs
 	 *		15 feet 6 inch
 	 *		5 million k i l o m e t r e s
-	 *		22 ° C
+	 *		22 ï¿½ C
 	 *		20 - 30 mm
 	 *
-	 * provided that the non-numerical tokens (here: meter, kg, lbs, feet, inch, kilometres, °C, mm) are elements
+	 * provided that the non-numerical tokens (here: meter, kg, lbs, feet, inch, kilometres, ï¿½C, mm) are elements
 	 * of the Set<String> surForms and the mathematical expressions (here: x, ^, million, -) are elements
 	 * of the Set<String> mathSymbols.
 	 * 
@@ -84,7 +81,6 @@ public class NaiveAlgorithm extends SearchAlgorithm
 	 * It is important to use a different instance of NaiveAlgorithm for each annotation type! as it will use the same
 	 * label for any BoaAnnotation created.
 	 */
-	
 	public void search(BoaSentence sentence)
 	{
 		String currentToken = "", dsfNumber = "", dsfUnit = "", dsfTemp = "";
@@ -100,13 +96,13 @@ public class NaiveAlgorithm extends SearchAlgorithm
 		Iterator<String> tokenIt = sentence.getTokens().iterator();
 		
 		while (tokenIt.hasNext())
-		{	
+		{
 			if (!replaced)
 			{
 				currentToken = tokenIt.next();
-				count ++;
+				count++;
 			}
-			//System.out.println(currentToken + " " + count);
+			// System.out.println(currentToken + " " + count);
 			
 			replaced = false;
 			
@@ -120,9 +116,10 @@ public class NaiveAlgorithm extends SearchAlgorithm
 				Iterator<String> findMatch = sentence.getTokens().iterator();
 				
 				// go to first token after currentToken
-				for(int i = 0; i < count;i++)
+				for (int i = 0; i < count; i++)
 				{
-					if(findMatch.hasNext())match = findMatch.next();
+					if (findMatch.hasNext())
+						match = findMatch.next();
 				}
 				
 				// for each token right from currentToken
@@ -156,43 +153,46 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						while (findMatch.hasNext())
 						{
 							part = findMatch.next();
-
+							
 							if (checkIfNumber(part) || mathSymbols.contains(part))
 							{
 								combinedNumber.append(";" + part);
 							} else
 							{
 								match = part;
-								while (!tokenIt.next().equals(match))count++;
+								while (!tokenIt.next().equals(match))
+									count++;
 								
 								currentToken = combinedNumber.toString();
 								count++;
 								replaced = true;
-
+								
 								break;
 							}
 						}
 					}
 					
-					//check if match is part of a combined surface form
-					//this has to be checked first, else there might occur 2 Annotations 
-					//for same label, 1 for uncombined and 1 for combined
-					if(this.isPrefix(match+"&&", surForms))
+					// check if match is part of a combined surface form
+					// this has to be checked first, else there might occur 2
+					// Annotations
+					// for same label, 1 for uncombined and 1 for combined
+					if (this.isPrefix(match + "&&", surForms))
 					{
 						Iterator<String> dsfFinder = sentence.getTokens().iterator();
 						
-						for(int j = 0; j < count +2; j++)
+						for (int j = 0; j < count + 2; j++)
 						{
-							if(dsfFinder.hasNext()) dsfNumber = dsfFinder.next();
+							if (dsfFinder.hasNext())
+								dsfNumber = dsfFinder.next();
 						}
 						
-						if(this.checkIfNumber(dsfNumber)&&dsfFinder.hasNext())
+						if (this.checkIfNumber(dsfNumber) && dsfFinder.hasNext())
 						{
 							dsfUnit = dsfFinder.next();
 							
-							if(surForms.contains(match+"&&"+dsfUnit))
+							if (surForms.contains(match + "&&" + dsfUnit))
 							{
-								//make Annotation
+								// make Annotation
 								ArrayList<String> annoTokens = new ArrayList<String>();
 								parts = currentToken.split(";");
 								
@@ -209,12 +209,12 @@ public class NaiveAlgorithm extends SearchAlgorithm
 								
 								currentToken = tokenIt.next();
 								currentToken = tokenIt.next();
-								count+=2;
+								count += 2;
 								
 								break;
 							}
 						}
-					}	
+					}
 					
 					// checks if match is equal to any known surface form of the
 					// units we look for
@@ -240,7 +240,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					}
 					// else check if match is the prefix of any surface form
 					else if (this.isPrefix(match, surForms))
-					{	
+					{
 						ArrayList<String> annoTokens = new ArrayList<String>();
 						parts = currentToken.split(";");
 						
@@ -296,25 +296,26 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					prefix = currentToken.substring(0, position - 1);
 					suffix = currentToken.substring(position - 1);
 					
-					//checking if combined surface form
-					if(this.isPrefix(suffix+"&&", surForms))
+					// checking if combined surface form
+					if (this.isPrefix(suffix + "&&", surForms))
 					{
 						Iterator<String> dsfFinder = sentence.getTokens().iterator();
 						
-						for(int j = 0; j < count +1; j++)
+						for (int j = 0; j < count + 1; j++)
 						{
-							if(dsfFinder.hasNext()) dsfNumber = dsfFinder.next();
+							if (dsfFinder.hasNext())
+								dsfNumber = dsfFinder.next();
 						}
 						
-						if(this.checkIfNumber(dsfNumber)&&dsfFinder.hasNext())
+						if (this.checkIfNumber(dsfNumber) && dsfFinder.hasNext())
 						{
 							dsfUnit = dsfFinder.next();
 							
-							if(surForms.contains(suffix+"&&"+dsfUnit))
+							if (surForms.contains(suffix + "&&" + dsfUnit))
 							{
-								//make Annotation
+								// make Annotation
 								ArrayList<String> annoTokens = new ArrayList<String>();
-
+								
 								annoTokens.add(prefix);
 								annoTokens.add(suffix);
 								annoTokens.add(dsfNumber);
@@ -323,21 +324,20 @@ public class NaiveAlgorithm extends SearchAlgorithm
 								sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 								break;
 							}
-						}
-						else
-						{	
+						} else
+						{
 							positionDsf = this.checkIfStartsWithNumber(dsfNumber);
-							if(positionDsf!=-1)
-							{	
+							if (positionDsf != -1)
+							{
 								dsfTemp = dsfNumber;
 								dsfNumber = dsfTemp.substring(0, positionDsf - 1);
 								dsfUnit = dsfTemp.substring(positionDsf - 1);
 								
-								if(surForms.contains(suffix+"&&"+dsfUnit))
+								if (surForms.contains(suffix + "&&" + dsfUnit))
 								{
-									//make Annotation
+									// make Annotation
 									ArrayList<String> annoTokens = new ArrayList<String>();
-
+									
 									annoTokens.add(prefix);
 									annoTokens.add(suffix);
 									annoTokens.add(dsfNumber);
@@ -349,10 +349,10 @@ public class NaiveAlgorithm extends SearchAlgorithm
 							}
 						}
 					}
-					//checking if ordinary surface form
+					// checking if ordinary surface form
 					if (surForms.contains(suffix.toLowerCase()))
 					{
-						//make Annotation
+						// make Annotation
 						ArrayList<String> annoTokens = new ArrayList<String>();
 						annoTokens.add(prefix);
 						annoTokens.add(suffix);
@@ -364,5 +364,84 @@ public class NaiveAlgorithm extends SearchAlgorithm
 		}
 		
 		return;
+	}
+	
+	/**
+	 * Checks if a String representation of a token is a number
+	 * 
+	 * @param token
+	 * @return true if it can be parsed to an integer or double value, else
+	 *         false
+	 */
+	public boolean checkIfNumber(String token)
+	{
+		try
+		{
+			if (token.endsWith("f"))
+				return numbers.contains(token); // else f at end of String is
+												// interpreted as "float"
+			if (token.contains(","))
+				token = token.replace(",", ".");
+			Double.parseDouble(token);
+			return true;
+		} catch (NumberFormatException e)
+		{
+		}
+		return numbers.contains(token.toLowerCase());
+	}
+	
+	/**
+	 * Checks if a String representation of a token starts with a number.
+	 * 
+	 * @param token
+	 * @return -1 if no combined number else position of first non-numerical
+	 *         char
+	 */
+	public int checkIfStartsWithNumber(String token)
+	{
+		String prefix;
+		int length = 1;
+		int position = -1;
+		
+		try
+		{
+			while (length < token.length())
+			{
+				prefix = token.substring(0, length);
+				length++;
+				
+				if (checkIfNumber(prefix))
+					position = length;
+			}
+		} catch (NumberFormatException e)
+		{
+		}
+		
+		return position;
+	}
+	
+	/**
+	 * Checks if a token is a prefix of any word in a certain set of words
+	 * 
+	 * @param token
+	 * @param words
+	 * @return true if prefix, else false
+	 */
+	public boolean isPrefix(String token, Set<String> words)
+	{
+		Iterator<String> it = words.iterator();
+		String nextWord;
+		
+		while (it.hasNext())
+		{
+			nextWord = it.next();
+			if (nextWord.length() > token.length())
+			{
+				if (token.equals(nextWord.substring(0, token.length())))
+					return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -15,72 +15,19 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Set;
 
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
-import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
-
-/**
- * Abstract. Searches BoaSentence for patterns related to the elements
- * of the Set<String> surForms. Also provides it subclasses with auxiliary
- * functions to detect String representations of numbers.
- * @author Jakob M.
- *
- */
 
 public abstract class SearchAlgorithm
 {
-	/**
-	 * String patterns that are searched for.
-	 */
+	protected BoaAnnotation.Type annoType;
 	
-	protected Set<String> surForms;
-	
-	/**
-	 * The label found patterns get when annotated. 
-	 */
-	
-	protected Type annoType;
-	
-	/**
-	 * A Set of Strings that can be associated to a number.
-	 */
-	
-	private Set<String> numbers;
-	
-	/**
-	 * Constructor. Does NOT initialize all attributes necessary to 
-	 * successfully use the class! (annoType and surForms still need to be set
-	 * after this)
-	 */
-	
-	public SearchAlgorithm()
+	public SearchAlgorithm(HashMap<String, Set<String>> config, BoaAnnotation.Type annoType)
 	{
-		numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
-	}
-	
-	/**
-	 * Constructor. Initializes all attributes.
-	 * @param surfaceForms Set of String patterns to search for 
-	 * @param annoType type of the BoaAnnotations that are added
-	 */
-	
-	public SearchAlgorithm(Set<String> surfaceForms, Type annoType)
-	{
-		try
-		{
-			this.annoType = annoType;
-			surForms = new HashSet<String>();
-			surForms.addAll(surfaceForms);
-			numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
-		}
-		catch(NullPointerException e)
-		{
-			e.printStackTrace();
-		}
+		this.annoType = annoType;
 	}
 	
 	/**
@@ -89,94 +36,9 @@ public abstract class SearchAlgorithm
 	 * On success objects of type BoaAnnotation will be added to sentence.
 	 * @param sentence
 	 */
-	//subclasses will have to overwrite this
 	public abstract void search(BoaSentence sentence);
 	
-	/**
-	 * Checks if a String representation of a token is a number
-	 * @param token
-	 * @return true if it can be parsed to an integer or double value, else false
-	 */
-	
-	
-	public boolean checkIfNumber(String token)
-	{	
-		try
-		{
-			if(token.endsWith("f")) return numbers.contains(token); //else f at end of String is interpreted as "float"
-			if(token.contains(",")) token = token.replace(",", ".");
-			Double.parseDouble(token);
-			return true;
-		}
-		catch(NumberFormatException e){}
-				
-		return numbers.contains(token.toLowerCase());
-	}
-	
-	
-	/**
-	 * Checks if a String representation of a token starts with a number.
-	 * @param token
-	 * @return -1 if no combined number else position of first non-numerical char
-	 */
-	
-	public int checkIfStartsWithNumber(String token)
-	{
-		String prefix;
-		int length = 1;
-		int position = -1;
-		
-		try
-		{
-			while(length < token.length())
-			{
-				prefix = token.substring(0, length);
-				length++;
-				
-				if(checkIfNumber(prefix)) position = length;
-			}
-		}
-		catch(NumberFormatException e){}
-		
-		return position;
-	}
-	
-	/**
-	 * Checks if a token is a prefix of any word in a certain set of words
-	 * @param token
-	 * @param words
-	 * @return true if prefix, else false
-	 */
-	
-	public boolean isPrefix(String token, Set<String> words)
-	{
-		Iterator<String> it = words.iterator();
-		String nextWord;
-		
-		while(it.hasNext())
-		{
-			nextWord = it.next();
-			if(nextWord.length() > token.length())
-			{
-				if(token.equals(nextWord.substring(0, token.length()))) return true;
-			}
-		}
-		
-		return false;
-	}
-
-	public void setSurForms(Set<String> surfaceForms)
-	{
-		surForms = new HashSet<String>();
-		surForms.addAll(surfaceForms);
-	}
-
-	public void setAnnoType(Type annoType2)
-	{
-		annoType = annoType2;
-	}
-	
-	public Type getAnnoType()
+	public BoaAnnotation.Type getAnnoType()
 	{
 		return annoType;
 	}

@@ -17,6 +17,7 @@
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -24,13 +25,12 @@ import java.util.regex.Pattern;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
-import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
  * This Algorithm search for date structures in sentences and annotate them. It
  * still need some Improvements. Important: Year search is still beta.
  * 
- * @author Benedict Pre�ler
+ * @author Benedict Preßler
  * 
  */
 
@@ -49,16 +49,106 @@ public class DateAlgorithm extends SearchAlgorithm
 	private Set<String> monthSet;
 	private Set<String> daySet;
 	
-	/*
-	 * public DateAlgorithm() {
-	 * 
-	 * }
-	 * 
-	 * public DateAlgorithm(Set<String> surfaceForms, Type annoType) {
-	 * 
-	 * }
-	 */
-	
+	public DateAlgorithm(HashMap<String, Set<String>> config, BoaAnnotation.Type annoType)
+	{
+		super(config, annoType);		
+		daySet = config.get("DAY");
+		monthSet = config.get("MONTH");
+		patternSet = config.get("PATTERNS");
+		prepoSet = config.get("PREPOSITIONS");
+		patterns = new ArrayList<Pattern>();
+		
+		for (String s : patternSet)
+		{
+			StringBuilder sb = new StringBuilder();
+			char state = 'n'; // default state
+			int yearPlaces = 0;
+			for (int i = 0; i < s.length(); i++)
+			{
+				switch (state)
+				{
+					case 'n':
+						switch (s.charAt(i))
+						{
+							case 'y':
+								yearPlaces++;
+							case 'd':
+							case 'm':
+								state = s.charAt(i);
+								break;
+							default:
+								sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
+						}
+						break;
+					case 'd':
+						if (s.charAt(i) == 'd')
+						{
+							sb.append(dayPattern);
+							state = 'l';
+						} else
+						{
+							sb.append(dayPatternShort);
+							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
+							state = 'n';
+						}
+						break;
+					case 'm':
+						if (s.charAt(i) == 'm')
+						{
+							sb.append(monthPattern);
+							state = 'l';
+						} else
+						{
+							sb.append(monthPatternShort);
+							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
+							state = 'n';
+						}
+						break;
+					case 'y':
+						if (s.charAt(i) == 'y')
+						{
+							yearPlaces++;
+						} else if (s.charAt(i) == '+')
+						{
+							sb.append("\\d");
+							sb.append('+');
+							state = 'l';
+						} else
+						{
+							for (; yearPlaces > 0; yearPlaces--)
+							{
+								sb.append("\\d");
+							}
+							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
+							state = 'n';
+						}
+						break;
+					case 'l':
+						sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
+						state = 'n';
+						break;
+				}
+			}
+			switch (state)
+			{
+				case 'd':
+					sb.append(dayPatternShort);
+					break;
+				case 'm':
+					sb.append(monthPatternShort);
+					break;
+				case 'y':
+					for (; yearPlaces > 0; yearPlaces--)
+					{
+						sb.append("\\d");
+					}
+					break;
+			}
+			patterns.add(Pattern.compile(sb.toString()));
+		}
+	}
+
+	@Override
 	public void search(BoaSentence sentence)
 	{
 		searchByNames(sentence);
@@ -79,7 +169,7 @@ public class DateAlgorithm extends SearchAlgorithm
 					{
 						ArrayList<String> tokens = new ArrayList<String>();
 						tokens.add(sentence.getTokens().get(i+1));
-						sentence.getAnnotations().add(new BoaAnnotation(BoaAnnotation.Type.DATE, tokens));
+						sentence.getAnnotations().add(new BoaAnnotation(annoType, tokens));
 						break;
 					}
 				}
@@ -98,7 +188,7 @@ public class DateAlgorithm extends SearchAlgorithm
 				{
 					ArrayList<String> tokens = new ArrayList<String>();
 					tokens.add(token);
-					sentence.getAnnotations().add(new BoaAnnotation(BoaAnnotation.Type.DATE, tokens));
+					sentence.getAnnotations().add(new BoaAnnotation(annoType, tokens));
 					break;
 				}
 			}
@@ -423,107 +513,7 @@ public class DateAlgorithm extends SearchAlgorithm
 			} // End If contains month
 		} // End while token
 	}
-	
-	public void setSurForms(Set<String> surfaceForms)
-	{
-		ConfigLoader cl = new ConfigLoader();
-		daySet = cl.openConfigSurfaceForms("DAY");
-		monthSet = cl.openConfigSurfaceForms("MONTH");
-		patternSet = cl.openConfigSurfaceForms("PATTERNS");
-		prepoSet = cl.openConfigSurfaceForms("PREPOSITIONS");
 		
-		
-		patterns = new ArrayList<Pattern>();
-		for (String s : patternSet)
-		{
-			StringBuilder sb = new StringBuilder();
-			char state = 'n'; // default state
-			int yearPlaces = 0;
-			for (int i = 0; i < s.length(); i++)
-			{
-				switch (state)
-				{
-					case 'n':
-						switch (s.charAt(i))
-						{
-							case 'y':
-								yearPlaces++;
-							case 'd':
-							case 'm':
-								state = s.charAt(i);
-								break;
-							default:
-								sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
-						}
-						break;
-					case 'd':
-						if (s.charAt(i) == 'd')
-						{
-							sb.append(dayPattern);
-							state = 'l';
-						} else
-						{
-							sb.append(dayPatternShort);
-							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
-							state = 'n';
-						}
-						break;
-					case 'm':
-						if (s.charAt(i) == 'm')
-						{
-							sb.append(monthPattern);
-							state = 'l';
-						} else
-						{
-							sb.append(monthPatternShort);
-							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
-							state = 'n';
-						}
-						break;
-					case 'y':
-						if (s.charAt(i) == 'y')
-						{
-							yearPlaces++;
-						} else if (s.charAt(i) == '+')
-						{
-							sb.append("\\d");
-							sb.append('+');
-							state = 'l';
-						} else
-						{
-							for (; yearPlaces > 0; yearPlaces--)
-							{
-								sb.append("\\d");
-							}
-							sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
-							state = 'n';
-						}
-						break;
-					case 'l':
-						sb.append(Pattern.quote(String.valueOf(s.charAt(i))));
-						state = 'n';
-						break;
-				}
-			}
-			switch (state)
-			{
-				case 'd':
-					sb.append(dayPatternShort);
-					break;
-				case 'm':
-					sb.append(monthPatternShort);
-					break;
-				case 'y':
-					for (; yearPlaces > 0; yearPlaces--)
-					{
-						sb.append("\\d");
-					}
-					break;
-			}
-			patterns.add(Pattern.compile(sb.toString()));
-		}
-	}
-	
 	/**
 	 * Checks if a Token contains a year date. Only works for years after 1 CE.
 	 * 
@@ -545,5 +535,4 @@ public class DateAlgorithm extends SearchAlgorithm
 		
 		return false;
 	}
-	
 }
