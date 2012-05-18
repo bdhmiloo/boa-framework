@@ -158,17 +158,17 @@ public class DateAlgorithm extends SearchAlgorithm
 	
 	private void searchByYears(BoaSentence sentence)
 	{
-		for (int i = 0; i < sentence.getTokens().size() - 1; i++)
+		for (int i = 0; i < sentence.size() - 1; i++)
 		{
 			for (String prepo : prepoSet)
 			{
-				if (prepo.equals(sentence.getTokens().get(i)))
+				if (prepo.equals(sentence.getToken(i)))
 				{
-					Matcher m = yearPattern.matcher(sentence.getTokens().get(i+1));
+					Matcher m = yearPattern.matcher(sentence.getToken(i+1));
 					if (m.matches())
 					{
 						ArrayList<String> tokens = new ArrayList<String>();
-						tokens.add(sentence.getTokens().get(i+1));
+						tokens.add(sentence.getToken(i+1));
 						sentence.getAnnotations().add(new BoaAnnotation(annoType, tokens));
 						break;
 					}
@@ -179,7 +179,7 @@ public class DateAlgorithm extends SearchAlgorithm
 	
 	private void searchByRegex(BoaSentence sentence)
 	{
-		for (String token : sentence.getTokens())
+		for (String token : sentence)
 		{
 			for (Pattern pattern : patterns)
 			{
@@ -204,7 +204,7 @@ public class DateAlgorithm extends SearchAlgorithm
 																			// position
 		boolean annotated = false;
 		
-		Iterator<String> tokensIT = sentence.getTokens().iterator();
+		Iterator<String> tokensIT = sentence.iterator();
 		while (tokensIT.hasNext()) // while has Tokens left
 		{
 			currentToken = tokensIT.next();
@@ -215,7 +215,7 @@ public class DateAlgorithm extends SearchAlgorithm
 				if (tokensIT.hasNext()) // if month=true next=true
 				{
 					positionDay = -1;
-					Iterator<String> findDay = sentence.getTokens().iterator();
+					Iterator<String> findDay = sentence.iterator();
 					while (positionDay != positionMonth + 1) // until
 																// day=month+1
 					{
@@ -230,7 +230,7 @@ public class DateAlgorithm extends SearchAlgorithm
 												// next=true
 						{
 							positionYear = -1;
-							Iterator<String> findYear = sentence.getTokens().iterator();
+							Iterator<String> findYear = sentence.iterator();
 							while (positionYear != positionDay + 1) // until
 																	// year=day+1
 							{
@@ -253,7 +253,7 @@ public class DateAlgorithm extends SearchAlgorithm
 																					// next=true
 							{
 								positionMeta = -1;
-								Iterator<String> findYearMeta = sentence.getTokens().iterator();
+								Iterator<String> findYearMeta = sentence.iterator();
 								while (positionMeta != positionYear + 1) // until
 																			// meta=year+1
 								{
@@ -325,7 +325,7 @@ public class DateAlgorithm extends SearchAlgorithm
 					// if month=true month:isFirstToken=false
 					{
 						positionDay = -1;
-						Iterator<String> findDay = sentence.getTokens().iterator();
+						Iterator<String> findDay = sentence.iterator();
 						while (positionDay != positionMonth - 1 && findDay.hasNext()) // until
 																						// day=month-1
 						{
@@ -338,7 +338,7 @@ public class DateAlgorithm extends SearchAlgorithm
 																		// of:isFirstToken=false
 						{
 							positionMeta = -1;
-							Iterator<String> findDayMeta = sentence.getTokens().iterator();
+							Iterator<String> findDayMeta = sentence.iterator();
 							while (positionMeta != positionDay - 1) // until
 																	// meta=day-1
 							{
@@ -354,7 +354,7 @@ public class DateAlgorithm extends SearchAlgorithm
 														// month=true next=true
 								{
 									positionYear = -1;
-									Iterator<String> findYear = sentence.getTokens().iterator();
+									Iterator<String> findYear = sentence.iterator();
 									while (positionYear != positionMonth + 1) // until
 																				// year=month+1
 									{
@@ -400,7 +400,7 @@ public class DateAlgorithm extends SearchAlgorithm
 														// month=true next=true
 								{
 									positionYear = -1;
-									Iterator<String> findYear = sentence.getTokens().iterator();
+									Iterator<String> findYear = sentence.iterator();
 									while (positionYear != positionMonth + 1) // until
 																				// year=month+1
 									{
@@ -444,7 +444,7 @@ public class DateAlgorithm extends SearchAlgorithm
 													// next=true
 							{
 								positionYear = -1;
-								Iterator<String> findYear = sentence.getTokens().iterator();
+								Iterator<String> findYear = sentence.iterator();
 								while (positionYear != positionMonth + 1) // until
 																			// year=month+1
 								{
@@ -485,7 +485,7 @@ public class DateAlgorithm extends SearchAlgorithm
 							if (tokensIT.hasNext())
 							{
 								positionYear = -1;
-								Iterator<String> findYear = sentence.getTokens().iterator();
+								Iterator<String> findYear = sentence.iterator();
 								while (positionYear != positionMonth + 1) // until
 																			// year=month+1
 								{

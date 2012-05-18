@@ -99,13 +99,13 @@ public class ConverterWeight extends Converter
 		
 	
 		// get all tokens of annotation and choose unit
-		for (int i = 0; i < annotation.getTokens().size(); i++)
+		for (int i = 0; i < annotation.size(); i++)
 		{
 			int chooseOption = 0;
 			
 			for (int l = 0; l < g.length; l++)
 			{
-				if (g[l].equals(annotation.getTokens().get(i)))
+				if (g[l].equals(annotation.getToken(i)))
 				{
 					tempUnit = "gram";
 					chooseOption++;
@@ -114,7 +114,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < microg.length; l++)
 				{
-					if (microg[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (microg[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "microgram";
@@ -123,7 +123,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < t.length; l++)
 				{
-					if (t[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (t[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "ton";
@@ -132,7 +132,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < kg.length; l++)
 				{
-					if (kg[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (kg[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "kilogram";
@@ -141,7 +141,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < Kt.length; l++)
 				{
-					if (Kt[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (Kt[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "karat";
@@ -150,7 +150,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < oz.length; l++)
 				{
-					if (oz[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (oz[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "ounze";
@@ -159,7 +159,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < mg.length; l++)
 				{
-					if (mg[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (mg[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "milligram";
@@ -168,7 +168,7 @@ public class ConverterWeight extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < lbs.length; l++)
 				{
-					if (lbs[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (lbs[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "pound";
@@ -182,11 +182,11 @@ public class ConverterWeight extends Converter
 			double number = 0;
 			
 			// looking for any numbers in annotation
-			for (int w = 0; w < annotation.getTokens().size(); w++)
+			for (int w = 0; w < annotation.size(); w++)
 			{
-				if (checkIfNumber(annotation.getTokens().get(w)))
+				if (checkIfNumber(annotation.getToken(w)))
 				{
-					String token = annotation.getTokens().get(w);
+					String token = annotation.getToken(w);
 					
 					if (token.contains("+"))
 						token = token.replace("+", "");

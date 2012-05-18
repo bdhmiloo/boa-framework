@@ -78,13 +78,13 @@ public class ConverterTemperature extends Converter
 		List<String> list4 = new ArrayList<String>(Kelvin);
 		Object[] K = list4.toArray();
 		
-		for (int i = 0; i < annotation.getTokens().size(); i++)
+		for (int i = 0; i < annotation.size(); i++)
 		{
 			int chooseOption = 0;
 			
 			for (int l = 0; l < C.length; l++)
 			{
-				if (C[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+				if (C[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 				{
 					tempUnit = "celsius";
 					chooseOption++;
@@ -93,7 +93,7 @@ public class ConverterTemperature extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < F.length; l++)
 				{
-					if (F[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (F[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "fahrenheit";
@@ -102,7 +102,7 @@ public class ConverterTemperature extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < K.length; l++)
 				{
-					if (K[l].toString().equalsIgnoreCase(annotation.getTokens().get(i)))
+					if (K[l].toString().equalsIgnoreCase(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "kelvin";
@@ -117,11 +117,11 @@ public class ConverterTemperature extends Converter
 			double number = 0;
 			
 			// looking for any numbers in annotation
-			for (int w = 0; w < annotation.getTokens().size(); w++)
+			for (int w = 0; w < annotation.size(); w++)
 			{
-				if (checkIfNumber(annotation.getTokens().get(w)))
+				if (checkIfNumber(annotation.getToken(w)))
 				{
-					String token = annotation.getTokens().get(w);
+					String token = annotation.getToken(w);
 					
 					if (token.contains("+"))
 						token = token.replace("+", "");

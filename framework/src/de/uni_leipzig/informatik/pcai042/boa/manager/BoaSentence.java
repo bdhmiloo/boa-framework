@@ -16,6 +16,7 @@
 package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -31,7 +32,7 @@ import edu.stanford.nlp.util.CoreMap;
  * 
  * @author Simon Suiter
  */
-public class BoaSentence
+public class BoaSentence implements Iterable<String>
 {
 	private String sentence;
 	private ArrayList<String> tokens;
@@ -171,9 +172,20 @@ public class BoaSentence
 		return sentence;
 	}
 	
-	public ArrayList<String> getTokens()
+	public String getToken(int index)
 	{
-		return tokens;
+		return tokens.get(index);
+	}
+	
+	public int size()
+	{
+		return tokens.size();
+	}
+	
+	@Override
+	public Iterator<String> iterator()
+	{
+		return tokens.iterator();
 	}
 	
 	public ArrayList<BoaAnnotation> getAnnotations()
@@ -247,7 +259,7 @@ public class BoaSentence
 		for (BoaAnnotation annotation : annotations)
 		{
 			Element annoElem = new Element("annotation");
-			for (String token : annotation.getTokens())
+			for (String token : annotation)
 			{
 				Element tokenElem = new Element("token");
 				// inserts id of token; start with 1 since Stanford's ids aren't
@@ -278,16 +290,5 @@ public class BoaSentence
 		bs.endPos = endPos;
 		bs.annotations = new ArrayList<BoaAnnotation>();
 		return bs;
-	}
-	
-	/**
-	 * Delete Annotations
-	 * 
-	 * @return a BoaSentence without Annotations
-	 */
-	public BoaSentence deleteSentence(BoaSentence withAnno)
-	{
-		withAnno.annotations.clear();
-		return withAnno;
 	}
 }

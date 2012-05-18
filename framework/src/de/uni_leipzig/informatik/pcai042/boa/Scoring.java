@@ -85,21 +85,21 @@ public class Scoring
 					
 				}
 				help2 = 0;
-				for (int e = 0; e < workSentences.get(i).getAnnotations().get(j).getTokens().size(); e++)
+				for (int e = 0; e < workSentences.get(i).getAnnotations().get(j).size(); e++)
 				{
-					for (int d = 0; d < workSentences.get(i).getTokens().size(); d++)
+					for (int d = 0; d < workSentences.get(i).size(); d++)
 					{
-						if (workSentences.get(i).getAnnotations().get(j).getTokens().get(e) == workSentences.get(i)
-								.getTokens().get(d))
+						if (workSentences.get(i).getAnnotations().get(j).getToken(e) == workSentences.get(i)
+								.getToken(d))
 						{ //System.out.println("i:"+i+"j:"+j+"e:"+e+"d:"+d);
 							for (int w = 0; w < s1.getSentence(i).getAnnotations().size(); w++)
 							{
-								for (int z = 0; z < s1.getSentence(i).getAnnotations().get(w).getTokens().size(); z++)
+								for (int z = 0; z < s1.getSentence(i).getAnnotations().get(w).size(); z++)
 								{
-									for (int y = 0; y < s1.getSentence(i).getTokens().size(); y++)
+									for (int y = 0; y < s1.getSentence(i).size(); y++)
 									{
-										if (s1.getSentence(i).getAnnotations().get(w).getTokens().get(z) == s1
-												.getSentence(i).getTokens().get(y))
+										if (s1.getSentence(i).getAnnotations().get(w).getToken(z) == s1
+												.getSentence(i).getToken(y))
 										{
 											if (e == z && d == y)
 												help2++;
@@ -111,7 +111,7 @@ public class Scoring
 					}
 					
 				}
-				if (help2 == workSentences.get(i).getAnnotations().get(j).getTokens().size())
+				if (help2 == workSentences.get(i).getAnnotations().get(j).size())
 					t2 = 1;
 				if (t1 == 1 && t2 == 1)
 					kp++;

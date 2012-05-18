@@ -125,13 +125,13 @@ public class ConverterLinearMeasure extends Converter
 		 * "km", "mile", "seamile", "yard", "ft", "inch" };
 		 */
 		// get all tokens of annotation and choose unit
-		for (int i = 0; i < annotation.getTokens().size(); i++)
+		for (int i = 0; i < annotation.size(); i++)
 		{
 			int chooseOption = 0;
 			
 			for (int l = 0; l < microm.length; l++)
 			{
-				if (microm[l].equals(annotation.getTokens().get(i)))
+				if (microm[l].equals(annotation.getToken(i)))
 				{
 					tempUnit = "microm";
 					chooseOption++;
@@ -140,7 +140,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < mm.length; l++)
 				{
-					if (mm[l].equals(annotation.getTokens().get(i)))
+					if (mm[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "mm";
@@ -149,7 +149,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < cm.length; l++)
 				{
-					if (cm[l].equals(annotation.getTokens().get(i)))
+					if (cm[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "cm";
@@ -158,7 +158,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < dm.length; l++)
 				{
-					if (dm[l].equals(annotation.getTokens().get(i)))
+					if (dm[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "dm";
@@ -167,7 +167,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < m.length; l++)
 				{
-					if (m[l].equals(annotation.getTokens().get(i)))
+					if (m[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "m";
@@ -176,7 +176,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < km.length; l++)
 				{
-					if (km[l].equals(annotation.getTokens().get(i)))
+					if (km[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "km";
@@ -185,7 +185,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < ft.length; l++)
 				{
-					if (ft[l].equals(annotation.getTokens().get(i)))
+					if (ft[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "ft";
@@ -194,7 +194,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < inch.length; l++)
 				{
-					if (inch[l].equals(annotation.getTokens().get(i)))
+					if (inch[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "inch";
@@ -203,7 +203,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < yard.length; l++)
 				{
-					if (yard[l].equals(annotation.getTokens().get(i)))
+					if (yard[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "yard";
@@ -212,7 +212,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < seamile.length; l++)
 				{
-					if (seamile[l].equals(annotation.getTokens().get(i)))
+					if (seamile[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "seamile";
@@ -221,7 +221,7 @@ public class ConverterLinearMeasure extends Converter
 			if (chooseOption == 0)
 				for (int l = 0; l < mile.length; l++)
 				{
-					if (mile[l].equals(annotation.getTokens().get(i)))
+					if (mile[l].equals(annotation.getToken(i)))
 					{
 						chooseOption++;
 						tempUnit = "mile";
@@ -235,11 +235,11 @@ public class ConverterLinearMeasure extends Converter
 			double number = 0;
 			
 			// looking for any numbers in annotation
-			for (int w = 0; w < annotation.getTokens().size(); w++)
+			for (int w = 0; w < annotation.size(); w++)
 			{
-				if (checkIfNumber(annotation.getTokens().get(w)))
+				if (checkIfNumber(annotation.getToken(w)))
 				{
-					String token = annotation.getTokens().get(w);
+					String token = annotation.getToken(w);
 					
 					if (token.contains("+"))
 						token = token.replace("+", "");
