@@ -22,8 +22,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation.Type;
-import de.uni_leipzig.informatik.pcai042.boa.searcher.SearchAlgorithm;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.NaiveAlgorithm;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import org.junit.*;
@@ -36,22 +36,19 @@ import org.junit.*;
  */
 public class TestingSearchAlgorithm extends TestCase
 {
-   private SearchAlgorithm searching;
-   SearchAlgorithm searching2;
+   private NaiveAlgorithm searching;
+   private NaiveAlgorithm searching2;
    private Set<String> surfaceForms;
-   private Type annoType;
+   private String annoType;
    private  Set<String> words = new HashSet<String>();
-  
+   private SearcherFactory sf = new SearcherFactory(new ConfigLoader());
    
   
    
    @Before
    public void setUp()
    {
-       searching = new SearchAlgorithm()
-       {
-    	   public void search(BoaSentence sentence){}
-       };
+       searching = (NaiveAlgorithm) sf.newSearcher("WEIGHT");
        
      
        
