@@ -17,7 +17,9 @@ package de.uni_leipzig.informatik.pcai042.boa.converter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -25,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
  * Converter class for unit type DATE.
@@ -42,7 +45,8 @@ public class ConverterDate extends Converter
 			"seventeenth", "eighteenth", "nineteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third",
 			"twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth",
 			"thirtieth", "thirty-first" };
-	private String[] dateSeparater = { "/", "-", "'", "~", "." };
+	
+	Object[] dateSeparater;
 	
 	/**
 	 * The beginning of the current century.
@@ -55,11 +59,16 @@ public class ConverterDate extends Converter
 	private int centuryEnd;
 	
 	/**
-	 * Constructor.
+	 * Constructor loads all necessary files for unit DATE.
 	 */
 	public ConverterDate()
 	{
-		super();
+		ConfigLoader load = new ConfigLoader();
+		
+		// load surface forms
+		Set<String> loadSeparater = load.openConfigSurfaceForms("DATE_SEPARATER".toString());
+		List<String> list = new ArrayList<String>(loadSeparater);
+		dateSeparater = list.toArray();
 	}
 	
 	/**
@@ -67,7 +76,7 @@ public class ConverterDate extends Converter
 	 * 
 	 * @param annotation
 	 *            one annotation comprising at least one token of type DATE
-	 * @return list with all surface forms of an unit inclusive all
+	 * @return the result list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
 	 * @throws ParseException
 	 */
@@ -272,8 +281,10 @@ public class ConverterDate extends Converter
 	 * Convert a month string to the particular month number {1;...;12}.
 	 * 
 	 * @param month
+	 *            the month
 	 * @param sForms
-	 * @return month as number
+	 *            the list of surface forms of months
+	 * @return the month as number
 	 */
 	private int convertMonthToNumber(String month, String[] sForms)
 	{
@@ -293,8 +304,10 @@ public class ConverterDate extends Converter
 	 * surface forms.
 	 * 
 	 * @param list
+	 *            the result list with all surface forms of an unit inclusive
+	 *            all corresponding conversions
 	 * @param stringBufferAnno
-	 * @param pattern
+	 *            the current Annotation of type DATE
 	 * @throws ParseException
 	 */
 	private void specialConversionOfDate(ArrayList<String> list, String stringBufferAnno) throws ParseException
@@ -315,10 +328,12 @@ public class ConverterDate extends Converter
 	 * different surface forms.
 	 * 
 	 * @param list
+	 *            the result list with all surface forms of an unit inclusive
+	 *            all corresponding conversions
 	 * @param stringBufferAnno
+	 *            the current Annotation of type DATE
 	 * @param pattern
-	 * @param dateSeparater
-	 * @param ordinalNumbers
+	 *            the date pattern
 	 * @throws ParseException
 	 */
 	private void specialConversionOfDate(ArrayList<String> list, String stringBufferAnno, String pattern)
@@ -361,8 +376,12 @@ public class ConverterDate extends Converter
 	 * different surface forms.
 	 * 
 	 * @param list
+	 *            the result list with all surface forms of an unit inclusive
+	 *            all corresponding conversions
 	 * @param stringBufferAnno
+	 *            the current Annotation of type DATE
 	 * @param pattern
+	 *            the date pattern
 	 * @throws ParseException
 	 */
 	private void standardConversionOfDate(ArrayList<String> list, String stringBufferAnno, String pattern)
@@ -717,13 +736,14 @@ public class ConverterDate extends Converter
 	}
 	
 	/**
-	 * Get a certain pattern from a date format.
+	 * Get a certain component from a date format.
 	 * 
-	 * @author Daniel Gerber
+	 * (@author Daniel Gerber)
+	 * 
 	 * @param dateString
 	 * @param fromPattern
 	 * @param toPattern
-	 * @return value of <code>toPattern</code>
+	 * @return the value of <code>toPattern</code>
 	 * @throws ParseException
 	 */
 	private String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException
@@ -738,12 +758,13 @@ public class ConverterDate extends Converter
 	/**
 	 * Gets the particular ending for a number in order to be an ordinal number.
 	 * 
-	 * @author Daniel Gerber
+	 * (@author Daniel Gerber)
+	 * 
 	 * @param value
 	 *            number which should get a particular ending in order to be an
 	 *            ordinal number
-	 * @return particular ending of an ordinal number for consigned parameter
-	 *         <code>value</code>
+	 * @return the particular ending of an ordinal number for consigned
+	 *         parameter <code>value</code>
 	 */
 	private String getOrdinalFor(int value)
 	{
@@ -780,7 +801,7 @@ public class ConverterDate extends Converter
 	/**
 	 * Gets the ending of the current century.
 	 * 
-	 * @return the beginning of the current century
+	 * @return the ending of the current century
 	 */
 	public int getCenturyEnd()
 	{
