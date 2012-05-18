@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 public class SearcherFactory
@@ -31,7 +30,7 @@ public class SearcherFactory
 	public SearcherFactory(ConfigLoader cf)
 	{
 		algos = new HashMap<String, Class<? extends SearchAlgorithm>>();
-		configs = new HashMap<String, HashMap<String,Set<String>>>();
+		configs = new HashMap<String, HashMap<String, Set<String>>>();
 		Set<String> types = cf.openConfigSurfaceForms("ALL_UNITS");
 		
 		for (String type : types)
@@ -39,12 +38,14 @@ public class SearcherFactory
 			try
 			{
 				Class<?> clazz = Class.forName(cf.returnValue(type + "_ALGO"));
-				//Constructor<?> c = clazz.getConstructor(new Class[] { HashMap.class, String.class });
-				//if (SearchAlgorithm.class.isInstance(c.newInstance(new HashMap<String, Set<String>>(), "")))
+				// Constructor<?> c = clazz.getConstructor(new Class[] {
+				// HashMap.class, String.class });
+				// if (SearchAlgorithm.class.isInstance(c.newInstance(new
+				// HashMap<String, Set<String>>(), "")))
 				if (SearchAlgorithm.class.isAssignableFrom(clazz))
 				{
 					algos.put(type, castClass(clazz));
-					HashMap<String,Set<String>> config = new HashMap<String, Set<String>>();
+					HashMap<String, Set<String>> config = new HashMap<String, Set<String>>();
 					Set<String> keys = cf.openConfigSurfaceForms(type);
 					Iterator<String> it = keys.iterator();
 					while (it.hasNext())
@@ -78,8 +79,8 @@ public class SearcherFactory
 	{
 		try
 		{
-			return algos.get(unit).getConstructor(new Class[] {HashMap.class, BoaAnnotation.Type.class })
-					.newInstance(configs.get(unit), BoaAnnotation.Type.valueOf(unit));
+			return algos.get(unit).getConstructor(new Class[] { HashMap.class, String.class })
+					.newInstance(configs.get(unit), unit);
 		} catch (IllegalArgumentException e)
 		{
 			// TODO Auto-generated catch block

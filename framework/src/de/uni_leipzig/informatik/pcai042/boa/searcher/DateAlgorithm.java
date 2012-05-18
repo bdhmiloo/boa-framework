@@ -49,7 +49,7 @@ public class DateAlgorithm extends SearchAlgorithm
 	private Set<String> monthSet;
 	private Set<String> daySet;
 	
-	public DateAlgorithm(HashMap<String, Set<String>> config, BoaAnnotation.Type annoType)
+	public DateAlgorithm(HashMap<String, Set<String>> config, String annoType)
 	{
 		super(config, annoType);		
 		daySet = config.get("DAY");

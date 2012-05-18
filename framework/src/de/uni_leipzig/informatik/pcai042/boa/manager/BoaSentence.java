@@ -145,8 +145,8 @@ public class BoaSentence
 			{
 				annotationTokens.add(tokens.get(Integer.parseInt(annotationTokenElems.get(k).getValue()) - 1));
 			}
-			annotations.add(new BoaAnnotation(BoaAnnotation.Type.valueOf(annotationElems.get(i)
-					.getFirstChildElement("type").getValue()), annotationTokens));
+			annotations.add(new BoaAnnotation(annotationElems.get(i).getFirstChildElement("type").getValue(),
+					annotationTokens));
 		}
 		
 		StringBuilder sb = new StringBuilder();
@@ -281,12 +281,13 @@ public class BoaSentence
 	}
 	
 	/**
-	 * Delete Annotations 
+	 * Delete Annotations
+	 * 
 	 * @return a BoaSentence without Annotations
 	 */
 	public BoaSentence deleteSentence(BoaSentence withAnno)
 	{
 		withAnno.annotations.clear();
-		return withAnno; 
+		return withAnno;
 	}
 }
