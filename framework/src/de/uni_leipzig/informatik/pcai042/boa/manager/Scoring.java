@@ -19,7 +19,6 @@ package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 import nu.xom.ParsingException;
@@ -30,16 +29,10 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
 
 public class Scoring
 {
-	Annotator a1;
-	SentenceLoader s1;
-	double kp, fp, countGoldAnno;
-	int help, help2, t1, t2;
-	double recall, precision, fscore;
-	BoaSentence workSentence;
+	
 	public Scoring()
 	{
 	}
-	
 	
 	/**
 	 * method to score the annotater method
@@ -48,6 +41,12 @@ public class Scoring
 	 */
 	public ArrayList<double[]> score()
 	{
+		Annotator a1;
+		SentenceLoader s1 = null;
+		double kp, fp, countGoldAnno;
+		int help, help2, t1, t2;
+		double recall, precision, fscore;
+		BoaSentence workSentence;
 		ArrayList<BoaSentence> workSentences = new ArrayList<BoaSentence>();
 		
 		ArrayList<double[]> result = new ArrayList<double[]>();
@@ -151,8 +150,7 @@ public class Scoring
 			recall=	(kp) / (countGoldAnno);
 			fscore=(2 * precision * recall) / (recall + precision);
 			
-			double[] help={precision,recall,fscore};
-			result.add(help);
+			result.add(new double[] {precision,recall,fscore});
 			
 			
 		}
