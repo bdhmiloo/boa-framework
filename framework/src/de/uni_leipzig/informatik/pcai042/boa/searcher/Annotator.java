@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
@@ -45,6 +46,18 @@ public class Annotator
 		while (it.hasNext())
 		{
 			searchers.add(sf.newSearcher(it.next()));
+		}
+	}
+	
+	public Annotator(SearcherFactory sf, Set<String> types)
+	{
+		searchers = new ArrayList<SearchAlgorithm>();
+		Iterator<String> it = types.iterator();
+		while (it.hasNext())
+		{
+			SearchAlgorithm searcher = sf.newSearcher(it.next());
+			if (searcher != null)
+				searchers.add(searcher);
 		}
 	}
 	
