@@ -24,12 +24,12 @@ import java.util.List;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
-public class SimpleFileDistributor extends StaticThreadDistributor
+public class SimpleStreamDistributor extends StaticThreadDistributor
 {
 	private ArrayList<BoaSentence> result;
 	private BufferedReader reader;
 	
-	public SimpleFileDistributor(InputStreamReader inputStream, int threadCount, ConfigLoader configLoader)
+	public SimpleStreamDistributor(InputStreamReader inputStream, int threadCount, ConfigLoader configLoader)
 	{
 		super(threadCount, configLoader, true);
 		reader = new BufferedReader(inputStream);

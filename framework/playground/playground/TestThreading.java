@@ -31,7 +31,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
 import de.uni_leipzig.informatik.pcai042.boa.threading.SimpleSentenceDistributor;
-import de.uni_leipzig.informatik.pcai042.boa.threading.SimpleFileDistributor;
+import de.uni_leipzig.informatik.pcai042.boa.threading.SimpleStreamDistributor;
 
 public class TestThreading
 {
@@ -64,10 +64,10 @@ public class TestThreading
 		
 		SimpleSentenceDistributor distr = new SimpleSentenceDistributor(sentences, 2, 50, new ConfigLoader());*/
 		
-		SimpleFileDistributor distr = null;
+		SimpleStreamDistributor distr = null;
 		try
 		{
-			distr = new SimpleFileDistributor(new FileReader(new File("test.txt")), 2,  new ConfigLoader());
+			distr = new SimpleStreamDistributor(new FileReader(new File("test.txt")), 2,  new ConfigLoader());
 		} catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block
