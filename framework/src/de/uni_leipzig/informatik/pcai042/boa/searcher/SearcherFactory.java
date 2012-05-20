@@ -75,12 +75,12 @@ public class SearcherFactory
 		}
 	}
 	
-	public SearchAlgorithm newSearcher(String unit)
+	public SearchAlgorithm newSearcher(String type)
 	{
 		try
 		{
-			return algos.get(unit).getConstructor(new Class[] { HashMap.class, String.class })
-					.newInstance(configs.get(unit), unit);
+			return algos.get(type).getConstructor(new Class[] { HashMap.class, String.class })
+					.newInstance(configs.get(type), type);
 		} catch (IllegalArgumentException e)
 		{
 			// TODO Auto-generated catch block
