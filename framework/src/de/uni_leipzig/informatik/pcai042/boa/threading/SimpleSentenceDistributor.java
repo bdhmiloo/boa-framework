@@ -62,7 +62,7 @@ public class SimpleSentenceDistributor extends StaticThreadDistributor
 	}
 	
 	@Override
-	public synchronized void returnSentences(List<BoaSentence> sentences)
+	public void returnSentences(List<BoaSentence> sentences)
 	{
 	}
 }
