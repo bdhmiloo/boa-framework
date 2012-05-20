@@ -46,7 +46,7 @@ public class ConverterDate extends Converter
 			"twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth",
 			"thirtieth", "thirty-first" };
 	
-	Object[] dateSeparater;
+	Object[] dateSeparator;
 	
 	/**
 	 * The beginning of the current century.
@@ -66,9 +66,9 @@ public class ConverterDate extends Converter
 		ConfigLoader load = new ConfigLoader();
 		
 		// load surface forms
-		Set<String> loadSeparater = load.openConfigSurfaceForms("DATE_SEPARATER".toString());
+		Set<String> loadSeparater = load.openConfigSurfaceForms("DATE_SEPARATOR".toString());
 		List<String> list = new ArrayList<String>(loadSeparater);
-		dateSeparater = list.toArray();
+		dateSeparator = list.toArray();
 	}
 	
 	/**
@@ -415,81 +415,81 @@ public class ConverterDate extends Converter
 		}
 		
 		// convert to other surface forms (just numbers)
-		for (int p = 0; p < dateSeparater.length; p++)
+		for (int p = 0; p < dateSeparator.length; p++)
 		{
 			// pattern DAY.MONTH.YEAR
 			
 			if (enableYY)
-				list.add(d + dateSeparater[p] + M + dateSeparater[p] + yy);
-			list.add(d + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+				list.add(d + dateSeparator[p] + M + dateSeparator[p] + yy);
+			list.add(d + dateSeparator[p] + M + dateSeparator[p] + yyyy);
 			
 			if (enableDD && Integer.valueOf(M) >= 10)
 			{
 				if (enableYY)
-					list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yy);
-				list.add(dd + dateSeparater[p] + M + dateSeparater[p] + yyyy);
+					list.add(dd + dateSeparator[p] + M + dateSeparator[p] + yy);
+				list.add(dd + dateSeparator[p] + M + dateSeparator[p] + yyyy);
 			}
 			if (enableMM && Integer.valueOf(d) >= 10)
 			{
 				if (enableYY)
-					list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yy);
-				list.add(d + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
+					list.add(d + dateSeparator[p] + MM + dateSeparator[p] + yy);
+				list.add(d + dateSeparator[p] + MM + dateSeparator[p] + yyyy);
 			}
 			if (enableDD && enableMM)
 			{
 				if (enableYY)
-					list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yy);
-				list.add(dd + dateSeparater[p] + MM + dateSeparater[p] + yyyy);
+					list.add(dd + dateSeparator[p] + MM + dateSeparator[p] + yy);
+				list.add(dd + dateSeparator[p] + MM + dateSeparator[p] + yyyy);
 			}
 			
 			// pattern MONTH.DAY.YEAR
 			
 			if (enableYY)
-				list.add(M + dateSeparater[p] + d + dateSeparater[p] + yy);
-			list.add(M + dateSeparater[p] + d + dateSeparater[p] + yyyy);
+				list.add(M + dateSeparator[p] + d + dateSeparator[p] + yy);
+			list.add(M + dateSeparator[p] + d + dateSeparator[p] + yyyy);
 			
 			if (enableDD && Integer.valueOf(M) >= 10)
 			{
 				if (enableYY)
-					list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yy);
-				list.add(M + dateSeparater[p] + dd + dateSeparater[p] + yyyy);
+					list.add(M + dateSeparator[p] + dd + dateSeparator[p] + yy);
+				list.add(M + dateSeparator[p] + dd + dateSeparator[p] + yyyy);
 			}
 			if (enableMM && Integer.valueOf(d) >= 10)
 			{
 				if (enableYY)
-					list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yy);
-				list.add(MM + dateSeparater[p] + d + dateSeparater[p] + yyyy);
+					list.add(MM + dateSeparator[p] + d + dateSeparator[p] + yy);
+				list.add(MM + dateSeparator[p] + d + dateSeparator[p] + yyyy);
 			}
 			if (enableDD && enableMM)
 			{
 				if (enableYY)
-					list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yy);
-				list.add(MM + dateSeparater[p] + dd + dateSeparater[p] + yyyy);
+					list.add(MM + dateSeparator[p] + dd + dateSeparator[p] + yy);
+				list.add(MM + dateSeparator[p] + dd + dateSeparator[p] + yyyy);
 			}
 			
 			// pattern YEAR.MONTH.DAY
 			
 			if (enableYY)
-				list.add(yy + dateSeparater[p] + M + dateSeparater[p] + d);
-			list.add(yyyy + dateSeparater[p] + M + dateSeparater[p] + d);
+				list.add(yy + dateSeparator[p] + M + dateSeparator[p] + d);
+			list.add(yyyy + dateSeparator[p] + M + dateSeparator[p] + d);
 			
 			if (enableDD && Integer.valueOf(M) >= 10)
 			{
 				if (enableYY)
-					list.add(yy + dateSeparater[p] + M + dateSeparater[p] + dd);
-				list.add(yyyy + dateSeparater[p] + M + dateSeparater[p] + dd);
+					list.add(yy + dateSeparator[p] + M + dateSeparator[p] + dd);
+				list.add(yyyy + dateSeparator[p] + M + dateSeparator[p] + dd);
 			}
 			if (enableMM && Integer.valueOf(d) >= 10)
 			{
 				if (enableYY)
-					list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + d);
-				list.add(yyyy + dateSeparater[p] + MM + dateSeparater[p] + d);
+					list.add(yy + dateSeparator[p] + MM + dateSeparator[p] + d);
+				list.add(yyyy + dateSeparator[p] + MM + dateSeparator[p] + d);
 			}
 			if (enableDD && enableMM)
 			{
 				if (enableYY)
-					list.add(yy + dateSeparater[p] + MM + dateSeparater[p] + dd);
-				list.add(yyyy + dateSeparater[p] + MM + dateSeparater[p] + dd);
+					list.add(yy + dateSeparator[p] + MM + dateSeparator[p] + dd);
+				list.add(yyyy + dateSeparator[p] + MM + dateSeparator[p] + dd);
 			}
 		}
 		
