@@ -77,7 +77,7 @@ public class ConverterTemperature extends Converter
 		
 		List<String> list4 = new ArrayList<String>(Kelvin);
 		Object[] K = list4.toArray();
-		
+		//het all tokens and choose unit
 		for (int i = 0; i < annotation.size(); i++)
 		{
 			int chooseOption = 0;
@@ -135,7 +135,7 @@ public class ConverterTemperature extends Converter
 					}
 				}
 			}
-			
+			//convert to Kelvin
 			BigDecimal tempNumber = new BigDecimal(number);
 			String help = conversionStandard.get(tempUnit).toString();
 			String help2 =conversionStandard.get(tempUnit+"f").toString();
@@ -143,7 +143,7 @@ public class ConverterTemperature extends Converter
 			BigDecimal add = new BigDecimal(help);
 			BigDecimal faktor = new BigDecimal(help2);
 			BigDecimal standard = tempNumber.add(add).multiply(faktor);
-			
+			//convert to other units
 			for (int d = 0; d < allUnitsofTemperature.length; d++)
 			{
 				String help3 = conversionUnit.get(allUnitsofTemperature[d]).toString();

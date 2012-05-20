@@ -19,6 +19,7 @@ package de.uni_leipzig.informatik.pcai042.boa.manager;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import nu.xom.ParsingException;
@@ -38,6 +39,13 @@ public class Scoring
 	public Scoring()
 	{
 	}
+	
+	
+	/**
+	 * method to score the annotater method
+	 * @return list with 3 doubles: percision, recall, fscore
+	 *        
+	 */
 	public ArrayList<double[]> score()
 	{
 		ArrayList<BoaSentence> workSentences = new ArrayList<BoaSentence>();
@@ -49,7 +57,7 @@ public class Scoring
 		kp = 0;
 		fp = 0;
 		countGoldAnno = 0;
-		
+		//load Goldstandard.xml
 		try
 		{
 			s1 = new SentenceLoader(new File("goldstandard.xml"));
@@ -63,7 +71,7 @@ public class Scoring
 		{
 			e.printStackTrace();
 		}
-		
+		//copy each sentence and send it to annotater
 		for (int i = 0; i < s1.getSentenceCount(); i++)
 		{
 			workSentence = s1.getSentence(i).copy();
@@ -71,7 +79,7 @@ public class Scoring
 			
 		}
 		a1.annotate(workSentences);
-		
+		//compare goldstandard and annotated sentences to get scoring information
 		for (int i = 0; i < s1.getSentenceCount(); i++)
 		{
 			
