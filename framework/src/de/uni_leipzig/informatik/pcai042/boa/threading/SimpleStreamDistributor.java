@@ -37,7 +37,7 @@ public class SimpleStreamDistributor extends StaticThreadDistributor
 	}
 	
 	@Override
-	public String getText()
+	public synchronized String getText()
 	{
 		try
 		{
@@ -57,7 +57,7 @@ public class SimpleStreamDistributor extends StaticThreadDistributor
 	}
 	
 	@Override
-	public void returnSentences(List<BoaSentence> sentences)
+	public synchronized void returnSentences(List<BoaSentence> sentences)
 	{
 		result.addAll(sentences);
 	}
