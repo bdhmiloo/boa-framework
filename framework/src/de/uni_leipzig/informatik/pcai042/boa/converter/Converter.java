@@ -19,10 +19,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
@@ -69,9 +65,7 @@ public abstract class Converter
 	 * @return true - if token is a number, false - if token is not a number
 	 */
 	public boolean checkIfNumber(String token)
-	{
-		Set<String> numbers = new ConfigLoader().openConfigSurfaceForms("NUMBERS");
-		
+	{		
 		try
 		{
 			Integer.parseInt(token);
