@@ -35,7 +35,7 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
  */
 @SuppressWarnings("serial")
 public class EvaluationView extends VerticalLayout
-{	
+{
 	private TabSheet tabsheet;
 	
 	private Table tableEvaluation;
@@ -45,18 +45,17 @@ public class EvaluationView extends VerticalLayout
 	private VerticalLayout tab3;
 	
 	private TextArea textAreaSentence;
+	private TextArea textAreaEvalSentence;
+	private TextArea textAreaAnnotation;
 	
 	private ListSelect listSelectAnnotation;
 	private ListSelect listSelectGoldstandard;
 	private ListSelect listSelectFramework;
 	
-	private Panel panelAnnotation;
-	
 	private Button buttonNew;
 	private Button buttonAnnotate;
 	private Button buttonNext; // button 'next' in tab 'Annotation'
 	private Button buttonNext2; // button 'next' in tab 'Evaluation'
-	private Button buttonEnd;
 	
 	/**
 	 * Constructor initializes View.
@@ -152,24 +151,17 @@ public class EvaluationView extends VerticalLayout
 		listSelectAnnotation.setWidth("100%");
 		tab2Content.addComponent(listSelectAnnotation);
 		
-		this.panelAnnotation = new Panel("Further annotations with other surfaceforms:");
-		panelAnnotation.setImmediate(false);
-		panelAnnotation.setHeight("100px");
-		panelAnnotation.setWidth("100%");
-		tab2Content.addComponent(panelAnnotation);
+		this.textAreaAnnotation = new TextArea("Further annotations with other surface forms:");
+		textAreaAnnotation.setImmediate(false);
+		textAreaAnnotation.setRows(4);
+		textAreaAnnotation.setReadOnly(true);
+		textAreaAnnotation.setWidth("100%");
+		tab2Content.addComponent(textAreaAnnotation);
 		
-		HorizontalLayout hlay2 = new HorizontalLayout();
 		this.buttonNext = new Button("Next");
 		buttonNext.setImmediate(true);
-		buttonNext.setDescription("Get next Sentence from uploaded file");
-		this.buttonEnd = new Button("End");
-		buttonEnd.setImmediate(true);
-		buttonEnd.setDescription("End Application");
-		hlay2.setSpacing(true);
-		hlay2.setMargin(false);
-		hlay2.addComponent(buttonNext);
-		hlay2.addComponent(buttonEnd);
-		tab2Content.addComponent(hlay2);
+		buttonNext.setDescription("Get next annotation");
+		tab2Content.addComponent(buttonNext);
 		
 		return tab2Content;
 	}
@@ -185,16 +177,6 @@ public class EvaluationView extends VerticalLayout
 	}
 	
 	/**
-	 * Add an item to panel Annotation.
-	 * 
-	 * @param annotation
-	 */
-	public void addItemToPanelAnnotation(Component annotation)
-	{
-		panelAnnotation.addComponent(annotation);
-	}
-	
-	/**
 	 * Build content 'evaluation process' of tab 3.
 	 * 
 	 * @return content of third tab
@@ -205,6 +187,10 @@ public class EvaluationView extends VerticalLayout
 		tab3Content.setSpacing(true);
 		tab3Content.setMargin(true);
 		tab3Content.setSizeFull();
+		
+		Label instructions = new Label(
+				"<b>Instructions:</b> <i>Please select and click a sentence below in order to process the evaluation.</i>", Label.CONTENT_XHTML);
+		tab3Content.addComponent(instructions);
 		
 		this.tableEvaluation = new Table("Evaluation process:");
 		tableEvaluation.setHeight("150px");
@@ -222,16 +208,24 @@ public class EvaluationView extends VerticalLayout
 		
 		this.buttonNext2 = new Button("Next");
 		buttonNext2.setImmediate(true);
+		buttonNext2.setDescription("Get the next sentence in table");
 		tab3Content.addComponent(buttonNext2);
+		
+		this.textAreaEvalSentence = new TextArea("Sentence:");
+		textAreaEvalSentence.setImmediate(false);
+		textAreaEvalSentence.setReadOnly(true);
+		textAreaEvalSentence.setRows(7);
+		textAreaEvalSentence.setWidth("100%");
+		tab3Content.addComponent(textAreaEvalSentence);
 		
 		HorizontalLayout hlay1 = new HorizontalLayout();
 		this.listSelectGoldstandard = new ListSelect("Goldstandard:");
 		listSelectGoldstandard.setImmediate(true);
-		listSelectGoldstandard.setHeight("70px");
+		listSelectGoldstandard.setHeight("120px");
 		listSelectGoldstandard.setWidth("100%");
 		this.listSelectFramework = new ListSelect("Framework:");
 		listSelectFramework.setImmediate(true);
-		listSelectFramework.setHeight("70px");
+		listSelectFramework.setHeight("120px");
 		listSelectFramework.setWidth("100%");
 		hlay1.setSpacing(true);
 		hlay1.setMargin(false);
@@ -295,11 +289,6 @@ public class EvaluationView extends VerticalLayout
 		return this.buttonAnnotate;
 	}
 	
-	public Panel getPanelAnnotation()
-	{
-		return this.panelAnnotation;
-	}
-	
 	public ListSelect getListSelectAnnotation()
 	{
 		return this.listSelectAnnotation;
@@ -330,6 +319,16 @@ public class EvaluationView extends VerticalLayout
 		return textAreaSentence;
 	}
 	
+	public TextArea getTextAreaAnnotation()
+	{
+		return textAreaAnnotation;
+	}
+	
+	public TextArea getTextAreaEvalSentence()
+	{
+		return textAreaEvalSentence;
+	}
+	
 	/**
 	 * Set all components to default status.
 	 */
@@ -337,7 +336,7 @@ public class EvaluationView extends VerticalLayout
 	{
 		textAreaSentence.setValue("");
 		textAreaSentence.setInputPrompt("Please insert a sentence here.");
-		//buttonAnnotate.setEnabled(false);
+		// buttonAnnotate.setEnabled(false);
 		listSelectAnnotation.removeAllItems();
 	}
 }
