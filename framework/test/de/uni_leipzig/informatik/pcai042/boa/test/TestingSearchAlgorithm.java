@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+
 import de.uni_leipzig.informatik.pcai042.boa.searcher.NaiveAlgorithm;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
@@ -37,8 +37,6 @@ import org.junit.*;
 public class TestingSearchAlgorithm extends TestCase
 {
    private NaiveAlgorithm searching;
-   private NaiveAlgorithm searching2;
-   private Set<String> surfaceForms;
    private String annoType;
    private  Set<String> words = new HashSet<String>();
    private SearcherFactory sf = new SearcherFactory(new ConfigLoader());
@@ -156,7 +154,7 @@ public class TestingSearchAlgorithm extends TestCase
 	{  
 	  try  
 	  {  
-	    double d = Double.parseDouble(str);  
+	    //double d = Double.parseDouble(str);  
 	  }  
 	  catch(NumberFormatException nfe)  
 	  {  

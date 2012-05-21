@@ -18,19 +18,12 @@ package playground;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
-import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
-import de.uni_leipzig.informatik.pcai042.boa.threading.SimpleSentenceDistributor;
+
 import de.uni_leipzig.informatik.pcai042.boa.threading.SimpleStreamDistributor;
 
 public class TestThreading

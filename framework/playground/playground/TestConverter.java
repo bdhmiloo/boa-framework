@@ -16,10 +16,9 @@
 package playground;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.io.PrintStream;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,10 +26,9 @@ import java.util.Iterator;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
-import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterDate;
+
 import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterLinearMeasure;
-import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterTemperature;
-import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
+
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 
@@ -49,10 +47,10 @@ public class TestConverter
 	 */
 	public static void main(String[] args) throws ParseException
 	{
-		ConverterWeight conWEIGHT = new ConverterWeight(new ConfigLoader());
+		//ConverterWeight conWEIGHT = new ConverterWeight(new ConfigLoader());
 		ConverterLinearMeasure conLINEAR_MEASURE = new ConverterLinearMeasure(new ConfigLoader());
-		ConverterTemperature conTEMPERATURE = new ConverterTemperature(new ConfigLoader());
-		ConverterDate conDATE = new ConverterDate(new ConfigLoader());
+		//ConverterTemperature conTEMPERATURE = new ConverterTemperature(new ConfigLoader());
+		//ConverterDate conDATE = new ConverterDate(new ConfigLoader());
 		
 		// result of conversions
 		ArrayList<String> result = new ArrayList<String>();
