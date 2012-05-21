@@ -3,6 +3,7 @@
 	<name>evaluation</name>
 	<comment></comment>
 	<projects>
+		<project>framework</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
