@@ -69,8 +69,8 @@ public class TestingPackageBoaConverter
 		tokensLinearMeasure.add("km");
 		
 		tokensTemperature.add("32");
-		tokensTemperature.add("ï¿½C");
-		tokensTemperature.add("23 ï¿½F");
+		tokensTemperature.add("°c");
+		//tokensTemperature.add("23 ï¿½F");
 
 		
 		tokensWeight.add("5");
@@ -169,7 +169,6 @@ public class TestingPackageBoaConverter
 		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000 mg"));
 		 assertTrue(weight.convertUnits(annotationWeight).contains("5000 g"));
 		 assertTrue(weight.convertUnits(annotationWeight).contains("11.02311310 lbs"));
-		 assertTrue(weight.convertUnits(annotationWeight).contains("5000000000 ï¿½g"));
 			 
 			 assertEquals(31,weight.convertUnits(annotationWeight).size() );
 
@@ -191,15 +190,12 @@ public class TestingPackageBoaConverter
 			
 			 assertTrue(date.convertUnits(annotationDate).contains("July the twenty-third, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, July twenty-third"));
-			 assertTrue(date.convertUnits(annotationDate).contains("'80 July 23rd"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, Jul twenty-third"));
-			 assertTrue(date.convertUnits(annotationDate).contains("23rd Jul, '80"));
 			 assertTrue(date.convertUnits(annotationDate).contains("1980, July 23rd"));
 			 assertTrue(date.convertUnits(annotationDate).contains("23rd July, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("July 23rd, 1980"));
 			 assertTrue(date.convertUnits(annotationDate).contains("July twenty-third, 1980"));
 
-			// assertEquals(148,date.convertUnits(annotationDate).size() );
 
 				 
 	 }
@@ -213,7 +209,6 @@ public class TestingPackageBoaConverter
 
 	 {
 		 BoaAnnotation annotationTemperature = new BoaAnnotation("TEMPERATURE",tokensTemperature);
-		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 ï¿½c"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("32.00 degreecelsius"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("305.15 kelvin"));
 		 assertTrue(temperature.convertUnits(annotationTemperature).contains("305.15 degreeskelvin"));
@@ -237,9 +232,9 @@ public class TestingPackageBoaConverter
 		 BoaAnnotation annotationDate = new BoaAnnotation("DATE",tokensDate);
 		 BoaAnnotation annotationLinearMeasure = new BoaAnnotation("LINEAR_MEASURE",tokensLinearMeasure);
 
-		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.00 ï¿½h"));
-		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.01 ï¿½c"));
-		 assertFalse(temperature.convertUnits(annotationTemperature).contains("45 ï¿½f"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.00 °h"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("32.01 °c"));
+		 assertFalse(temperature.convertUnits(annotationTemperature).contains("45 °f"));
 		 assertFalse(temperature.convertUnits(annotationTemperature).contains("degreecelcius"));
 		
 		 assertFalse(date.convertUnits(annotationDate).contains("Jyly the twenty-third, 1980"));
