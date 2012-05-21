@@ -15,23 +15,59 @@
 
 package playground;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.Scoring;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 public class TestScoring
 {
 	
-
-public static void main(String[] args)
-{
-	Scoring s1=new Scoring();
-	for(int j=0;j<s1.score().size();j++)
+	public static void main(String[] args)
 	{
-		double[] jau=s1.score().get(j);
-	System.out.print("satz:"+j+"   ");
-	for(int i=0;i<jau.length;i++)
-		System.out.print(jau[i]+"  ");
-		System.out.println("");
+		Scoring s1 = null;
+		try
+		{
+			s1 = new Scoring(new File("goldstandard.xml"), new SearcherFactory(new ConfigLoader()));
+		} catch (ValidityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ArrayList<BoaSentence> sentences = s1.getWorkSentences();
+		ArrayList<BoaSentence> gold = s1.getGoldstandard();
+		ArrayList<double[]> jau = s1.score();
+		for (int j = 0; j < s1.score().size(); j++)
+		{
+			System.out.println("satz:" + j + "   " + sentences.get(j).getSentence());
+			for (BoaAnnotation anno : sentences.get(j).getAnnotations())
+			{
+				System.out.print(anno + ",  ");
+			}
+			System.out.println();
+			for (BoaAnnotation anno : sentences.get(j).getAnnotations())
+			{
+				System.out.print(anno + ",  ");
+			}
+			System.out.println();
+		}
+		
 	}
-	
-}
 }
