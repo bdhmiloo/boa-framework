@@ -20,6 +20,7 @@ package de.uni_leipzig.informatik.pcai042.boa.manager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -46,7 +47,13 @@ public class Scoring
 		
 		s1 = new SentenceLoader(goldstandard);
 		gold = s1.getSentences();
-		a1 = new Annotator(sf);
+		HashSet<String> types = new HashSet<String>();
+		for (BoaSentence sentence : gold)
+		{
+			for(BoaAnnotation anno : sentence.getAnnotations())
+				types.add(anno.getType());
+		}
+		a1 = new Annotator(sf, types);
 		
 		result = new ArrayList<double[]>();
 		

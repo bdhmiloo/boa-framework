@@ -62,10 +62,13 @@ public class TestScoring
 				System.out.print(anno + ",  ");
 			}
 			System.out.println();
-			for (BoaAnnotation anno : sentences.get(j).getAnnotations())
+			for (BoaAnnotation anno : gold.get(j).getAnnotations())
 			{
 				System.out.print(anno + ",  ");
 			}
+			System.out.println();
+			System.out.println("precision:" + jau.get(j)[2] + "   recall:" + jau.get(j)[2] + "   fscore:" + jau.get(j)[2]);
+			
 			System.out.println();
 		}
 		
