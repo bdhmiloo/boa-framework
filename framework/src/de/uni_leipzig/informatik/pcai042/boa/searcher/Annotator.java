@@ -15,20 +15,13 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.searcher;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
-import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
-
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 public class Annotator
 {
@@ -97,66 +90,4 @@ public class Annotator
 		}
 	}
 	
-	public static void main(String[] args)
-	{
-		Annotator a = new Annotator();
-		SentenceLoader sl = null;
-		try
-		{
-			sl = new SentenceLoader(new File("goldstandard.xml"));
-		} catch (ValidityException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParsingException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ArrayList<BoaSentence> sentences = new ArrayList<BoaSentence>();
-		for (BoaSentence sentence : sl.getSentences())
-		{
-			sentences.add(sentence.copy());
-		}
-		a.annotate(sentences);
-		int annoCountDate = 0;
-		int annoCountWeight = 0;
-		int annoCountTemperature = 0;
-		int annoCountLinearM = 0;
-		for (BoaSentence sentence : sentences)
-		{
-			System.out.println(sentence.getSentence());
-			for (BoaAnnotation anno : sentence.getAnnotations())
-			{
-				System.out.print("    " + anno.toString() + ",");
-				if (anno.getType().equals("DATE"))
-				{
-					annoCountDate++;
-				}
-				if (anno.getType().equals("WEIGHT"))
-				{
-					annoCountWeight++;
-				}
-				if (anno.getType().equals("TEMPERATURE"))
-				{
-					annoCountTemperature++;
-				}
-				if (anno.getType().equals("LINEAR_MEASURE"))
-				{
-					annoCountLinearM++;
-				}
-				
-			}
-			System.out.println();
-		}
-		System.out.println();
-		System.out.println("Weight " + annoCountWeight);
-		System.out.println("Temperature " + annoCountTemperature);
-		System.out.println("Date " + annoCountDate);
-		System.out.println("LinearMeasure " + annoCountLinearM);
-	}
 }

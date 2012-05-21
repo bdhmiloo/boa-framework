@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
 /**
@@ -31,6 +34,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public class SearcherFactory
 {
+	private static final Logger logger = LoggerFactory.getLogger(SearcherFactory.class);
+	
 	private HashMap<String, Class<? extends SearchAlgorithm>> algos;
 	private HashMap<String, HashMap<String, Set<String>>> configs;
 	
@@ -59,21 +64,18 @@ public class SearcherFactory
 					configs.put(type, config);
 				} else
 				{
-					// TODO logger
+					logger.warn("Class ist not an SearchAlgorithm: {}", clazz.getName());
 				}
 				
 			} catch (ClassNotFoundException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn("Couldn't load SearchAlgorithm: {}", cf.returnValue(type + "_ALGO"));
 			} catch (SecurityException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn("Class ist not an valid SearchAlgorithm: {}", cf.returnValue(type + "_ALGO"));
 			} catch (IllegalArgumentException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn("Class ist not an valid SearchAlgorithm: {}", cf.returnValue(type + "_ALGO"));
 			}
 		}
 	}
@@ -93,29 +95,24 @@ public class SearcherFactory
 					.newInstance(configs.get(type), type);
 		} catch (IllegalArgumentException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (SecurityException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (InstantiationException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (IllegalAccessException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (InvocationTargetException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (NoSuchMethodException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
+		logger.error("Couldn't create searcher for \"{}\"", type);
 		return null;
 	}
 	

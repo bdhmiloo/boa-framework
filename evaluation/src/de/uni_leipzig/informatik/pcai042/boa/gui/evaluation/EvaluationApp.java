@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
@@ -52,6 +55,8 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 @SuppressWarnings("serial")
 public class EvaluationApp extends Application implements ClickListener, ValueChangeListener
 {
+	private static final Logger logger = LoggerFactory.getLogger(EvaluationApp.class);
+	
 	private EvaluationView view = new EvaluationView();
 	private File rootFolder;
 	
@@ -94,9 +99,10 @@ public class EvaluationApp extends Application implements ClickListener, ValueCh
 		view.getTableEvaluation().addListener((Property.ValueChangeListener) this);
 		view.getListSelectAnnotation().addListener((Property.ValueChangeListener) this);
 		
+		Scoring scoring = null;
 		try
 		{
-			Scoring scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), sf);
+			scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), sf);
 			sentences = scoring.getWorkSentences();
 			goldstandard = scoring.getGoldstandard();
 			ArrayList<double[]> result = scoring.score();
@@ -108,18 +114,13 @@ public class EvaluationApp extends Application implements ClickListener, ValueCh
 								new Double(result.get(i)[1]), new Double(result.get(i)[2]) }, new Integer(i));
 			}
 		} catch (ValidityException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		{	
 		} catch (ParsingException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		if (scoring == null) logger.error("Failed to load goldstandard");
 	}
 	
 	/**
@@ -223,7 +224,6 @@ public class EvaluationApp extends Application implements ClickListener, ValueCh
 					view.getTextAreaAnnotation().setReadOnly(true);
 				} catch (ParseException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else
