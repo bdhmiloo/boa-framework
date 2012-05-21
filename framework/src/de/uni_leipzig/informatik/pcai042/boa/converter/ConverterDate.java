@@ -61,10 +61,8 @@ public class ConverterDate extends Converter
 	/**
 	 * Constructor loads all necessary files for unit DATE.
 	 */
-	public ConverterDate()
-	{
-		ConfigLoader load = new ConfigLoader();
-		
+	public ConverterDate(ConfigLoader load)
+	{		
 		// load surface forms
 		Set<String> loadSeparater = load.openConfigSurfaceForms("DATE_SEPARATOR".toString());
 		List<String> list = new ArrayList<String>(loadSeparater);

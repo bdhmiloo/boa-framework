@@ -35,8 +35,8 @@ public class ConfigLoader
 	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 	
 	private final File root;
-	private static Properties configForms;
-	private static HashMap<String, HashMap<String, BigDecimal>> conversions;
+	private Properties configForms;
+	private HashMap<String, HashMap<String, BigDecimal>> conversions;
 	
 	/**
 	 * Constructs a ConfigLoader searching for files in the working directory.

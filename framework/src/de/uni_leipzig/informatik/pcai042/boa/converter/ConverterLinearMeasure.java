@@ -30,12 +30,15 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public class ConverterLinearMeasure extends Converter
 {
+	private ConfigLoader load;
+	
 	/**
 	 * Constructor loads all necessary files for unit LINEAR_MEASURE.
-	 */
-	public ConverterLinearMeasure()
+	 */	
+	public ConverterLinearMeasure(ConfigLoader load)
 	{
-		super("LINEAR_MEASURE");
+		super("LINEAR_MEASURE", load);
+		this.load = load;
 	}
 	
 	/**
@@ -51,7 +54,6 @@ public class ConverterLinearMeasure extends Converter
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
-		ConfigLoader load = new ConfigLoader();
 		String tempUnit = null;
 		
 		// load surface forms

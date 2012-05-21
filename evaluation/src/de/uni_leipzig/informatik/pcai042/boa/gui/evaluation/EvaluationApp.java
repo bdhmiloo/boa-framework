@@ -17,7 +17,9 @@ package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
@@ -32,6 +34,11 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import de.uni_leipzig.informatik.pcai042.boa.converter.Converter;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterDate;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterLinearMeasure;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterTemperature;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
@@ -45,7 +52,7 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
  * @author Simon Suiter, Duc Huy Bui
  */
 @SuppressWarnings("serial")
-public class EvaluationApp extends Application implements ItemClickListener, ClickListener, ValueChangeListener
+public class EvaluationApp extends Application implements ClickListener, ValueChangeListener
 {
 	private EvaluationView view = new EvaluationView();
 	private File rootFolder;
@@ -59,6 +66,11 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	private SearcherFactory sf;
 	private Tokenizer tokenizer;
 	
+	private ConverterWeight conWEIGHT;
+	private ConverterLinearMeasure conLINEAR_MEASURE;
+	private ConverterTemperature conTEMPERATURE;
+	private ConverterDate conDATE;
+	
 	@Override
 	public void init()
 	{
@@ -68,6 +80,11 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		annotator = new Annotator(sf);
 		tokenizer = new Tokenizer();
 		
+		conWEIGHT = new ConverterWeight(cl);
+		conLINEAR_MEASURE = new ConverterLinearMeasure(cl);
+		conTEMPERATURE = new ConverterTemperature(cl);
+		conDATE = new ConverterDate(cl);
+		
 		Window mainWindow = new Window("Boa");
 		setMainWindow(mainWindow);
 		mainWindow.getContent().setSizeFull();
@@ -75,9 +92,9 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		
 		view.getButtonAnnotate().addListener((ClickListener) this);
 		view.getButtonNew().addListener((ClickListener) this);
-		view.getButtonNext().addListener((ClickListener) this);
 		view.getButtonNext2().addListener((ClickListener) this);
 		view.getTableEvaluation().addListener((Property.ValueChangeListener) this);
+		view.getListSelectAnnotation().addListener((Property.ValueChangeListener) this);
 		
 		try
 		{
@@ -137,10 +154,6 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		} else if (button == view.getButtonNew())
 		{
 			view.resetComponents();
-		} else if (button == view.getButtonNext())
-		{
-			// TODO add code here
-			
 		} else if (button == view.getButtonNext2())
 		{
 			view.getTableEvaluation().setValue(new Integer((Integer) (view.getTableEvaluation().getValue()) + 1));
@@ -149,29 +162,75 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	}
 	
 	/**
-	 * Listener for choosing an item in listselect.
-	 */
-	public void itemClick(ItemClickEvent event)
-	{
-		
-	}
-	
-	/**
 	 * Listener for selecting a line of a table.
 	 */
 	public void valueChange(ValueChangeEvent event)
 	{
-		int index = (Integer) view.getTableEvaluation().getValue();
-		view.getListSelectFramework().removeAllItems();
-		view.getListSelectGoldstandard().removeAllItems();
-		for (BoaAnnotation anno : goldstandard.get(index).getAnnotations())
+		if (view.getTableEvaluation().getValue() != null)
 		{
-			view.getListSelectGoldstandard().addItem(anno);
-		}
-		for (BoaAnnotation anno : sentences.get(index).getAnnotations())
-		{
-			view.getListSelectFramework().addItem(anno);
+			int index = (Integer) view.getTableEvaluation().getValue();
+			view.getListSelectFramework().removeAllItems();
+			view.getListSelectGoldstandard().removeAllItems();
+			for (BoaAnnotation anno : goldstandard.get(index).getAnnotations())
+			{
+				view.getListSelectGoldstandard().addItem(anno);
+			}
+			for (BoaAnnotation anno : sentences.get(index).getAnnotations())
+			{
+				view.getListSelectFramework().addItem(anno);
+			}
+			view.getTextAreaEvalSentence().setReadOnly(false);
+			view.getTextAreaEvalSentence().setValue(sentences.get(index).getSentence());
+			view.getTextAreaEvalSentence().setReadOnly(true);
+			
 		}
 		
+		BoaAnnotation anno = (BoaAnnotation) view.getListSelectAnnotation().getValue();
+		
+		if (anno != null)
+		{
+			Converter converter = null;
+			
+			if (anno.getType().equals("DATE"))
+			{
+				converter = conDATE;
+			}
+			if (anno.getType().equals("WEIGHT"))
+			{
+				converter = conWEIGHT;
+			}
+			if (anno.getType().equals("TEMPERATURE"))
+			{
+				converter = conTEMPERATURE;
+			}
+			if (anno.getType().equals("LINEAR_MEASURE"))
+			{
+				converter = conLINEAR_MEASURE;
+			}
+			if (converter != null)
+			{
+				ArrayList<String> units;
+				try
+				{
+					units = converter.convertUnits(anno);
+					
+					StringBuilder sb = new StringBuilder();
+					for (String string : units)
+					{
+						sb.append(string);
+						sb.append("\n");
+					}
+					view.getTextAreaAnnotation().setReadOnly(false);
+					view.getTextAreaAnnotation().setValue(sb.toString());
+					view.getTextAreaAnnotation().setReadOnly(true);
+				} catch (ParseException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else
+			{
+			}
+		}
 	}
 }
