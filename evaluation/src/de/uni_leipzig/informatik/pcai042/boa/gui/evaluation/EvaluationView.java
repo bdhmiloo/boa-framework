@@ -40,7 +40,7 @@ public class EvaluationView extends VerticalLayout
 	
 	private Table tableEvaluation;
 	
-	private VerticalLayout tab1;
+//	private VerticalLayout tab1;
 	private VerticalLayout tab2;
 	private VerticalLayout tab3;
 	
@@ -67,9 +67,9 @@ public class EvaluationView extends VerticalLayout
 		// buildMainLayout
 		
 		// Tab 1 content
-		tab1 = new VerticalLayout();
-		tab1.setMargin(true);
-		tab1.addComponent(buildTab1Content());
+//		tab1 = new VerticalLayout();
+//		tab1.setMargin(true);
+//		tab1.addComponent(buildTab1Content());
 		
 		// Tab 2 content
 		tab2 = new VerticalLayout();
@@ -83,7 +83,7 @@ public class EvaluationView extends VerticalLayout
 		
 		tabsheet = new TabSheet();
 		// tabsheet.setSizeFull();
-		tabsheet.addTab(tab1, "Home");
+//		tabsheet.addTab(tab1, "Home");
 		tabsheet.addTab(tab2, "Annotation");
 		tabsheet.addTab(tab3, "Evaluation");
 		
@@ -93,26 +93,26 @@ public class EvaluationView extends VerticalLayout
 		this.addComponent(tabsheet);
 	}
 	
-	/**
-	 * Build content 'welcome page' of tab 1.
-	 * 
-	 * @return content of first tab
-	 */
-	private Layout buildTab1Content()
-	{
-		VerticalLayout tab1Content = new VerticalLayout();
-		tab1Content.setSpacing(true);
-		tab1Content.setMargin(true);
-		tab1Content.setSizeFull();
-		
-		Label welcomeIntro = new Label("<h1>Welcome to our test-GUI</h1>"
-				+ "<p><i>there should be a description here...as soon as possible! :)</i></p>"
-				+ "<p>- <i>swp12-1</i> -</p>", Label.CONTENT_XHTML);
-		
-		tab1Content.addComponent(welcomeIntro);
-		
-		return tab1Content;
-	}
+//	/**
+//	 * Build content 'welcome page' of tab 1.
+//	 * 
+//	 * @return content of first tab
+//	 */
+//	private Layout buildTab1Content()
+//	{
+//		VerticalLayout tab1Content = new VerticalLayout();
+//		tab1Content.setSpacing(true);
+//		tab1Content.setMargin(true);
+//		tab1Content.setSizeFull();
+//		
+//		Label welcomeIntro = new Label("<h1>Welcome to our test-GUI</h1>"
+//				+ "<p><i>There was not enough time to do this! :)</i></p>"
+//				+ "<p>- <i>swp12-1</i> -</p>", Label.CONTENT_XHTML);
+//		
+//		tab1Content.addComponent(welcomeIntro);
+//		
+//		return tab1Content;
+//	}
 	
 	/**
 	 * Build content 'annotation process' of tab 2.
