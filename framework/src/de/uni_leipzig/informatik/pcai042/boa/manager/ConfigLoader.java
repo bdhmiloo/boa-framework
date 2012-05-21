@@ -38,11 +38,20 @@ public class ConfigLoader
 	private static Properties configForms;
 	private static HashMap<String, HashMap<String, BigDecimal>> conversions;
 	
+	/**
+	 * Constructs a ConfigLoader searching for files in the working directory.
+	 */
 	public ConfigLoader()
 	{
 		this(new File("."));
 	}
 	
+	/**
+	 * Constructs a ConfigLoader searching for files passed directory.
+	 * 
+	 * @param file
+	 *            the directory to search for files
+	 */
 	public ConfigLoader(File file)
 	{
 		root = file;
@@ -53,12 +62,10 @@ public class ConfigLoader
 			configForms.load(new InputStreamReader(new FileInputStream(new File(root, "sForms.properties"))));
 		} catch (FileNotFoundException e)
 		{
-			// TODO logger
-			e.printStackTrace();
+			logger.error("Main config file \"sForms.properties\" was not found.");
 		} catch (IOException e)
 		{
-			// TODO logger
-			e.printStackTrace();
+			logger.error("Main config file \"sForms.properties\" could not be loaded.");
 		}
 	}
 	
@@ -77,12 +84,16 @@ public class ConfigLoader
 		if (property != null)
 		{
 			unityTemp = property.split(";");
-		
+			
 			for (int i = 0; i < unityTemp.length; i++)
 			{
 				unityTemp[i] = unityTemp[i].trim();
-				if (!unityTemp[i].isEmpty()) unity.add(unityTemp[i]);
+				if (!unityTemp[i].isEmpty())
+					unity.add(unityTemp[i]);
 			}
+		} else
+		{
+			logger.warn("Could not find property with key \"{}\".", label);
 		}
 		return unity;
 	}
@@ -132,7 +143,7 @@ public class ConfigLoader
 			logger.error("NumberFormatException when creating BigDecimal from " + fileName);
 		} catch (IOException e)
 		{
-			logger.error(e.getMessage());
+			logger.error("Config file \"{}\" was not found.", fileName);
 		}
 		
 		return null;

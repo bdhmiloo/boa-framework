@@ -177,11 +177,17 @@ public class BoaSentence implements Iterable<String>
 		return tokens.get(index);
 	}
 	
+	/**
+	 * Returns the number of tokens.
+	 */
 	public int size()
 	{
 		return tokens.size();
 	}
 	
+	/**
+	 * Returns an iterator to iterate over the tokens of the sentence.
+	 */
 	@Override
 	public Iterator<String> iterator()
 	{
