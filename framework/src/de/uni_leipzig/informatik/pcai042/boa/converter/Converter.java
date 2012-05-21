@@ -43,10 +43,10 @@ public abstract class Converter
 	 * @param unit
 	 *            choose between WEIGHT, LINEAR_MEASURE, TEMPERATURE or DATE
 	 */
-	public Converter(String unit)
+	public Converter(String unit, ConfigLoader cl)
 	{
-		conversionStandard = new ConfigLoader().openConfigConversion("Standard", unit);
-		conversionUnit = new ConfigLoader().openConfigConversion("Unit", unit);
+		conversionStandard = cl.openConfigConversion("Standard", unit);
+		conversionUnit = cl.openConfigConversion("Unit", unit);
 	}
 	
 	/**
