@@ -54,7 +54,7 @@ public class EvaluationView extends VerticalLayout
 	
 	private Button buttonNew;
 	private Button buttonAnnotate;
-	private Button buttonNext; // button 'next' in tab 'Annotation'
+	//private Button buttonNext; // button 'next' in tab 'Annotation'
 	private Button buttonNext2; // button 'next' in tab 'Evaluation'
 	
 	/**
@@ -147,8 +147,9 @@ public class EvaluationView extends VerticalLayout
 		
 		this.listSelectAnnotation = new ListSelect("Annotations:");
 		listSelectAnnotation.setImmediate(true);
-		listSelectAnnotation.setHeight("70px");
+		listSelectAnnotation.setHeight("150px");
 		listSelectAnnotation.setWidth("100%");
+		listSelectAnnotation.setNullSelectionAllowed(false);
 		tab2Content.addComponent(listSelectAnnotation);
 		
 		this.textAreaAnnotation = new TextArea("Further annotations with other surface forms:");
@@ -158,10 +159,10 @@ public class EvaluationView extends VerticalLayout
 		textAreaAnnotation.setWidth("100%");
 		tab2Content.addComponent(textAreaAnnotation);
 		
-		this.buttonNext = new Button("Next");
-		buttonNext.setImmediate(true);
-		buttonNext.setDescription("Get next annotation");
-		tab2Content.addComponent(buttonNext);
+		//this.buttonNext = new Button("Next");
+		//buttonNext.setImmediate(true);
+		//buttonNext.setDescription("Get next annotation");
+		//tab2Content.addComponent(buttonNext);
 		
 		return tab2Content;
 	}
@@ -214,7 +215,7 @@ public class EvaluationView extends VerticalLayout
 		this.textAreaEvalSentence = new TextArea("Sentence:");
 		textAreaEvalSentence.setImmediate(false);
 		textAreaEvalSentence.setReadOnly(true);
-		textAreaEvalSentence.setRows(7);
+		textAreaEvalSentence.setRows(3);
 		textAreaEvalSentence.setWidth("100%");
 		tab3Content.addComponent(textAreaEvalSentence);
 		
@@ -223,10 +224,12 @@ public class EvaluationView extends VerticalLayout
 		listSelectGoldstandard.setImmediate(true);
 		listSelectGoldstandard.setHeight("120px");
 		listSelectGoldstandard.setWidth("100%");
+		listSelectGoldstandard.setNullSelectionAllowed(false);
 		this.listSelectFramework = new ListSelect("Framework:");
 		listSelectFramework.setImmediate(true);
 		listSelectFramework.setHeight("120px");
 		listSelectFramework.setWidth("100%");
+		listSelectFramework.setNullSelectionAllowed(false);
 		hlay1.setSpacing(true);
 		hlay1.setMargin(false);
 		hlay1.setWidth("100%");
@@ -279,10 +282,10 @@ public class EvaluationView extends VerticalLayout
 		return this.buttonNew;
 	}
 	
-	public Button getButtonNext()
+	/*public Button getButtonNext()
 	{
 		return this.buttonNext;
-	}
+	}*/
 	
 	public Button getButtonAnnotate()
 	{

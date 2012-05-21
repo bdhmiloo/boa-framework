@@ -30,12 +30,15 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public class ConverterTemperature extends Converter
 {
+	private ConfigLoader load;
+	
 	/**
 	 * Constructor loads all necessary files for unit TEMPERATURE.
 	 */
-	public ConverterTemperature()
+	public ConverterTemperature(ConfigLoader load)
 	{
-		super("TEMPERATURE");
+		super("TEMPERATURE", load);
+		this.load = load;
 	}
 	
 	/**
@@ -51,7 +54,6 @@ public class ConverterTemperature extends Converter
 	public ArrayList<String> convertUnits(BoaAnnotation annotation)
 	{
 		ArrayList<String> list = new ArrayList<String>();
-		ConfigLoader load = new ConfigLoader();
 		String tempUnit = null;
 		
 		// load surface forms
