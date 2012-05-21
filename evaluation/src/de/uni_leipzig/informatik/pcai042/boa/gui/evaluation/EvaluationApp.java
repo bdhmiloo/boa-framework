@@ -32,10 +32,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.Scoring;
-import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 /**
@@ -47,6 +47,10 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 {
 	private EvaluationView view = new EvaluationView();
 	private File rootFolder;
+	
+	private ArrayList<BoaSentence> sentences;
+	private ArrayList<BoaSentence> goldstandard;
+	private ArrayList<Object[]> evaluationItems;
 	
 	@Override
 	public void init()
@@ -64,10 +68,20 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		view.getButtonNext2().addListener((ClickListener) this);
 		view.getTableEvaluation().addListener((Property.ValueChangeListener) this);
 		
-		Scoring scoring = null;
 		try
-		{ 
-			scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), new SearcherFactory(new ConfigLoader(rootFolder)));
+		{
+			Scoring scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), new SearcherFactory(
+					new ConfigLoader(rootFolder)));
+			sentences = scoring.getWorkSentences();
+			goldstandard = scoring.getGoldstandard();
+			ArrayList<double[]> result = scoring.score();
+			for (int i = 0; i < result.size(); i++)
+			{
+				// last "new Integer()" represents position of object in table!
+				view.getTableEvaluation().addItem(
+						new Object[] { new Integer(i), sentences.get(i).getSentence(), new Double(result.get(i)[0]),
+								new Double(result.get(i)[1]), new Double(result.get(i)[2]) }, new Integer(i));
+			}
 		} catch (ValidityException e)
 		{
 			// TODO Auto-generated catch block
@@ -80,16 +94,6 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		ArrayList<BoaSentence> sentences = scoring.getWorkSentences();
-		ArrayList<BoaSentence> gold = scoring.getGoldstandard();
-		ArrayList<double[]> result = scoring.score();
-		for (int i = 0; i < result.size(); i++)
-		{
-			// last "new Integer()" represents position of object in table!
-			view.getTableEvaluation().addItem(
-					new Object[] { new Integer(i), sentences.get(i).getSentence(), new Double(result.get(i)[0]),
-							new Double(result.get(i)[1]), new Double(result.get(i)[2]) }, new Integer(i));
 		}
 	}
 	
@@ -113,7 +117,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 			
 		} else if (button == view.getButtonNext2())
 		{
-			// TODO add code here
+			view.getTableEvaluation().setValue(new Integer((Integer) (view.getTableEvaluation().getValue()) + 1));
 			
 		}
 	}
@@ -131,6 +135,17 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	 */
 	public void valueChange(ValueChangeEvent event)
 	{
+		int index = (Integer) view.getTableEvaluation().getValue();
+		view.getListSelectFramework().removeAllItems();
+		view.getListSelectGoldstandard().removeAllItems();
+		for (BoaAnnotation anno : goldstandard.get(index).getAnnotations())
+		{
+			view.getListSelectGoldstandard().addItem(anno);
+		}
+		for (BoaAnnotation anno : sentences.get(index).getAnnotations())
+		{
+			view.getListSelectFramework().addItem(anno);
+		}
 		
 	}
 }
