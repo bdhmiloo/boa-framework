@@ -44,11 +44,17 @@ public class BoaAnnotation implements Iterable<String>
 		return tokens.get(index);
 	}
 	
+	/**
+	 * Returns the number of tokens.
+	 */
 	public int size()
 	{
 		return tokens.size();
 	}
 	
+	/**
+	 * Returns an iterator to iterate over the tokens.
+	 */
 	@Override
 	public Iterator<String> iterator()
 	{
