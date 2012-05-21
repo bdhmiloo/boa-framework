@@ -16,6 +16,12 @@
 			<param-name>application</param-name>
 			<param-value>de.uni_leipzig.informatik.pcai042.boa.gui.evaluation.EvaluationApp</param-value>
 		</init-param>
+		<init-param>
+			<description>
+			Application widgetset</description>
+			<param-name>widgetset</param-name>
+			<param-value>de.uni_leipzig.informatik.pcai042.boa.gui.evaluation.widgetset.EvaluationWidgetset</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Evaluation</servlet-name>

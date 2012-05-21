@@ -47,6 +47,8 @@ public class EvaluationView extends VerticalLayout
 	private TextArea textAreaSentence;
 	
 	private ListSelect listSelectAnnotation;
+	private ListSelect listSelectGoldstandard;
+	private ListSelect listSelectFramework;
 	
 	private Panel panelAnnotation;
 	
@@ -218,19 +220,33 @@ public class EvaluationView extends VerticalLayout
 		tableEvaluation.addContainerProperty("F-Score", Double.class, null);
 		tab3Content.addComponent(tableEvaluation);
 		
-		/*// TODO remove this test if not used anymore
+		// TODO remove this test if not used anymore
 		for (int i = 1; i <= 10; i++)
 		{
 			// last "new Integer()" represents position of object in table!
 			tableEvaluation.addItem(new Object[] { new Integer(1234 + i), "Bazinga!", new Double(0.2 + i),
 					new Double(5 + i), new Double(5.6789 - i) }, new Integer(i));
-		}*/
+		}
 		
 		this.buttonNext2 = new Button("Next");
 		buttonNext2.setImmediate(true);
 		tab3Content.addComponent(buttonNext2);
 		
-		// TODO print-out for evaluation needed here
+		HorizontalLayout hlay1 = new HorizontalLayout();
+		this.listSelectGoldstandard = new ListSelect("Goldstandard:");
+		listSelectGoldstandard.setImmediate(true);
+		listSelectGoldstandard.setHeight("70px");
+		listSelectGoldstandard.setWidth("100%");
+		this.listSelectFramework = new ListSelect("Framework:");
+		listSelectFramework.setImmediate(true);
+		listSelectFramework.setHeight("70px");
+		listSelectFramework.setWidth("100%");
+		hlay1.setSpacing(true);
+		hlay1.setMargin(false);
+		hlay1.setWidth("100%");
+		hlay1.addComponent(listSelectGoldstandard);
+		hlay1.addComponent(listSelectFramework);
+		tab3Content.addComponent(hlay1);
 		
 		return tab3Content;
 	}
@@ -250,6 +266,26 @@ public class EvaluationView extends VerticalLayout
 	{
 		tableEvaluation.addItem(new Object[] { new Integer(id), sentence, new Double(precision), new Double(recall),
 				new Double(fScore) }, new Integer(line));
+	}
+	
+	/**
+	 * Add an item to listselect Goldstandard.
+	 * 
+	 * @param annotation
+	 */
+	public void addItemToListSelectGoldstandard(BoaAnnotation annotation)
+	{
+		listSelectGoldstandard.addItem(annotation);
+	}
+	
+	/**
+	 * Add an item to listselect Framework.
+	 * 
+	 * @param annotation
+	 */
+	public void addItemToListSelectFramework(BoaAnnotation annotation)
+	{
+		listSelectGoldstandard.addItem(annotation);
 	}
 	
 	public Button getButtonNew()
