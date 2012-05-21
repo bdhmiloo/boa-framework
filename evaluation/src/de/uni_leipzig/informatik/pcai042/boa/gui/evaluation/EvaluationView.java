@@ -218,13 +218,13 @@ public class EvaluationView extends VerticalLayout
 		tableEvaluation.addContainerProperty("F-Score", Double.class, null);
 		tab3Content.addComponent(tableEvaluation);
 		
-		// TODO remove this test if not used anymore
+		/*// TODO remove this test if not used anymore
 		for (int i = 1; i <= 10; i++)
 		{
 			// last "new Integer()" represents position of object in table!
 			tableEvaluation.addItem(new Object[] { new Integer(1234 + i), "Bazinga!", new Double(0.2 + i),
 					new Double(5 + i), new Double(5.6789 - i) }, new Integer(i));
-		}
+		}*/
 		
 		this.buttonNext2 = new Button("Next");
 		buttonNext2.setImmediate(true);

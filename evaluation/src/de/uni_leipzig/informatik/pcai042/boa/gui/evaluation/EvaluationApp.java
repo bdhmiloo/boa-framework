@@ -15,8 +15,14 @@
 
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
 import com.vaadin.Application;
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -25,24 +31,28 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-//import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-//import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+
+import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
+import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
+import de.uni_leipzig.informatik.pcai042.boa.manager.Scoring;
+import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 /**
  * 
  * @author Simon Suiter, Duc Huy Bui
  */
 @SuppressWarnings("serial")
-public class EvaluationApp extends Application implements ItemClickListener, ClickListener, /*SelectedTabChangeListener,*/ ValueChangeListener
+public class EvaluationApp extends Application implements ItemClickListener, ClickListener, ValueChangeListener
 {
 	private EvaluationView view = new EvaluationView();
+	private File rootFolder;
 	
-	/**
-	 * 
-	 */
 	@Override
 	public void init()
 	{
+		rootFolder = new File(getContext().getBaseDirectory(), "WEB-INF/resources/");
+		
 		Window mainWindow = new Window("Boa");
 		setMainWindow(mainWindow);
 		mainWindow.getContent().setSizeFull();
@@ -52,8 +62,35 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		view.getButtonNew().addListener((ClickListener) this);
 		view.getButtonNext().addListener((ClickListener) this);
 		view.getButtonNext2().addListener((ClickListener) this);
-//		view.getTabSheet().addListener((SelectedTabChangeListener) this);
 		view.getTableEvaluation().addListener((Property.ValueChangeListener) this);
+		
+		Scoring scoring = null;
+		try
+		{ 
+			scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), new SearcherFactory(new ConfigLoader(rootFolder)));
+		} catch (ValidityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<BoaSentence> sentences = scoring.getWorkSentences();
+		ArrayList<BoaSentence> gold = scoring.getGoldstandard();
+		ArrayList<double[]> result = scoring.score();
+		for (int i = 0; i < result.size(); i++)
+		{
+			// last "new Integer()" represents position of object in table!
+			view.getTableEvaluation().addItem(
+					new Object[] { new Integer(i), sentences.get(i).getSentence(), new Double(result.get(i)[0]),
+							new Double(result.get(i)[1]), new Double(result.get(i)[2]) }, new Integer(i));
+		}
 	}
 	
 	/**
@@ -86,7 +123,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	 */
 	public void itemClick(ItemClickEvent event)
 	{
-		// TODO add code here
+		
 	}
 	
 	/**
@@ -94,16 +131,6 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	 */
 	public void valueChange(ValueChangeEvent event)
 	{
-		// https://vaadin.com/book/-/page/components.table.html
-		// TODO add code here
+		
 	}
-	
-//	/**
-//	 * Listener for changing tabs on tabsheet.
-//	 */
-//	public void selectedTabChange(SelectedTabChangeEvent event)
-//	{
-//		TabSheet tabsheet = event.getTabSheet();
-//		tabsheet.getTab(tabsheet.getSelectedTab());
-//	}
 }
