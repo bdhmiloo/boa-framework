@@ -16,12 +16,10 @@
 package de.uni_leipzig.informatik.pcai042.boa.gui.evaluation;
 
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.ListSelect;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TabSheet;

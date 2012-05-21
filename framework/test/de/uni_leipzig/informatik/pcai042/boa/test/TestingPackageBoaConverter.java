@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import de.uni_leipzig.informatik.pcai042.boa.converter.*;
 
