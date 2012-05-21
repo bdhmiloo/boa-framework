@@ -54,7 +54,11 @@ public class NaiveAlgorithm extends SearchAlgorithm
 		{
 			String key = it.next();
 			if (!key.equals("MATH") && !key.equals("NUMBERS"))
-				surForms.addAll(config.get(key));
+			{
+				Iterator<String> setIt = config.get(key).iterator();
+				while (setIt.hasNext())
+					surForms.add(setIt.next().toLowerCase().replaceAll("\\s", ""));
+			}
 		}
 	}
 	
