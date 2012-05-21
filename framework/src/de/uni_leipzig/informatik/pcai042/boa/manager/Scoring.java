@@ -26,50 +26,36 @@ import nu.xom.ValidityException;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 public class Scoring
 {
+	private ArrayList<double[]> result;
+	private ArrayList<BoaSentence> gold;
+	private ArrayList<BoaSentence> workSentences;
 	
-	public Scoring()
-	{
-	}
-	
-	/**
-	 * method to score the annotater method
-	 * @return list with 3 doubles: percision, recall, fscore
-	 *        
-	 */
-	public ArrayList<double[]> score()
+	public Scoring(File goldstandard, SearcherFactory sf) throws ValidityException, ParsingException, IOException
 	{
 		Annotator a1;
-		SentenceLoader s1 = null;
+		SentenceLoader s1;
 		double kp, fp, countGoldAnno;
 		int help, help2, t1, t2;
 		double recall, precision, fscore;
 		BoaSentence workSentence;
-		ArrayList<BoaSentence> workSentences = new ArrayList<BoaSentence>();
+		workSentences = new ArrayList<BoaSentence>();
 		
-		ArrayList<double[]> result = new ArrayList<double[]>();
-		a1 = new Annotator();
+		s1 = new SentenceLoader(goldstandard);
+		gold = s1.getSentences();
+		a1 = new Annotator(sf);
+		
+		result = new ArrayList<double[]>();
+		
 		t1 = 0;
 		t2 = 0;
 		kp = 0;
 		fp = 0;
 		countGoldAnno = 0;
-		//load Goldstandard.xml
-		try
-		{
-			s1 = new SentenceLoader(new File("goldstandard.xml"));
-		} catch (ValidityException e)
-		{
-			e.printStackTrace();
-		} catch (ParsingException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		
 		//copy each sentence and send it to annotater
 		for (int i = 0; i < s1.getSentenceCount(); i++)
 		{
@@ -154,9 +140,27 @@ public class Scoring
 			
 			
 		}
-		
+	}
+	
+	/**
+	 * method to score the annotater method
+	 * @return list with 3 doubles: percision, recall, fscore
+	 *        
+	 */
+	public ArrayList<double[]> score()
+	{
 		return result;
 		
 	}
 	
+	public ArrayList<BoaSentence> getWorkSentences()
+	{
+		return workSentences;
+		
+	}
+	public ArrayList<BoaSentence> getGoldstandard()
+	{
+		return gold;
+		
+	}
 }
