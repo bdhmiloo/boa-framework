@@ -325,6 +325,11 @@ public class EvaluationView extends VerticalLayout
 		return listSelectFramework;
 	}
 	
+	public TextArea getTextArea()
+	{
+		return textAreaSentence;
+	}
+	
 	/**
 	 * Set all components to default status.
 	 */
@@ -332,7 +337,7 @@ public class EvaluationView extends VerticalLayout
 	{
 		textAreaSentence.setValue("");
 		textAreaSentence.setInputPrompt("Please insert a sentence here.");
-		buttonAnnotate.setEnabled(false);
+		//buttonAnnotate.setEnabled(false);
 		listSelectAnnotation.removeAllItems();
 	}
 }

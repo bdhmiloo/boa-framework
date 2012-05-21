@@ -36,6 +36,8 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.Scoring;
+import de.uni_leipzig.informatik.pcai042.boa.manager.Tokenizer;
+import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 /**
@@ -50,12 +52,21 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 	
 	private ArrayList<BoaSentence> sentences;
 	private ArrayList<BoaSentence> goldstandard;
-	private ArrayList<Object[]> evaluationItems;
+	ArrayList<BoaSentence> annotated;
+	
+	private Annotator annotator;
+	private ConfigLoader cl;
+	private SearcherFactory sf;
+	private Tokenizer tokenizer;
 	
 	@Override
 	public void init()
 	{
 		rootFolder = new File(getContext().getBaseDirectory(), "WEB-INF/resources/");
+		cl = new ConfigLoader(rootFolder);
+		sf = new SearcherFactory(cl);
+		annotator = new Annotator(sf);
+		tokenizer = new Tokenizer();
 		
 		Window mainWindow = new Window("Boa");
 		setMainWindow(mainWindow);
@@ -70,8 +81,7 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		
 		try
 		{
-			Scoring scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), new SearcherFactory(
-					new ConfigLoader(rootFolder)));
+			Scoring scoring = new Scoring(new File(rootFolder, "goldstandard.xml"), sf);
 			sentences = scoring.getWorkSentences();
 			goldstandard = scoring.getGoldstandard();
 			ArrayList<double[]> result = scoring.score();
@@ -106,7 +116,23 @@ public class EvaluationApp extends Application implements ItemClickListener, Cli
 		
 		if (button == view.getButtonAnnotate())
 		{
-			// TODO add code here
+			String text = (String) view.getTextArea().getValue();
+			text = text.trim();
+			if (!text.equals(""))
+			{
+				annotated = tokenizer.tokenize(text);
+				annotator.annotate(annotated);
+				
+				view.getListSelectAnnotation().removeAllItems();
+				for (BoaSentence sentence : annotated)
+				{
+					for (BoaAnnotation anno : sentence.getAnnotations())
+					{
+						view.getListSelectAnnotation().addItem(anno);
+					}
+				}
+				
+			}
 			
 		} else if (button == view.getButtonNew())
 		{
