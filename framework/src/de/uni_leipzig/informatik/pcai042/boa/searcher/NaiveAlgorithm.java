@@ -148,7 +148,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						break;
 					}
 					// else check if match is a mathematical symbol
-					else if (mathSymbols.contains(match))
+					else if (mathSymbols.contains(match.toLowerCase()))
 					{
 						StringBuilder combinedNumber = new StringBuilder();
 						combinedNumber.append(currentToken);
@@ -243,7 +243,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						// " " + match + " Type: " + annoType);
 					}
 					// else check if match is the prefix of any surface form
-					else if (this.isPrefix(match, surForms))
+					else if (this.isPrefix(match.toLowerCase(), surForms))
 					{
 						ArrayList<String> annoTokens = new ArrayList<String>();
 						parts = currentToken.split(";");
@@ -258,7 +258,7 @@ public class NaiveAlgorithm extends SearchAlgorithm
 						StringBuilder stringBuilder = new StringBuilder();
 						stringBuilder.append(match);
 						
-						while (this.isPrefix(stringBuilder.toString(), surForms))
+						while (this.isPrefix(stringBuilder.toString().toLowerCase(), surForms))
 						{
 							// if yes, melt with next token (if it exists) and
 							// check again
