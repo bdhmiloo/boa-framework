@@ -22,6 +22,13 @@ import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
+/**
+ * This class simplifies the construction of SearchAlgorithm instances from the
+ * information provides by an ConfigLoader. It uses reflection to choose the
+ * right class for any type, which is defined by a TYPE_ALGO key.
+ * 
+ * @author Simon Suiter
+ */
 public class SearcherFactory
 {
 	private HashMap<String, Class<? extends SearchAlgorithm>> algos;
@@ -38,10 +45,6 @@ public class SearcherFactory
 			try
 			{
 				Class<?> clazz = Class.forName(cf.returnValue(type + "_ALGO"));
-				// Constructor<?> c = clazz.getConstructor(new Class[] {
-				// HashMap.class, String.class });
-				// if (SearchAlgorithm.class.isInstance(c.newInstance(new
-				// HashMap<String, Set<String>>(), "")))
 				if (SearchAlgorithm.class.isAssignableFrom(clazz))
 				{
 					algos.put(type, castClass(clazz));
@@ -75,6 +78,13 @@ public class SearcherFactory
 		}
 	}
 	
+	/**
+	 * Creates a new instance of a SearchAlgorithm searching for a certain type.
+	 * 
+	 * @param type
+	 *            the type of annotations the searcher should find
+	 * @return the new searcher
+	 */
 	public SearchAlgorithm newSearcher(String type)
 	{
 		try
@@ -115,6 +125,11 @@ public class SearcherFactory
 		return (Class<? extends SearchAlgorithm>) clazz;
 	}
 	
+	/**
+	 * Returns an iterator to iterate over all aviable annotation types.
+	 * 
+	 * @return
+	 */
 	public Iterator<String> getTypeIterator()
 	{
 		return algos.keySet().iterator();
