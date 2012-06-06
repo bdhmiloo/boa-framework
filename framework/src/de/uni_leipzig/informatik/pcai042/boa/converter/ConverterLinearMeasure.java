@@ -264,49 +264,49 @@ public class ConverterLinearMeasure extends Converter
 			{
 				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfLinearMeasure[d]));
 				
-				// if (allUnitsOfLinearMeasure[d].equals("µm"))
-				// {
-				// for (int l = 0; l < microm.length; l++)
-				// {
-				// list.add(newNumber + " " + microm[l]);
-				// }
-				// }
-				if (allUnitsOfLinearMeasure[d].equals("mm"))
+				 if (allUnitsOfLinearMeasure[d].equals("micrometer"))
+				 {
+				 for (int l = 0; l < microm.length; l++)
+				 {
+				 list.add(newNumber + " " + microm[l]);
+				 }
+				 }
+				if (allUnitsOfLinearMeasure[d].equals("millimeter"))
 				{
 					for (int l = 0; l < mm.length; l++)
 					{
 						list.add(newNumber + " " + mm[l]);
 					}
 				}
-				if (allUnitsOfLinearMeasure[d].equals("cm"))
+				if (allUnitsOfLinearMeasure[d].equals("centimeterm"))
 				{
 					for (int l = 0; l < cm.length; l++)
 					{
 						list.add(newNumber + " " + cm[l]);
 					}
 				}
-				if (allUnitsOfLinearMeasure[d].equals("dm"))
+				if (allUnitsOfLinearMeasure[d].equals("decimeter"))
 				{
 					for (int l = 0; l < dm.length; l++)
 					{
 						list.add(newNumber + " " + dm[l]);
 					}
 				}
-				if (allUnitsOfLinearMeasure[d].equals("m"))
+				if (allUnitsOfLinearMeasure[d].equals("meter"))
 				{
 					for (int l = 0; l < m.length; l++)
 					{
 						list.add(newNumber + " " + m[l]);
 					}
 				}
-				if (allUnitsOfLinearMeasure[d].equals("km"))
+				if (allUnitsOfLinearMeasure[d].equals("kilometer"))
 				{
 					for (int l = 0; l < km.length; l++)
 					{
 						list.add(newNumber + " " + km[l]);
 					}
 				}
-				if (allUnitsOfLinearMeasure[d].equals("ft"))
+				if (allUnitsOfLinearMeasure[d].equals("feet"))
 				{
 					for (int l = 0; l < ft.length; l++)
 					{
