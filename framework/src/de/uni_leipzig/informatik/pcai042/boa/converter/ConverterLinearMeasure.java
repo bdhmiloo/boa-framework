@@ -112,20 +112,6 @@ public class ConverterLinearMeasure extends Converter
 		List<String> list12 = new ArrayList<String>(Feet);
 		Object[] ft = list12.toArray();
 		
-		/*
-		 * String[] microm = { "µm", "micrometer", "micrometre" }; String[] mm =
-		 * { "mm", "millimeter", "millimeters" }; String[] cm = { "cm",
-		 * "centimeter", "centimeters" }; String[] dm = { "dm", "decimeters",
-		 * "decimeter" }; String[] m = { "m", "meter", "meters", "metres" };
-		 * String[] km = { "km", "kilometer", "kilometers" }; String[] inch = {
-		 * "inch", "in", "inches", }; String[] ft = { "ft", "feet", "feet", "'"
-		 * }; String[] yard = { "yard", "yards", "yd", "yds" }; String[] mile =
-		 * { "mile", "miles" }; String[] seamile = { "sm", "seamile",
-		 * "seamiles", "nautic mile", "nautic miles" };
-		 * 
-		 * String[] allUnitsOfLinearMeasure = { "µm", "mm", "cm", "dm", "m",
-		 * "km", "mile", "seamile", "yard", "ft", "inch" };
-		 */
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.size(); i++)
 		{
@@ -278,7 +264,7 @@ public class ConverterLinearMeasure extends Converter
 						list.add(newNumber + " " + mm[l]);
 					}
 				}
-				if (allUnitsOfLinearMeasure[d].equals("centimeterm"))
+				if (allUnitsOfLinearMeasure[d].equals("centimeter"))
 				{
 					for (int l = 0; l < cm.length; l++)
 					{
