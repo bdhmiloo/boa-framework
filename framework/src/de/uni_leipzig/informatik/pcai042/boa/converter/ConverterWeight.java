@@ -99,7 +99,6 @@ public class ConverterWeight extends Converter
 		List<String> list9 = new ArrayList<String>(Ounze);
 		Object[] oz = list9.toArray();
 		
-	
 		// get all tokens of annotation and choose unit
 		for (int i = 0; i < annotation.size(); i++)
 		{
@@ -178,7 +177,7 @@ public class ConverterWeight extends Converter
 				}
 		}
 		
-		// option was selected
+		// option was selected if any weight-unit could have been found
 		if (tempUnit != null)
 		{
 			double number = 0;
@@ -189,16 +188,183 @@ public class ConverterWeight extends Converter
 				if (checkIfNumber(annotation.getToken(w)))
 				{
 					String token = annotation.getToken(w);
-					
-					if (token.contains("+"))
-						token = token.replace("+", "");
-					if (token.contains(","))
-						token = token.replace(",", ".");
-					if (token.contains("."))
-						number = Double.parseDouble(token);
-					else
+					int check = 0;
+					if (token.equals("one"))
 					{
-						number = (double) Integer.parseInt(token);
+						check++;
+						number = 1;
+						
+					}
+					if (token.equals("two"))
+					{
+						check++;
+						number = 2;
+						
+					}
+					if (token.equals("three"))
+					{
+						check++;
+						number = 3;
+						
+					}
+					if (token.equals("four"))
+					{
+						check++;
+						number = 4;
+						
+					}
+					if (token.equals("five"))
+					{
+						check++;
+						number = 5;
+						
+					}
+					if (token.equals("six"))
+					{
+						check++;
+						number = 6;
+						
+					}
+					if (token.equals("seven"))
+					{
+						check++;
+						number = 7;
+						
+					}
+					if (token.equals("eight"))
+					{
+						check++;
+						number = 8;
+						
+					}
+					if (token.equals("nine"))
+					{
+						check++;
+						number = 9;
+						
+					}
+					if (token.equals("ten"))
+					{
+						check++;
+						number = 10;
+						
+					}
+					if (token.equals("eleven"))
+					{
+						check++;
+						number = 11;
+						
+					}
+					if (token.equals("twelve"))
+					{
+						check++;
+						number = 12;
+						
+					}
+					if (token.equals("thirteen"))
+					{
+						check++;
+						number = 13;
+						
+					}
+					if (token.equals("fourteen"))
+					{
+						check++;
+						number = 14;
+						
+					}
+					if (token.equals("fifteen"))
+					{
+						check++;
+						number = 15;
+						
+					}
+					
+					if (token.equals("sixteen"))
+					{
+						check++;
+						number = 16;
+						
+					}
+					if (token.equals("seventeen"))
+					{
+						check++;
+						number = 17;
+						
+					}
+					if (token.equals("eighteen"))
+					{
+						check++;
+						number = 18;
+						
+					}
+					if (token.equals("nineteen"))
+					{
+						check++;
+						number = 19;
+						
+					}
+					if (token.equals("twenty"))
+					{
+						check++;
+						number = 20;
+						
+					}
+					if (token.equals("thirty"))
+					{
+						check++;
+						number = 30;
+						
+					}
+					if (token.equals("fourty"))
+					{
+						check++;
+						number = 40;
+						
+					}
+					if (token.equals("fifty"))
+					{
+						check++;
+						number = 50;
+						
+					}
+					if (token.equals("sixty"))
+					{
+						check++;
+						number = 60;
+						
+					}
+					if (token.equals("seventy"))
+					{
+						check++;
+						number = 70;
+						
+					}
+					if (token.equals("eighty"))
+					{
+						check++;
+						number = 80;
+						
+					}
+					if (token.equals("ninety"))
+					{
+						check++;
+						number = 90;
+						
+					}
+					
+					if (check != 0)
+					{
+						if (token.contains("+"))
+							token = token.replace("+", "");
+						if (token.contains(","))
+							token = token.replace(",", ".");
+						if (token.contains("."))
+							number = Double.parseDouble(token);
+						else
+						{
+							number = (double) Integer.parseInt(token);
+						}
 					}
 				}
 			}
