@@ -63,6 +63,7 @@ public class ConverterDate extends Converter
 	 */
 	public ConverterDate(ConfigLoader load)
 	{		
+		super("DATE", load);
 		// load surface forms
 		Set<String> loadSeparater = load.openConfigSurfaceForms("DATE_SEPARATOR".toString());
 		List<String> list = new ArrayList<String>(loadSeparater);

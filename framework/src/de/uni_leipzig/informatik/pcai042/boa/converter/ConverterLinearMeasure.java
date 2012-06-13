@@ -580,7 +580,7 @@ public class ConverterLinearMeasure extends Converter
 							
 						}
 						
-						if (check != 0)
+						if (check == 0)
 						{
 							
 							if (token.contains("+"))

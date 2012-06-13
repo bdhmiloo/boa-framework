@@ -53,13 +53,6 @@ public abstract class Converter
 		numbers = cl.openConfigSurfaceForms("NUMBERS");
 	}
 	
-	/**
-	 * Constructor.
-	 */
-	public Converter()
-	{
-		
-	}
 	
 	/**
 	 * Checks whether token is a number or not.
@@ -70,7 +63,7 @@ public abstract class Converter
 	 */
 	public boolean checkIfNumber(String token)
 	{
-		
+	
 		try
 		{
 			if (token.endsWith("f"))
@@ -83,7 +76,7 @@ public abstract class Converter
 		} catch (NumberFormatException e)
 		{
 		}
-		return numbers.contains(token.toLowerCase());
+		return numbers.contains(token);
 	}
 	
 	/**
