@@ -357,7 +357,7 @@ public class ConverterWeight extends Converter
 							
 						}
 						
-						if (check != 0)
+						if (check == 0)
 						{
 							if (token.contains("+"))
 								token = token.replace("+", "");

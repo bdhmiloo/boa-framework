@@ -27,7 +27,10 @@ import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
 
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterDate;
 import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterLinearMeasure;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterTemperature;
+import de.uni_leipzig.informatik.pcai042.boa.converter.ConverterWeight;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.manager.SentenceLoader;
@@ -47,10 +50,10 @@ public class TestConverter
 	 */
 	public static void main(String[] args) throws ParseException
 	{
-		//ConverterWeight conWEIGHT = new ConverterWeight(new ConfigLoader());
+		ConverterWeight conWEIGHT = new ConverterWeight(new ConfigLoader());
 		ConverterLinearMeasure conLINEAR_MEASURE = new ConverterLinearMeasure(new ConfigLoader());
-		//ConverterTemperature conTEMPERATURE = new ConverterTemperature(new ConfigLoader());
-		//ConverterDate conDATE = new ConverterDate(new ConfigLoader());
+		ConverterTemperature conTEMPERATURE = new ConverterTemperature(new ConfigLoader());
+		ConverterDate conDATE = new ConverterDate(new ConfigLoader());
 		
 		// result of conversions
 		ArrayList<String> result = new ArrayList<String>();
@@ -100,7 +103,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals("WEIGHT"))
 				{
 					// TODO test method here
-//					result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+				result.addAll(conWEIGHT.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				
@@ -116,7 +119,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals("TEMPERATURE"))
 				{
 					// TODO test method here
-//					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					result.addAll(conTEMPERATURE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				
@@ -124,7 +127,7 @@ public class TestConverter
 				if (sentence.getSentence(i).getAnnotations().get(k).getType().equals( "DATE"))
 				{
 					// TODO test method here
-//					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
+					result.addAll(conDATE.convertUnits(sentence.getSentence(i).getAnnotations().get(k)));
 					count++;
 				}
 				result.add("________________________");
