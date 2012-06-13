@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaAnnotation;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
@@ -31,11 +32,13 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
  */
 public abstract class Converter
 {
+	
 	// private static final Logger logger =
 	// LoggerFactory.getLogger(Converter.class);
 	
 	protected HashMap<String, BigDecimal> conversionStandard;
 	protected HashMap<String, BigDecimal> conversionUnit;
+	protected Set<String> numbers;
 	
 	/**
 	 * Constructor loads all necessary files for unit conversions.
@@ -47,6 +50,7 @@ public abstract class Converter
 	{
 		conversionStandard = cl.openConfigConversion("Standard", unit);
 		conversionUnit = cl.openConfigConversion("Unit", unit);
+		numbers = cl.openConfigSurfaceForms("NUMBERS");
 	}
 	
 	/**
@@ -65,30 +69,21 @@ public abstract class Converter
 	 * @return true - if token is a number, false - if token is not a number
 	 */
 	public boolean checkIfNumber(String token)
-	{		
+	{
+		
 		try
 		{
-			Integer.parseInt(token);
-			return true;
-		} catch (NumberFormatException e)
-		{
-			// TODO catch exception or log
-		}
-		try
-		{
-			// if(token.endsWith("f")) return numbers.contains(token); //else f
-			// at end of String is interpreted as "float", similar i as
-			// imaginary
+			if (token.endsWith("f"))
+				return numbers.contains(token); // else f at end of String is
+												// interpreted as "float"
 			if (token.contains(","))
 				token = token.replace(",", ".");
 			Double.parseDouble(token);
 			return true;
 		} catch (NumberFormatException e)
 		{
-			// TODO catch exception or log
 		}
-		return false;
-		// return numbers.contains(token.toLowerCase());
+		return numbers.contains(token.toLowerCase());
 	}
 	
 	/**
@@ -98,7 +93,7 @@ public abstract class Converter
 	 *            one annotation
 	 * @return list with all surface forms of an unit inclusive all
 	 *         corresponding conversions
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public abstract ArrayList<String> convertUnits(BoaAnnotation annotation) throws ParseException;
 }

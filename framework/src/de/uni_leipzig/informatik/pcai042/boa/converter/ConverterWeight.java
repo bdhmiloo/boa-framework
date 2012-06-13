@@ -181,259 +181,520 @@ public class ConverterWeight extends Converter
 		if (tempUnit != null)
 		{
 			double number = 0;
-			
+			double number2 = 0;
+			int check2 = 0;
 			// looking for any numbers in annotation
 			for (int w = 0; w < annotation.size(); w++)
 			{
 				if (checkIfNumber(annotation.getToken(w)))
 				{
-					String token = annotation.getToken(w);
-					int check = 0;
-					if (token.equals("one"))
+					check2++;
+					if (check2 < 2)
 					{
-						check++;
-						number = 1;
-						
-					}
-					if (token.equals("two"))
-					{
-						check++;
-						number = 2;
-						
-					}
-					if (token.equals("three"))
-					{
-						check++;
-						number = 3;
-						
-					}
-					if (token.equals("four"))
-					{
-						check++;
-						number = 4;
-						
-					}
-					if (token.equals("five"))
-					{
-						check++;
-						number = 5;
-						
-					}
-					if (token.equals("six"))
-					{
-						check++;
-						number = 6;
-						
-					}
-					if (token.equals("seven"))
-					{
-						check++;
-						number = 7;
-						
-					}
-					if (token.equals("eight"))
-					{
-						check++;
-						number = 8;
-						
-					}
-					if (token.equals("nine"))
-					{
-						check++;
-						number = 9;
-						
-					}
-					if (token.equals("ten"))
-					{
-						check++;
-						number = 10;
-						
-					}
-					if (token.equals("eleven"))
-					{
-						check++;
-						number = 11;
-						
-					}
-					if (token.equals("twelve"))
-					{
-						check++;
-						number = 12;
-						
-					}
-					if (token.equals("thirteen"))
-					{
-						check++;
-						number = 13;
-						
-					}
-					if (token.equals("fourteen"))
-					{
-						check++;
-						number = 14;
-						
-					}
-					if (token.equals("fifteen"))
-					{
-						check++;
-						number = 15;
-						
-					}
-					
-					if (token.equals("sixteen"))
-					{
-						check++;
-						number = 16;
-						
-					}
-					if (token.equals("seventeen"))
-					{
-						check++;
-						number = 17;
-						
-					}
-					if (token.equals("eighteen"))
-					{
-						check++;
-						number = 18;
-						
-					}
-					if (token.equals("nineteen"))
-					{
-						check++;
-						number = 19;
-						
-					}
-					if (token.equals("twenty"))
-					{
-						check++;
-						number = 20;
-						
-					}
-					if (token.equals("thirty"))
-					{
-						check++;
-						number = 30;
-						
-					}
-					if (token.equals("fourty"))
-					{
-						check++;
-						number = 40;
-						
-					}
-					if (token.equals("fifty"))
-					{
-						check++;
-						number = 50;
-						
-					}
-					if (token.equals("sixty"))
-					{
-						check++;
-						number = 60;
-						
-					}
-					if (token.equals("seventy"))
-					{
-						check++;
-						number = 70;
-						
-					}
-					if (token.equals("eighty"))
-					{
-						check++;
-						number = 80;
-						
-					}
-					if (token.equals("ninety"))
-					{
-						check++;
-						number = 90;
-						
-					}
-					
-					if (check != 0)
-					{
-						if (token.contains("+"))
-							token = token.replace("+", "");
-						if (token.contains(","))
-							token = token.replace(",", ".");
-						if (token.contains("."))
-							number = Double.parseDouble(token);
-						else
+						String token = annotation.getToken(w);
+						int check = 0;
+						if (token.equals("one"))
 						{
-							number = (double) Integer.parseInt(token);
+							check++;
+							number = 1;
+							
+						}
+						if (token.equals("two"))
+						{
+							check++;
+							number = 2;
+							
+						}
+						if (token.equals("three"))
+						{
+							check++;
+							number = 3;
+							
+						}
+						if (token.equals("four"))
+						{
+							check++;
+							number = 4;
+							
+						}
+						if (token.equals("five"))
+						{
+							check++;
+							number = 5;
+							
+						}
+						if (token.equals("six"))
+						{
+							check++;
+							number = 6;
+							
+						}
+						if (token.equals("seven"))
+						{
+							check++;
+							number = 7;
+							
+						}
+						if (token.equals("eight"))
+						{
+							check++;
+							number = 8;
+							
+						}
+						if (token.equals("nine"))
+						{
+							check++;
+							number = 9;
+							
+						}
+						if (token.equals("ten"))
+						{
+							check++;
+							number = 10;
+							
+						}
+						if (token.equals("eleven"))
+						{
+							check++;
+							number = 11;
+							
+						}
+						if (token.equals("twelve"))
+						{
+							check++;
+							number = 12;
+							
+						}
+						if (token.equals("thirteen"))
+						{
+							check++;
+							number = 13;
+							
+						}
+						if (token.equals("fourteen"))
+						{
+							check++;
+							number = 14;
+							
+						}
+						if (token.equals("fifteen"))
+						{
+							check++;
+							number = 15;
+							
+						}
+						
+						if (token.equals("sixteen"))
+						{
+							check++;
+							number = 16;
+							
+						}
+						if (token.equals("seventeen"))
+						{
+							check++;
+							number = 17;
+							
+						}
+						if (token.equals("eighteen"))
+						{
+							check++;
+							number = 18;
+							
+						}
+						if (token.equals("nineteen"))
+						{
+							check++;
+							number = 19;
+							
+						}
+						if (token.equals("twenty"))
+						{
+							check++;
+							number = 20;
+							
+						}
+						if (token.equals("thirty"))
+						{
+							check++;
+							number = 30;
+							
+						}
+						if (token.equals("fourty"))
+						{
+							check++;
+							number = 40;
+							
+						}
+						if (token.equals("fifty"))
+						{
+							check++;
+							number = 50;
+							
+						}
+						if (token.equals("sixty"))
+						{
+							check++;
+							number = 60;
+							
+						}
+						if (token.equals("seventy"))
+						{
+							check++;
+							number = 70;
+							
+						}
+						if (token.equals("eighty"))
+						{
+							check++;
+							number = 80;
+							
+						}
+						if (token.equals("ninety"))
+						{
+							check++;
+							number = 90;
+							
+						}
+						
+						if (check != 0)
+						{
+							if (token.contains("+"))
+								token = token.replace("+", "");
+							if (token.contains(","))
+								token = token.replace(",", ".");
+							if (token.contains("."))
+								number = Double.parseDouble(token);
+							else
+							{
+								number = (double) Integer.parseInt(token);
+							}
+						}
+					} else
+					{
+						String token = annotation.getToken(w);
+						int check = 0;
+						if (token.equals("one"))
+						{
+							check++;
+							number2 = 1;
+							
+						}
+						if (token.equals("two"))
+						{
+							check++;
+							number2 = 2;
+							
+						}
+						if (token.equals("three"))
+						{
+							check++;
+							number2 = 3;
+							
+						}
+						if (token.equals("four"))
+						{
+							check++;
+							number2 = 4;
+							
+						}
+						if (token.equals("five"))
+						{
+							check++;
+							number2 = 5;
+							
+						}
+						if (token.equals("six"))
+						{
+							check++;
+							number2 = 6;
+							
+						}
+						if (token.equals("seven"))
+						{
+							check++;
+							number2 = 7;
+							
+						}
+						if (token.equals("eight"))
+						{
+							check++;
+							number2 = 8;
+							
+						}
+						if (token.equals("nine"))
+						{
+							check++;
+							number2 = 9;
+							
+						}
+						if (token.equals("ten"))
+						{
+							check++;
+							number2 = 10;
+							
+						}
+						if (token.equals("eleven"))
+						{
+							check++;
+							number2 = 11;
+							
+						}
+						if (token.equals("twelve"))
+						{
+							check++;
+							number2 = 12;
+							
+						}
+						if (token.equals("thirteen"))
+						{
+							check++;
+							number2 = 13;
+							
+						}
+						if (token.equals("fourteen"))
+						{
+							check++;
+							number2 = 14;
+							
+						}
+						if (token.equals("fifteen"))
+						{
+							check++;
+							number2 = 15;
+							
+						}
+						
+						if (token.equals("sixteen"))
+						{
+							check++;
+							number2 = 16;
+							
+						}
+						if (token.equals("seventeen"))
+						{
+							check++;
+							number2 = 17;
+							
+						}
+						if (token.equals("eighteen"))
+						{
+							check++;
+							number2 = 18;
+							
+						}
+						if (token.equals("nineteen"))
+						{
+							check++;
+							number2 = 19;
+							
+						}
+						if (token.equals("twenty"))
+						{
+							check++;
+							number2 = 20;
+							
+						}
+						if (token.equals("thirty"))
+						{
+							check++;
+							number2 = 30;
+							
+						}
+						if (token.equals("fourty"))
+						{
+							check++;
+							number2 = 40;
+							
+						}
+						if (token.equals("fifty"))
+						{
+							check++;
+							number2 = 50;
+							
+						}
+						if (token.equals("sixty"))
+						{
+							check++;
+							number2 = 60;
+							
+						}
+						if (token.equals("seventy"))
+						{
+							check++;
+							number2 = 70;
+							
+						}
+						if (token.equals("eighty"))
+						{
+							check++;
+							number2 = 80;
+							
+						}
+						if (token.equals("ninety"))
+						{
+							check++;
+							number2 = 90;
+							
+						}
+						
+						if (check == 0)
+						{
+							if (token.contains("+"))
+								token = token.replace("+", "");
+							if (token.contains(","))
+								token = token.replace(",", ".");
+							if (token.contains("."))
+								number2 = Double.parseDouble(token);
+							else
+							{
+								number2 = (double) Integer.parseInt(token);
+							}
+						}
+						
+					}
+				}
+			}
+			if (check2 == 1)
+			{
+				BigDecimal tempNumber = new BigDecimal(number);
+				BigDecimal standard = tempNumber.multiply(conversionStandard.get(tempUnit));
+				
+				// get multiplication factor for conversion
+				for (int d = 0; d < allUnitsOfWeight.length; d++)
+				{
+					BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfWeight[d]));
+					
+					if (allUnitsOfWeight[d].equals("kilogram"))
+					{
+						for (int l = 0; l < kg.length; l++)
+						{
+							list.add(newNumber + " " + kg[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("microgram"))
+					{
+						for (int l = 0; l < microg.length; l++)
+						{
+							list.add(newNumber + " " + microg[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("gram"))
+					{
+						for (int l = 0; l < g.length; l++)
+						{
+							list.add(newNumber + " " + g[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("ton"))
+					{
+						for (int l = 0; l < t.length; l++)
+						{
+							list.add(newNumber + " " + t[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("karat"))
+					{
+						for (int l = 0; l < Kt.length; l++)
+						{
+							list.add(newNumber + " " + Kt[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("ounze"))
+					{
+						for (int l = 0; l < oz.length; l++)
+						{
+							list.add(newNumber + " " + oz[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("pound"))
+					{
+						for (int l = 0; l < lbs.length; l++)
+						{
+							list.add(newNumber + " " + lbs[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("milligram"))
+					{
+						for (int l = 0; l < mg.length; l++)
+						{
+							list.add(newNumber + " " + mg[l]);
+						}
+					}
+				}
+			} else
+			{
+				BigDecimal tempNumber = new BigDecimal(number);
+				BigDecimal standard = tempNumber.multiply(conversionStandard.get(tempUnit));
+				
+				BigDecimal tempNumber2 = new BigDecimal(number2);
+				BigDecimal standard2 = tempNumber2.multiply(conversionStandard.get(tempUnit));
+				
+				// get multiplication factor for conversion
+				for (int d = 0; d < allUnitsOfWeight.length; d++)
+				{
+					BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfWeight[d]));
+					
+					BigDecimal newNumber2 = standard2.multiply(conversionUnit.get(allUnitsOfWeight[d]));
+					if (allUnitsOfWeight[d].equals("kilogram"))
+					{
+						for (int l = 0; l < kg.length; l++)
+						{
+							list.add(newNumber + "-" +newNumber2+ kg[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("microgram"))
+					{
+						for (int l = 0; l < microg.length; l++)
+						{
+							list.add(newNumber + "-" +newNumber2+ microg[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("gram"))
+					{
+						for (int l = 0; l < g.length; l++)
+						{
+							list.add(newNumber + "-" +newNumber2+ g[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("ton"))
+					{
+						for (int l = 0; l < t.length; l++)
+						{
+							list.add(newNumber + "-" +newNumber2+ t[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("karat"))
+					{
+						for (int l = 0; l < Kt.length; l++)
+						{
+							list.add(newNumber + "-"+newNumber2 + Kt[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("ounze"))
+					{
+						for (int l = 0; l < oz.length; l++)
+						{
+							list.add(newNumber + "-"+newNumber2 + oz[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("pound"))
+					{
+						for (int l = 0; l < lbs.length; l++)
+						{
+							list.add(newNumber + "-"+newNumber2 + lbs[l]);
+						}
+					}
+					if (allUnitsOfWeight[d].equals("milligram"))
+					{
+						for (int l = 0; l < mg.length; l++)
+						{
+							list.add(newNumber + "-"+newNumber2 + mg[l]);
 						}
 					}
 				}
 			}
 			
-			BigDecimal tempNumber = new BigDecimal(number);
-			BigDecimal standard = tempNumber.multiply(conversionStandard.get(tempUnit));
-			
-			// get multiplication factor for conversion
-			for (int d = 0; d < allUnitsOfWeight.length; d++)
-			{
-				BigDecimal newNumber = standard.multiply(conversionUnit.get(allUnitsOfWeight[d]));
-				
-				if (allUnitsOfWeight[d].equals("kilogram"))
-				{
-					for (int l = 0; l < kg.length; l++)
-					{
-						list.add(newNumber + " " + kg[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("microgram"))
-				{
-					for (int l = 0; l < microg.length; l++)
-					{
-						list.add(newNumber + " " + microg[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("gram"))
-				{
-					for (int l = 0; l < g.length; l++)
-					{
-						list.add(newNumber + " " + g[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("ton"))
-				{
-					for (int l = 0; l < t.length; l++)
-					{
-						list.add(newNumber + " " + t[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("karat"))
-				{
-					for (int l = 0; l < Kt.length; l++)
-					{
-						list.add(newNumber + " " + Kt[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("ounze"))
-				{
-					for (int l = 0; l < oz.length; l++)
-					{
-						list.add(newNumber + " " + oz[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("pound"))
-				{
-					for (int l = 0; l < lbs.length; l++)
-					{
-						list.add(newNumber + " " + lbs[l]);
-					}
-				}
-				if (allUnitsOfWeight[d].equals("milligram"))
-				{
-					for (int l = 0; l < mg.length; l++)
-					{
-						list.add(newNumber + " " + mg[l]);
-					}
-				}
-			}
 		}
 		
 		return list;
