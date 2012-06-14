@@ -24,7 +24,9 @@ import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
 /**
  * A thread that creates its own Searchers, retrieves data from a Distributor
- * and annotates it.
+ * and annotates it. If a Thread is used to tokenize the input,
+ * Distributor.getText is called, otherwise Distributor.getSentences is called.
+ * It stops as soon as it receives null from the Distributor.
  * 
  * @see Distributor
  * @author Simon Suiter
