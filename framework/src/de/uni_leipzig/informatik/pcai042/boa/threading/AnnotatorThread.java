@@ -22,6 +22,13 @@ import de.uni_leipzig.informatik.pcai042.boa.manager.Tokenizer;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.Annotator;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
+/**
+ * A thread that creates its own Searchers, retrieves data from a Distributor
+ * and annotates it.
+ * 
+ * @see Distributor
+ * @author Simon Suiter
+ */
 public class AnnotatorThread extends Thread
 {
 	private Distributor distr;
@@ -29,11 +36,20 @@ public class AnnotatorThread extends Thread
 	private boolean tokenize;
 	private Tokenizer tokenizer;
 	
+	/**
+	 * @param distr
+	 *            the Distributor to receive date from
+	 * @param sf
+	 *            a SearcherFactory to construct searchers
+	 * @param tokenize
+	 *            whether the thread shall retrieve untokenized data from distr
+	 */
 	public AnnotatorThread(Distributor distr, SearcherFactory sf, boolean tokenize)
 	{
 		this.distr = distr;
 		this.tokenize = tokenize;
-		if (tokenize) tokenizer = new Tokenizer();
+		if (tokenize)
+			tokenizer = new Tokenizer();
 		annotator = new Annotator(sf);
 	}
 	

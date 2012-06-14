@@ -24,11 +24,23 @@ import java.util.List;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
+/**
+ * A Simple Implementation of Distributor to annotate an untokenized text line
+ * by line. The data is retrieved from an InputStream.
+ * 
+ * @author Simon Suiter
+ */
 public class SimpleStreamDistributor extends StaticThreadDistributor
 {
 	private ArrayList<BoaSentence> result;
 	private BufferedReader reader;
 	
+	/**
+	 * @param inputStream
+	 *            the stream to retrieve data from
+	 * @param threadCount
+	 *            the number of threads to create
+	 */
 	public SimpleStreamDistributor(InputStreamReader inputStream, int threadCount, ConfigLoader configLoader)
 	{
 		super(threadCount, configLoader, true);
@@ -61,9 +73,13 @@ public class SimpleStreamDistributor extends StaticThreadDistributor
 		result.addAll(sentences);
 	}
 	
+	/**
+	 * Returns the result of the annotation process or null if it has not
+	 * finished yet.
+	 */
 	public ArrayList<BoaSentence> getResult()
 	{
-		return hasFinished() ? result : null; 
+		return hasFinished() ? result : null;
 	}
 	
 }
