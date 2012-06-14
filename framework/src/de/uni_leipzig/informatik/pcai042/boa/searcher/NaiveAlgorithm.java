@@ -320,8 +320,8 @@ public class NaiveAlgorithm extends SearchAlgorithm
 								// make Annotation
 								ArrayList<String> annoTokens = new ArrayList<String>();
 								
-								annoTokens.add(prefix);
-								annoTokens.add(suffix);
+								annoTokens.add(prefix+suffix);
+								//annoTokens.add(suffix);
 								annoTokens.add(dsfNumber);
 								annoTokens.add(dsfUnit);
 								
@@ -342,10 +342,10 @@ public class NaiveAlgorithm extends SearchAlgorithm
 									// make Annotation
 									ArrayList<String> annoTokens = new ArrayList<String>();
 									
-									annoTokens.add(prefix);
-									annoTokens.add(suffix);
-									annoTokens.add(dsfNumber);
-									annoTokens.add(dsfUnit);
+									annoTokens.add(prefix+suffix);
+									//annoTokens.add(suffix);
+									annoTokens.add(dsfNumber+dsfUnit);
+									//annoTokens.add(dsfUnit);
 									
 									sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 									break;
@@ -358,8 +358,8 @@ public class NaiveAlgorithm extends SearchAlgorithm
 					{
 						// make Annotation
 						ArrayList<String> annoTokens = new ArrayList<String>();
-						annoTokens.add(prefix);
-						annoTokens.add(suffix);
+						annoTokens.add(prefix+suffix);
+						//annoTokens.add(suffix);
 						
 						sentence.getAnnotations().add(new BoaAnnotation(annoType, annoTokens));
 					}
