@@ -20,8 +20,22 @@ import java.util.ArrayList;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 import de.uni_leipzig.informatik.pcai042.boa.searcher.SearcherFactory;
 
+/**
+ * An abstract class for Distributors which deal with a fixed number threads
+ * which are alive throughout the whole annotation process.
+ * 
+ * @author Simon Suiter
+ */
 public abstract class StaticThreadDistributor extends Distributor
-{	
+{
+	/**
+	 * Creates a certain number of threads.
+	 * 
+	 * @param threadCount
+	 *            number of threads to create
+	 * @param tokenize
+	 *            whether the threads shall retrieve untokenized data
+	 */
 	protected StaticThreadDistributor(int threadCount, ConfigLoader configLoader, boolean tokenize)
 	{
 		super(configLoader);

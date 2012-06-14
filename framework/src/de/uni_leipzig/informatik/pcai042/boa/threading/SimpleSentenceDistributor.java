@@ -21,13 +21,28 @@ import java.util.List;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
+/**
+ * A simple Implementation of Distributor to annotate a list of sentences.
+ * 
+ * @author Simon Suiter
+ */
 public class SimpleSentenceDistributor extends StaticThreadDistributor
 {
 	private ArrayList<BoaSentence> sentences;
 	private int counter = 0;
 	private int chunkSize;
 	
-	public SimpleSentenceDistributor(ArrayList<BoaSentence> sentences, int threadCount, int chunkSize, ConfigLoader configLoader)
+	/**
+	 * @param sentences
+	 *            the sentences to annotate
+	 * @param threadCount
+	 *            the number of threads to create
+	 * @param chunkSize
+	 *            the number of sentences a thread retrieves when calling
+	 *            getSentences (at maximum)
+	 */
+	public SimpleSentenceDistributor(ArrayList<BoaSentence> sentences, int threadCount, int chunkSize,
+			ConfigLoader configLoader)
 	{
 		super(threadCount, configLoader, false);
 		this.sentences = sentences;
@@ -56,9 +71,10 @@ public class SimpleSentenceDistributor extends StaticThreadDistributor
 				x = counter++;
 			}
 		}
-		int upper = chunkSize*x+chunkSize;
-		if (upper > sentences.size()) upper = sentences.size();
-		return sentences.subList(chunkSize*x, upper);
+		int upper = chunkSize * x + chunkSize;
+		if (upper > sentences.size())
+			upper = sentences.size();
+		return sentences.subList(chunkSize * x, upper);
 	}
 	
 	@Override

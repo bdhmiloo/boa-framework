@@ -20,15 +20,45 @@ import java.util.List;
 import de.uni_leipzig.informatik.pcai042.boa.manager.BoaSentence;
 import de.uni_leipzig.informatik.pcai042.boa.manager.ConfigLoader;
 
+/**
+ * An abstract class that provides methods for AnnotatorThread to retrieve data and return the result. 
+ * 
+ * @see AnnotatorThread
+ * @author Simon Suiter
+ */
 public abstract class Distributor
 {
 	protected List<AnnotatorThread> threads;
 	protected ConfigLoader configLoder;
 	
+	/**
+	 * Called by an AnnotatorThread to retrieve an untokenized piece of text to
+	 * annotate.
+	 */
 	public abstract String getText();
+	
+	/**
+	 * Called by an AnnotatorThread to retrieve a list of (tokenized) sentences
+	 * to annotate.
+	 */
 	public abstract List<BoaSentence> getSentences();
+	
+	/**
+	 * Called by an AnnotatorThread to return a list of annotated sentences.
+	 * 
+	 * @param sentences
+	 *            the result of the annotations made by the thread
+	 */
 	public abstract void returnSentences(List<BoaSentence> sentences);
+	
+	/**
+	 * Returns true when there is no data left to annotate.
+	 */
 	public abstract boolean hasFinished();
+	
+	/**
+	 * Starts the annotation process.
+	 */
 	public abstract void run();
 	
 	protected Distributor(ConfigLoader configLoader)
