@@ -556,15 +556,12 @@
                 </tokens>
                 <annotation id="1">
                     <token>5</token>
+                    <token>6</token>
+					<token>7</token>
                     <token>8</token>
                     <type>WEIGHT</type>
                 </annotation>
-                <annotation id="2">
-                    <token>7</token>
-                    <token>8</token>
-                    <type>WEIGHT</type>
-                </annotation>
-            </sentence>
+                </sentence>
             <sentence id="9">
                 <tokens>
                     <token id="1">
@@ -14472,30 +14469,24 @@
                 </tokens>
                 <annotation id="1">
                     <token>7</token>
+                    <token>8</token>
+					<token>9</token>
                     <token>10</token>
-                    <type>LINEAR_MEASURE</type>
+					<type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="2">
-                    <token>9</token>
-                    <token>10</token>
+                    <token>12</token>
+                    <token>13</token>
+					<token>14</token>
+                    <token>15</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="3">
-                    <token>12</token>
-                    <token>15</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="4">
-                    <token>14</token>
-                    <token>15</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="5">
                     <token>19</token>
                     <token>20</token>
                     <type>WEIGHT</type>
                 </annotation>
-                <annotation id="6">
+                <annotation id="4">
                     <token>22</token>
                     <token>23</token>
                     <type>WEIGHT</type>
@@ -15385,45 +15376,33 @@
                 </tokens>
                 <annotation id="1">
                     <token>5</token>
+                    <token>6</token>
+					<token>7</token>
                     <token>8</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="2">
-                    <token>7</token>
-                    <token>8</token>
+                    <token>10</token>
+                    <token>11</token>
+					<token>12</token>
+                    <token>13</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="3">
-                    <token>10</token>
-                    <token>13</token>
+                    <token>19</token>
+                    <token>20</token>
+					<token>21</token>
+                    <token>22</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="4">
-                    <token>12</token>
-                    <token>13</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="5">
-                    <token>19</token>
-                    <token>22</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="6">
-                    <token>21</token>
-                    <token>22</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="7">
                     <token>24</token>
+                    <token>25</token>
+					<token>26</token>
                     <token>27</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
-                <annotation id="8">
-                    <token>26</token>
-                    <token>27</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-            </sentence>
+                </sentence>
             <sentence id="135">
                 <tokens>
                     <token id="1">
@@ -18143,29 +18122,21 @@
                 </tokens>
                 <annotation id="1">
                     <token>8</token>
-                    <token>11</token>
-                    <token>12</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="2">
+					<token>9</token>
                     <token>10</token>
                     <token>11</token>
                     <token>12</token>
                     <type>TEMPERATURE</type>
                 </annotation>
-                <annotation id="3">
+                <annotation id="2">
                     <token>14</token>
-                    <token>17</token>
-                    <token>18</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="4">
+                    <token>15</token>
                     <token>16</token>
-                    <token>17</token>
+					<token>17</token>
                     <token>18</token>
                     <type>TEMPERATURE</type>
                 </annotation>
-            </sentence>
+               </sentence>
             <sentence id="162">
                 <tokens>
                     <token id="1">
@@ -18296,15 +18267,12 @@
                 </tokens>
                 <annotation id="1">
                     <token>15</token>
+                    <token>16</token>
+					<token>17</token>
                     <token>18</token>
                     <type>WEIGHT</type>
                 </annotation>
                 <annotation id="2">
-                    <token>17</token>
-                    <token>18</token>
-                    <type>WEIGHT</type>
-                </annotation>
-                <annotation id="3">
                     <token>20</token>
                     <token>21</token>
                     <token>22</token>
@@ -27455,15 +27423,12 @@
                 </annotation>
                 <annotation id="3">
                     <token>23</token>
+                    <token>24</token>
+					<token>25</token>
                     <token>26</token>
                     <type>WEIGHT</type>
                 </annotation>
-                <annotation id="4">
-                    <token>25</token>
-                    <token>26</token>
-                    <type>WEIGHT</type>
-                </annotation>
-            </sentence>
+                </sentence>
             <sentence id="242">
                 <tokens>
                     <token id="1">
@@ -28891,15 +28856,12 @@
                 </tokens>
                 <annotation id="1">
                     <token>21</token>
+                    <token>22</token>
+					<token>23</token>
                     <token>24</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
-                <annotation id="2">
-                    <token>23</token>
-                    <token>24</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-            </sentence>
+               </sentence>
             <sentence id="252">
                 <tokens>
                     <token id="1">
@@ -50831,25 +50793,19 @@
                 </tokens>
                 <annotation id="1">
                     <token>7</token>
+                    <token>8</token>
+					<token>9</token>
                     <token>10</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="2">
-                    <token>9</token>
-                    <token>10</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="3">
                     <token>12</token>
+                    <token>13</token>
+					<token>14</token>
                     <token>15</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
-                <annotation id="4">
-                    <token>14</token>
-                    <token>15</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-            </sentence>
+                </sentence>
             <sentence id="420">
                 <tokens>
                     <token id="1">
@@ -62083,15 +62039,12 @@
                 </annotation>
                 <annotation id="3">
                     <token>30</token>
+                    <token>31</token>
+					<token>32</token>
                     <token>33</token>
                     <type>LINEAR_MEASURE</type>
                 </annotation>
                 <annotation id="4">
-                    <token>32</token>
-                    <token>33</token>
-                    <type>LINEAR_MEASURE</type>
-                </annotation>
-                <annotation id="5">
                     <token>35</token>
                     <token>36</token>
                     <type>LINEAR_MEASURE</type>
@@ -62464,53 +62417,37 @@
                 </tokens>
                 <annotation id="1">
                     <token>16</token>
-                    <token>19</token>
-                    <token>20</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="2">
+					<token>17</token>
                     <token>18</token>
                     <token>19</token>
                     <token>20</token>
                     <type>TEMPERATURE</type>
                 </annotation>
-                <annotation id="3">
+                <annotation id="2">
                     <token>22</token>
-                    <token>25</token>
+                    <token>23</token>
+                    <token>24</token>
+					<token>25</token>
                     <token>26</token>
+                    <type>TEMPERATURE</type>
+                </annotation>
+                <annotation id="3">
+                    <token>31</token>
+                    <token>32</token>
+                    <token>33</token>
+					<token>34</token>
+                    <token>35</token>
                     <type>TEMPERATURE</type>
                 </annotation>
                 <annotation id="4">
-                    <token>24</token>
-                    <token>25</token>
-                    <token>26</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="5">
-                    <token>31</token>
-                    <token>34</token>
-                    <token>35</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="6">
-                    <token>33</token>
-                    <token>34</token>
-                    <token>35</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="7">
                     <token>37</token>
-                    <token>40</token>
-                    <token>41</token>
-                    <type>TEMPERATURE</type>
-                </annotation>
-                <annotation id="8">
+                    <token>38</token>
                     <token>39</token>
-                    <token>40</token>
+					<token>40</token>
                     <token>41</token>
                     <type>TEMPERATURE</type>
                 </annotation>
-            </sentence>
+               </sentence>
             <sentence id="510">
                 <tokens>
                     <token id="1">
