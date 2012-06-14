@@ -72,19 +72,6 @@ public class TestingPackageBoaConverter
 		tokensWeight.add("5");
 		tokensWeight.add("kg");
 		
-		// abstract class
-		converter = new Converter()
-		{
-			// Add unimplemented Methods
-			@Override
-			public ArrayList<String> convertUnits(BoaAnnotation annotation)
-			{
-				
-				return null;
-			}
-			
-		};
-		
 	}
 	
 	/**
